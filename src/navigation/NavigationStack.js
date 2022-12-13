@@ -16,6 +16,7 @@ const AuthStackRider = createStackNavigator({
    Login: { screen: RiderLogin },
    Verify: { screen: RiderVerifyNumber },
    Register: { screen: RiderRegister },
+   FinishSetup: {screen: FinishSetup},
    // Register: { screen: RiderRegister },
 },
    {
@@ -29,7 +30,6 @@ const AuthStackRider = createStackNavigator({
 const AuthStackMain = createAppContainer(
    createStackNavigator(
       {
-         FinishSetup: {screen: FinishSetup},
          Home: { screen: Home },
       },
       {
