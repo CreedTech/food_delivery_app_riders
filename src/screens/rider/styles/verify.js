@@ -16,15 +16,15 @@ export default styles = StyleSheet.create({
    title: {
       fontSize: 32,
       fontWeight: '900',
-      lineHeight: '34px',
-      letterSpacing: '-0.01px',
+      // lineHeight: '34px',
+      // letterSpacing: '-0.01px',
       color:'#303030',
    },
    subtitle: {
       fontSize: 12,
       fontWeight: '400',
-      lineHeight: '24px',
-      letterSpacing: '-0.01px',
+      // lineHeight: '24px',
+      // letterSpacing: '-0.01px',
       color:'#ABABB4',
    },
    otpContainer: {
@@ -52,7 +52,7 @@ export default styles = StyleSheet.create({
       width: '100%',
       height: 56,
       marginTop: 15,
-      borderRadius:'8px',
+      borderRadius:8,
    },
    resendCode: {
       paddingTop: 14,
@@ -60,8 +60,8 @@ export default styles = StyleSheet.create({
    },
    resendCodeText: {
       color: "#FE8CA2",
-      fontSize: "16px",
-      lineHeight:'18px',
+      fontSize: 16,
+      // lineHeight:'18px',
    },
    verifyText: {
       color: '#ffffff',

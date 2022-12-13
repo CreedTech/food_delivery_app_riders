@@ -1,4 +1,4 @@
 import NavigationSwitch from './NavigationSwitch';
-//import RiderHomeDrawer from './NavigationDrawer';
+// import HomeDrawer from './NavigationDrawer';
 
 export default NavigationSwitch;

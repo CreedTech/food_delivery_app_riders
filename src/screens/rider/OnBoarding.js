@@ -30,7 +30,7 @@ export default OnBoarding = (props) => {
         >
           <View style={{ flex: 1 }} />
           <View style={{ flex: 5 }} />
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1.5 }}>
             <View style={{ flexDirection: 'column',width:180, marginLeft:205 }}>
               <Text style={{ color: 'white', textAlign: 'center', fontSize:32, fontWeight:'800', }}>
                 Ride & Flex
@@ -41,24 +41,21 @@ export default OnBoarding = (props) => {
             </View>
           </View>
           <View style={{ backgroundColor: 'red', height: 160, flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
-          <Pressable style={styles.login} onPress={() => {
-                signInAsync(props);
-             }}>
-        <Text style={styles.loginText}>Login</Text>
-      </Pressable>
-            {/* <TouchableHighlight
-              style={styles.login}
-              onPress={() => {
-                signInAsync(props);
+          
+            <TouchableHighlight
+               style={styles.login}
+               onPress={() => {
+                props.navigation.navigate('Login');
              }}
               underlayColor="#fff"
             >
               <Text style={styles.loginText}>Login</Text>
-            </TouchableHighlight> */}
+            </TouchableHighlight>
+           
             <TouchableHighlight
               style={styles.signup}
               onPress={() => {
-                signUpAsync(props);
+                props.navigation.navigate('Register');
              }}
               underlayColor="#fff"
             >

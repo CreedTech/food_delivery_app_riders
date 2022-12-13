@@ -7,7 +7,7 @@ export default styles = StyleSheet.create({
    },
    container: {
       flex: 1,
-      backgroundColor: '#fff',
+      // backgroundColor: '#fff',
       flexDirection:'column',
       marginTop: '20%',
       paddingVertical: 20,
@@ -19,15 +19,15 @@ export default styles = StyleSheet.create({
    title: {
       fontSize: 28,
       fontWeight: '800',
-      lineHeight: '34px',
-      letterSpacing: '-0.01px',
+      // lineHeight: '34px',
+      // letterSpacing: '-0.01px',
       color:'#303030',
    },
    subtitle: {
       fontSize: 16,
       fontWeight: '400',
-      lineHeight: '24px',
-      letterSpacing: '-0.01px',
+      // lineHeight: '24px',
+      // letterSpacing: '-0.01px',
       color:'#ABABB4',
    },
    textInputMobile: {
@@ -35,7 +35,7 @@ export default styles = StyleSheet.create({
       width: '90%',
       paddingHorizontal: 11,
       paddingVertical: 10,
-      color:'#6C6969',
+      color:'#000000',
    },
    countrCode: {
       width: '30%',
@@ -45,7 +45,7 @@ export default styles = StyleSheet.create({
       paddingHorizontal: 11,
       paddingVertical: 10,
       width: '90%',
-      color:'#6C6969',
+      color:'#000000',
    },
    LoginButton: {
       alignItems: 'center',
@@ -54,7 +54,8 @@ export default styles = StyleSheet.create({
       width: '100%',
       height: 56,
       marginTop: 30,
-      borderRadius:'8px',
+      borderRadius: 8,
+      
    },
    forgotPass: {
       // flex: 1,
@@ -63,9 +64,9 @@ export default styles = StyleSheet.create({
    },
    passwordForgotten: {
       color: '#FD264F',
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: '600',
-      lineHeight: '18px'
+      // lineHeight: '18px'
    },
    activityIndicator: {
       position: 'absolute',
@@ -74,8 +75,8 @@ export default styles = StyleSheet.create({
    loginText: {
       color: '#ffffff',
       fontWeight: '600',
-      fontSize: '18px',
-      lineHeight: '18px',
+      fontSize: 18,
+      // lineHeight: '18px',
    },
    loginContainer: {
       // justifyContent: 'flex-end',
@@ -91,17 +92,21 @@ export default styles = StyleSheet.create({
    },
    noAccountText: {
       color: "#FD264F",
-      fontSize: "16px",
-      lineHeight:'18px',
+      fontSize: 16,
+      // lineHeight:'18px',
+   },
+   eyeIcon: {
+      marginTop:10,
    },
    mobileContainer: {
       width: '100%',
       flexDirection: 'row',
       paddingHorizontal: 27,
-      paddingVertical: 10,
+      paddingVertical: 7,
       marginTop: 40,
       backgroundColor:'#F2F2F4',
-      borderRadius:'15px',
+      borderRadius: 15,
+      // overflow: 'hidden'
    },
    headerContainer: {
       width: '100%',
