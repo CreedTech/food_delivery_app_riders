@@ -1,7 +1,13 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import customDrawerContentComponent from '../components/DrawerComponent/riderDrawerContainer';
+// import {
+//    createDrawerNavigator,
+//    DrawerContentScrollView,
+//    DrawerItemList,
+//    DrawerItem,
+//  } from '@react-navigation/drawer';
+// import { createDrawerNavigator } from 'react-navigation-drawer';
+// import customDrawerContentComponent from '../components/DrawerComponent/riderDrawerContainer';
 // import Login from '../screens/rider/Login';
 import RiderLogin from '../screens/rider/RiderLogin';
 import RiderVerifyNumber from '../screens/rider/RiderVerifyNumber';
@@ -37,20 +43,20 @@ const AuthStackMain = createAppContainer(
       },
    ),
 );
-const HomeDrawer = createAppContainer(
-   createDrawerNavigator(
-      {
-         Home: { screen: Home },
-      },
-      {
-         initialRouteName: 'Home',
-         contentComponent: customDrawerContentComponent,
-         drawerOpenRoute: 'DrawerOpen',
-         drawerCloseRoute: 'DrawerClose',
-         drawerToggleRoute: 'DrawerToggle',
-      },
-   ),
-);
+// const HomeDrawer = createAppContainer(
+//    createDrawerNavigator(
+//       {
+//          Home: { screen: Home },
+//       },
+//       {
+//          initialRouteName: 'Home',
+//          contentComponent: customDrawerContentComponent,
+//          drawerOpenRoute: 'DrawerOpen',
+//          drawerCloseRoute: 'DrawerClose',
+//          drawerToggleRoute: 'DrawerToggle',
+//       },
+//    ),
+// );
 // const RiderHomeStackNav = createStackNavigator(
 //    {
 //       Main: { screen: RiderHomeContents },
@@ -66,6 +72,6 @@ const HomeDrawer = createAppContainer(
 export {
    AuthStackMain,
    AuthStackRider,
-   HomeDrawer
+   // HomeDrawer
    // RiderHomeStackNav
 };

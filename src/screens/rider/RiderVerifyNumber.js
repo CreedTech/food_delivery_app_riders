@@ -15,7 +15,7 @@ import styles from './styles/verify';
 export default RiderVerifyNumber = (props) => {
   const [otp, setOtp] = useState('');
   return (
-    // <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
+    <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>Enter the {'\n'} verification code</Text>
@@ -47,7 +47,7 @@ export default RiderVerifyNumber = (props) => {
         </Text>
       </View>
     </View>
-    // </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
   );
 };
 const otpField = {

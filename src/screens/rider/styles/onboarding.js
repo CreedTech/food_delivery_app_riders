@@ -46,7 +46,7 @@ export default styles = StyleSheet.create({
     height: 56,
     marginLeft: 30,
     // marginTop: 30,
-    paddingTop: 15,
+    paddingTop: 18,
     paddingBottom: 15,
     // backgroundColor: 'transparent',
     borderRadius: 10,

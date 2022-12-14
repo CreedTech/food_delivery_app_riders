@@ -42,7 +42,7 @@ export default FinishSetup = (props) => {
                 style={{
                   color: 'black',
                   textAlign: 'center',
-                  fontSize: 32,
+                  fontSize: 48,
                   fontWeight: '800',
                 }}
               >
@@ -50,14 +50,16 @@ export default FinishSetup = (props) => {
               </Text>
             </View>
           </View>
+        </ImageBackground>
           <View
             style={{
               backgroundColor: 'white',
-              height: 160,
+              height: 200,
               flexDirection: 'column',
               alignItems: 'center',
               alignContent: 'center',
-              padding: 20,
+            padding: 20,
+              // paddingBottom:50,
             }}
           >
             <Text style={styles.text}>
@@ -73,7 +75,6 @@ export default FinishSetup = (props) => {
               <Text style={styles.startRidingText}>Start Riding</Text>
             </TouchableHighlight>
           </View>
-        </ImageBackground>
 
         {/* <ActivityIndicator size="large" /> */}
       </View>

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, AsyncStorage, Text } from 'react-native';
+import { View, AsyncStorage, Text,Button } from 'react-native';
 // import HomeDrawer  from '../../navigation/index';
 import styles from './styles/home';
-export default Home = () => {
+export default Home = (props) => {
    const navigationOptions = {
       header: null,
    };
    return (
       <View style={styles.container}>
-           {/* <HomeDrawer /> */}
-           <Text>Welcome To My World</Text>
+         {/* <HomeDrawer /> */}
+         {/* <Button title="Open drawer" onPress={() => props.navigation.openDrawer()} />
+      <Button title="Toggle drawer" onPress={() => props.navigation.toggleDrawer()} /> */}
+         <Text>Welcome To My World</Text>
+         
       </View>
    );
 };

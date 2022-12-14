@@ -96,7 +96,7 @@ export default styles = StyleSheet.create({
       // lineHeight:'18px',
    },
    eyeIcon: {
-      marginTop:10,
+      marginTop:5,
    },
    mobileContainer: {
       width: '100%',

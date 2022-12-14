@@ -10,11 +10,11 @@ export default styles = StyleSheet.create({
       backgroundColor: '#fff',
       flexDirection:'column',
       marginTop: '15%',
-      paddingVertical: 10,
+      paddingVertical: 30,
       paddingHorizontal: 40,
    },
    backIcon: {
-      marginBottom:27,
+      marginBottom:67,
    },
    title: {
       fontSize: 28,
@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
    subtitle: {
       fontSize: 16,
       fontWeight: '400',
-      marginBottom: 15,
+      marginBottom: 20,
       // lineHeight: '24px',
       // letterSpacing: '-0.01px',
       color:'#ABABB4',
@@ -56,7 +56,7 @@ export default styles = StyleSheet.create({
       color:'#000000',
    },
    eyeIcon: {
-      marginTop:10,
+      marginTop:5,
    },
    registerButton: {
       alignItems: 'center',
@@ -85,7 +85,7 @@ export default styles = StyleSheet.create({
    noAccount: {
       paddingTop: 10,
       alignSelf: 'center',
-      marginBottom: 25,
+      marginBottom: 105,
    },
    noAccountText: {
       color: "#FD264F",

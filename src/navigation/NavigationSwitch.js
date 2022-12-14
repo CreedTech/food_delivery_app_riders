@@ -1,6 +1,7 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { AuthStackRider,AuthStackMain, HomeDrawer } from './NavigationStack';
+import { AuthStackRider,AuthStackMain } from './NavigationStack';
 import AuthLoadingScreen from '../screens/main/AuthLoadingScreen';
+import Drawer from '../components/DrawerComponent/Drawer';
 // import RiderLogin from '../screens/rider/RiderLogin';
 
 export default switchNavigator = createAppContainer(
@@ -9,7 +10,8 @@ export default switchNavigator = createAppContainer(
          AuthLoading: AuthLoadingScreen,
          Main: AuthStackMain,
          OnBoard: AuthStackRider,
-         Drawer: HomeDrawer
+         // Drawer: Drawer,
+         // Drawer: HomeDrawer
       },
       {
          initialRouteName: 'AuthLoading',

@@ -22,7 +22,7 @@ import styles from './styles/register';
 export default RiderRegister = (props) => {
   return (
     <ScrollView>
-      <View style={styles.wrapper}>
+      <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
         <View style={styles.container}>
           <TouchableOpacity>
             <AntIcon
@@ -121,7 +121,7 @@ export default RiderRegister = (props) => {
 
           {/* <ActivityIndicator size="large" /> */}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };
