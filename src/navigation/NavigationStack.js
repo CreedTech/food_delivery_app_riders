@@ -15,33 +15,57 @@ import RiderRegister from '../screens/rider/RiderRegister';
 import OnBoarding from '../screens/rider/OnBoarding';
 import Home from '../screens/rider/Home';
 import FinishSetup from '../screens/rider/FinishSetup';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import CustomDrawer from '../screens/rider/CustomDrawer';
+import Dashboard from '../screens/rider/Dashboard';
 
-
-const AuthStackRider = createStackNavigator({
-   OnBoarding: {screen: OnBoarding},
-   Login: { screen: RiderLogin },
-   Verify: { screen: RiderVerifyNumber },
-   Register: { screen: RiderRegister },
-   FinishSetup: {screen: FinishSetup},
-   // Register: { screen: RiderRegister },
-},
-   {
-      headerMode: 'none',
-      navigationOptions: {
-         headerVisible: false,
-      },
-   },
+const AuthStackRider = createStackNavigator(
+  {
+    OnBoarding: { screen: OnBoarding },
+    Login: { screen: RiderLogin },
+    Verify: { screen: RiderVerifyNumber },
+    Register: { screen: RiderRegister },
+    FinishSetup: { screen: FinishSetup },
+    // Register: { screen: RiderRegister },
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  }
 );
 
 const AuthStackMain = createAppContainer(
-   createStackNavigator(
+  createStackNavigator(
+    {
+      Home: { screen: Home },
+    },
+    {
+      headerMode: 'none',
+    }
+  )
+);
+const DrawerNavigator = createAppContainer(
+   createDrawerNavigator(
       {
-         Home: { screen: Home },
+         Dashboard: { screen: Dashboard },
       },
       {
-         headerMode: 'none',
-      },
-   ),
+         initialRouteName: 'Dashboard',
+         contentComponent: CustomDrawer, // Pass here
+         drawerOpenRoute: 'DrawerOpen',
+         drawerCloseRoute: 'DrawerClose',
+         drawerToggleRoute: 'DrawerToggle',
+         // others props
+         drawerBackgroundColor: 'rgba(255,255,255,.9)',
+         overlayColor: 'rgba(0,0,0,0.5)',
+         contentOptions: {
+            activeTintColor: '#fff',
+            activeBackgroundColor: '#6b52ae',
+         },
+      }
+   )
 );
 // const HomeDrawer = createAppContainer(
 //    createDrawerNavigator(
@@ -70,8 +94,9 @@ const AuthStackMain = createAppContainer(
 //    },
 // );
 export {
-   AuthStackMain,
+  AuthStackMain,
    AuthStackRider,
-   // HomeDrawer
-   // RiderHomeStackNav
+   DrawerNavigator
+  // HomeDrawer
+  // RiderHomeStackNav
 };

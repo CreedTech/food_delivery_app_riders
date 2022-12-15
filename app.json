@@ -4,12 +4,12 @@
     "slug": "fudap-riders-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/fudap_logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/fudap.png",
+      "image": "./assets/fudap_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ff0000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +24,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FF0000"
       },
       "package": "com.lazyprogrammer.fudapridersapp"
     },

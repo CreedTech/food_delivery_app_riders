@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-picker/picker": "^2.4.8",
+    "@react-navigation/drawer": "^6.5.5",
     "expo": "~47.0.8",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
@@ -17,8 +18,7 @@
     "react": "18.1.0",
     "react-dom": "^18.2.0",
     "react-native": "0.70.5",
-    "react-native-bem-check-box": "^1.0.0",
-    "react-native-check-box": "^2.1.7",
+    "react-native-elements": "^3.4.2",
     "react-native-geocoding": "^0.5.0",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-google-places-autocomplete": "^2.5.1",
