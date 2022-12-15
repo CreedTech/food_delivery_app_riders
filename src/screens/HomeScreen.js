@@ -19,7 +19,6 @@ import {
   TouchableRipple,
   Switch,
 } from 'react-native-paper';
-import SvgComponent from '../components/SvgComponent';
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -42,7 +41,6 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
           <TouchableOpacity>
-            {/* <SvgComponent /> */}
             <Icon
               name="ios-menu"
               size={35}
