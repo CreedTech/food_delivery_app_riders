@@ -48,7 +48,8 @@ const AuthStackMain = createAppContainer(
 );
 const DrawerNavigator = createAppContainer(
    createDrawerNavigator(
-      {
+     {
+      Home: { screen: Home },
          Dashboard: { screen: Dashboard },
       },
       {
