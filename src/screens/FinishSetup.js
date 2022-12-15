@@ -14,14 +14,17 @@ import {
   ActivityIndicator,
   Pressable,
 } from 'react-native';
-import styles from './styles/finishSetup';
+import { AuthContext } from '../components/context';
+// import { CachedImage } from 'react-native-cached-image';
 
-export default FinishSetup = (props) => {
-  return (
-    <View style={styles.wrapper}>
+const FinishSetupScreen = ({ navigation }) => {
+    const { signIn } = React.useContext(AuthContext);
+
+    return (
+        <View style={styles.wrapper}>
       <View style={styles.container}>
         <ImageBackground
-          source={require('../../assets/images/FinishSetup.png')}
+          source={require('../assets/images/FinishSetup.png')}
           style={styles.image}
         >
           {/* <View style={{ flex: 1 }} /> */}
@@ -68,8 +71,8 @@ export default FinishSetup = (props) => {
             <TouchableHighlight
               style={styles.startRiding}
               onPress={() => {
-                props.navigation.navigate('Home');
-              }}
+              signIn();
+            }}
               underlayColor="#fff"
             >
               <Text style={styles.startRidingText}>Start Riding</Text>
@@ -79,5 +82,62 @@ export default FinishSetup = (props) => {
         {/* <ActivityIndicator size="large" /> */}
       </View>
     </View>
-  );
+    );
 };
+
+
+export default FinishSetupScreen;
+
+const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        backgroundColor: '#fff',
+      },
+      container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        flexDirection:'column',
+        // marginTop: '20%',
+        // paddingVertical: 20,
+        // paddingHorizontal: 60,
+        },
+        innerContainer: {
+            flex: 1,
+            marginTop: '10%',
+        paddingVertical: 63,
+        paddingHorizontal: 20,
+        },
+      image: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+      },
+      startRiding: {
+        // marginRight: 10,
+          width: '100 %',
+        height: 56,
+        // marginLeft: 40,
+        marginTop: 20,
+          paddingTop: 20,
+        paddingHorizontal:50,
+        paddingBottom: 20,
+        backgroundColor: '#FF0000',
+        borderRadius: 10,
+        // borderWidth: 1,
+        // borderColor: '#ffffff',
+      },
+      startRidingText: {
+        color: '#ffffff',
+        textAlign: 'center',
+      },
+      text: {
+        fontSize: 14,
+        color: '#6C6969',
+        fontWeight: '600',
+        alignItems: 'center',
+        width: 189,
+        alignContent: 'center',
+        textAlign: 'center',
+        paddingBottom:20,
+      },
+  });

@@ -1,0 +1,13 @@
+import React from 'react';
+import { SvgXml } from 'react-native-svg';
+export default function SvgComponent() {
+  const svgMarkup = `<svg width="47" height="30" viewBox="0 0 47 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M37.2083 12H9.79165" stroke="#160808" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M37.2084 6H9.79171" stroke="#160808" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36.8333 18H25.1666" stroke="#160808" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  `;
+  const SvgImage = () => <SvgXml xml={svgMarkup} width="301px" />;
+
+  return <SvgImage />;
+}
