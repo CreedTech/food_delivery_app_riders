@@ -22,36 +22,63 @@ const SignInScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
     firstname: '',
     lastname: '',
+    email: '',
     password: '',
-    confirm_password: '',
+    phone_number: '',
     check_textInputChange: false,
+    check_numberInputChange: false,
+    check_emailInputChange: false,
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
 
-  const textInputChange = (val) => {
-    if (val.length !== 0) {
+  const numberInputChange = (val) => {
+    if (val.length > 10) {
       setData({
         ...data,
-        username: val,
-        check_textInputChange: true,
+        phone_number: val,
+        check_numberInputChange: true,
       });
     } else {
       setData({
         ...data,
-        username: val,
-        check_textInputChange: false,
+        phone_number: val,
+        check_numberInputChange: false,
+      });
+    }
+  };
+
+  const emailInputChange = (val) => {
+    if (val.length > 5) {
+      setData({
+        ...data,
+        email: val,
+        check_emailInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        email: val,
+        check_emailInputChange: false,
       });
     }
   };
 
   const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    });
+    if (val.trim().length >= 8) {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: false,
+      });
+    }
   };
-
   const updateSecureTextEntry = () => {
     setData({
       ...data,
@@ -60,8 +87,7 @@ const SignInScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
+      <ScrollView behavior="padding" style={styles.wrapper}>
         <StatusBar backgroundColor="#ffffff" barStyle="light-content" />
         <View style={styles.container}>
           <TouchableOpacity>
@@ -84,36 +110,30 @@ const SignInScreen = ({ navigation }) => {
               style={styles.input}
               placeholder="First Name"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={(val) => textInputChange(val)}
+              underlineColorAndroid="transparent"
+              selectionColor="transparent"
             />
-            {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn">
-                <Feather name="check-circle" color="green" size={20} />
-              </Animatable.View>
-            ) : null}
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Last Name"
+              selectionColor="transparent"
+              underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={(val) => textInputChange(val)}
             />
-            {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn">
-                <Feather name="check-circle" color="green" size={20} />
-              </Animatable.View>
-            ) : null}
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Email"
+              underlineColorAndroid="transparent"
+              selectionColor="transparent"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={(val) => textInputChange(val)}
+              onChangeText={(val) => emailInputChange(val)}
             />
-            {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn">
+            {data.check_emailInputChange ? (
+              <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
             ) : null}
@@ -123,18 +143,27 @@ const SignInScreen = ({ navigation }) => {
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.passInput}
               placeholder="Enter Password"
+              underlineColorAndroid="transparent"
+              selectionColor="transparent"
               placeholderStyle={{ fontSize: 40 }}
               onChangeText={(val) => handlePasswordChange(val)}
             />
-            <TouchableOpacity onPress={updateSecureTextEntry}>
+            <TouchableOpacity onPress={updateSecureTextEntry} style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={30} />
+                <Feather name="eye-off" color="grey" size={25}  />
               ) : (
-                <Feather name="eye" color="grey" size={30} />
+                <Feather name="eye" color="grey" size={25} />
               )}
             </TouchableOpacity>
             
           </View>
+          {data.isValidPassword ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMsg}>
+              Password must be 8 characters long.
+            </Text>
+          </Animatable.View>
+        )}
           <View style={styles.mobileContainer}>
             <PhoneInput
               allowZeroAfterCountryCode={true}
@@ -149,11 +178,12 @@ const SignInScreen = ({ navigation }) => {
               placeholder="Phone Number"
               keyboardType="numeric"
               maxLength={20}
-              selectionColor="#42A5F5"
-              onChangeText={(val) => textInputChange(val)}
+              underlineColorAndroid="transparent"
+              selectionColor="transparent"
+              onChangeText={(val) => numberInputChange(val)}
             />
-            {data.check_textInputChange ? (
-              <Animatable.View animation="bounceIn">
+            {data.check_numberInputChange ? (
+              <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
             ) : null}
@@ -185,8 +215,7 @@ const SignInScreen = ({ navigation }) => {
 
           {/* <ActivityIndicator size="large" /> */}
         </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+      </ScrollView>
   );
 };
 
@@ -225,7 +254,7 @@ const styles = StyleSheet.create({
   },
   textInputMobile: {
     alignSelf: 'stretch',
-    width: '90%',
+    width: '65%',
     paddingHorizontal: 11,
     paddingVertical: 10,
     color: '#000000',
@@ -237,14 +266,14 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     paddingHorizontal: 11,
     paddingVertical: 10,
-    width: '100%',
+    width: '95%',
     color: '#000000',
   },
   passInput: {
     alignSelf: 'stretch',
     paddingHorizontal: 11,
     paddingVertical: 10,
-    width: '90%',
+    width: '95%',
     color: '#000000',
   },
   eyeIcon: {
@@ -270,7 +299,7 @@ const styles = StyleSheet.create({
     // lineHeight: '18px',
   },
   registerContainer: {
-    width: '100%',
+    width: '90%',
     // paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -285,7 +314,7 @@ const styles = StyleSheet.create({
     // lineHeight:'18px',
   },
   mobileContainer: {
-    width: '100%',
+    width: '90%',
     flexDirection: 'row',
     paddingHorizontal: 27,
     paddingVertical: 7,
@@ -304,67 +333,5 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'grey',
   },
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#009387'
-  // },
-  // header: {
-  //     flex: 1,
-  //     justifyContent: 'flex-end',
-  //     paddingHorizontal: 20,
-  //     paddingBottom: 50
-  // },
-  // footer: {
-  //     flex: Platform.OS === 'ios' ? 3 : 5,
-  //     backgroundColor: '#fff',
-  //     borderTopLeftRadius: 30,
-  //     borderTopRightRadius: 30,
-  //     paddingHorizontal: 20,
-  //     paddingVertical: 30
-  // },
-  // text_header: {
-  //     color: '#fff',
-  //     fontWeight: 'bold',
-  //     fontSize: 30
-  // },
-  // text_footer: {
-  //     color: '#05375a',
-  //     fontSize: 18
-  // },
-  // action: {
-  //     flexDirection: 'row',
-  //     marginTop: 10,
-  //     borderBottomWidth: 1,
-  //     borderBottomColor: '#f2f2f2',
-  //     paddingBottom: 5
-  // },
-  // textInput: {
-  //     flex: 1,
-  //     marginTop: Platform.OS === 'ios' ? 0 : -12,
-  //     paddingLeft: 10,
-  //     color: '#05375a',
-  // },
-  // button: {
-  //     alignItems: 'center',
-  //     marginTop: 50
-  // },
-  // signIn: {
-  //     width: '100%',
-  //     height: 50,
-  //     justifyContent: 'center',
-  //     alignItems: 'center',
-  //     borderRadius: 10
-  // },
-  // textSign: {
-  //     fontSize: 18,
-  //     fontWeight: 'bold'
-  // },
-  // textPrivate: {
-  //     flexDirection: 'row',
-  //     flexWrap: 'wrap',
-  //     marginTop: 20
-  // },
-  // color_textPrivate: {
-  //     color: 'grey'
-  // }
+ 
 });

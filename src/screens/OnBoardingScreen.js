@@ -32,7 +32,7 @@ const OnBoardingScreen = ({navigation}) => {
                   Ride & Flex
                 </Text>
                 <Text style={{ color: 'white', textAlign: 'center', fontSize:18, fontWeight:'600', }}>
-                  Deliver food on earn Extra money
+                  Deliver food and earn Extra money
                 </Text>
               </View>
             </View>

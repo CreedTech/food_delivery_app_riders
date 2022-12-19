@@ -151,13 +151,14 @@ const SignInScreen = ({ navigation }) => {
             placeholder="Phone Number"
             keyboardType="numeric"
             maxLength={20}
+            underlineColorAndroid="transparent"
             // underlineColorAndroid="#c0c0c0"
             selectionColor="#42A5F5"
             onChangeText={(val) => textInputChange(val)}
             onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
           {data.check_textInputChange ? (
-            <Animatable.View animation="bounceIn">
+            <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               <Feather name="check-circle" color="green" size={20} />
             </Animatable.View>
           ) : null}
@@ -176,11 +177,11 @@ const SignInScreen = ({ navigation }) => {
             autoCapitalize="none"
             onChangeText={(val) => handlePasswordChange(val)}
           />
-          <TouchableOpacity onPress={updateSecureTextEntry}>
+          <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
             {data.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={30} />
+              <Feather name="eye-off" color="grey" size={25} />
             ) : (
-              <Feather name="eye" color="grey" size={30} />
+              <Feather name="eye" color="grey" size={25} />
             )}
           </TouchableOpacity>
         </View>
@@ -380,7 +381,7 @@ const styles = StyleSheet.create({
   },
   textInputMobile: {
     alignSelf: 'stretch',
-    width: '90%',
+    width: '65%',
     paddingHorizontal: 11,
     paddingVertical: 10,
     color: '#000000',
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     paddingHorizontal: 11,
     paddingVertical: 10,
-    width: '90%',
+    width: '95%',
     color: '#000000',
   },
   LoginButton: {
