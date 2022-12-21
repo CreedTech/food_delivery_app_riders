@@ -15,10 +15,10 @@ import OTPTextInput from 'react-native-otp-textinput';
 
 const VerifyPhoneScreen = ({ navigation }) => {
   return (
-    <ScrollView behavior="padding" style={styles.wrapper}>
+    <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
       <View style={styles.container}>
         <View>
-          <Text style={styles.title}>Enter the {'\n'} verification code</Text>
+          <Text style={styles.title}>Enter the {'\n'}verification code</Text>
           <Text style={styles.subtitle}>
             Please provide details below to login
           </Text>
@@ -47,7 +47,7 @@ const VerifyPhoneScreen = ({ navigation }) => {
           </Text>
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 const otpField = {

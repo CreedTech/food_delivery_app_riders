@@ -152,10 +152,9 @@ const SignInScreen = ({ navigation }) => {
             keyboardType="numeric"
             maxLength={20}
             underlineColorAndroid="transparent"
-            // underlineColorAndroid="#c0c0c0"
-            selectionColor="#42A5F5"
+            selectionColor="#ff0000"
             onChangeText={(val) => textInputChange(val)}
-            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+            // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -175,6 +174,7 @@ const SignInScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderStyle={{ fontSize: 40, color: 'red' }}
             autoCapitalize="none"
+            selectionColor="#ff0000"
             onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: '20%',
     paddingVertical: 20,
-    paddingHorizontal: 60,
+    paddingHorizontal: 40,
   },
   backIcon: {
     marginBottom: 67,
@@ -385,6 +385,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 11,
     paddingVertical: 10,
     color: '#000000',
+    backgroundColor: 'transparent',
+    // backgroundColor:'#c0c0c0'
   },
   countrCode: {
     width: '30%',
@@ -395,6 +397,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '95%',
     color: '#000000',
+    backgroundColor: 'transparent',
   },
   LoginButton: {
     alignItems: 'center',
@@ -431,7 +434,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // flexDirection: 'row',
     width: '100%',
-    paddingHorizontal: 10,
+    // paddingHorizontal: 7,
     paddingVertical: 5,
   },
   noAccount: {

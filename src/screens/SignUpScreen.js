@@ -11,6 +11,7 @@ import {
   ScrollView,
   StatusBar,
   KeyboardAvoidingView,
+  
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import * as Animatable from 'react-native-animatable';
@@ -87,8 +88,10 @@ const SignInScreen = ({ navigation }) => {
   };
 
   return (
-      <ScrollView behavior="padding" style={styles.wrapper}>
-        <StatusBar backgroundColor="#ffffff" barStyle="light-content" />
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
+ style={styles.wrapper} enabled >
+          <ScrollView>
+        {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
         <View style={styles.container}>
           <TouchableOpacity>
             <AntIcon
@@ -111,14 +114,14 @@ const SignInScreen = ({ navigation }) => {
               placeholder="First Name"
               placeholderStyle={{ fontSize: 40 }}
               underlineColorAndroid="transparent"
-              selectionColor="transparent"
+              selectionColor="#ff0000"
             />
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Last Name"
-              selectionColor="transparent"
+              selectionColor="#ff0000"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
             />
@@ -128,7 +131,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.input}
               placeholder="Email"
               underlineColorAndroid="transparent"
-              selectionColor="transparent"
+              selectionColor="#ff0000"
               placeholderStyle={{ fontSize: 40 }}
               onChangeText={(val) => emailInputChange(val)}
             />
@@ -144,7 +147,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.passInput}
               placeholder="Enter Password"
               underlineColorAndroid="transparent"
-              selectionColor="transparent"
+              selectionColor="#ff0000"
               placeholderStyle={{ fontSize: 40 }}
               onChangeText={(val) => handlePasswordChange(val)}
             />
@@ -179,7 +182,7 @@ const SignInScreen = ({ navigation }) => {
               keyboardType="numeric"
               maxLength={20}
               underlineColorAndroid="transparent"
-              selectionColor="transparent"
+              selectionColor="#ff0000"
               onChangeText={(val) => numberInputChange(val)}
             />
             {data.check_numberInputChange ? (
@@ -215,7 +218,8 @@ const SignInScreen = ({ navigation }) => {
 
           {/* <ActivityIndicator size="large" /> */}
         </View>
-      </ScrollView>
+        </ScrollView>
+        </KeyboardAvoidingView>
   );
 };
 
@@ -231,11 +235,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'column',
     marginTop: '15%',
-    paddingVertical: 30,
+    paddingTop: 20,
     paddingHorizontal: 40,
   },
   backIcon: {
-    marginBottom: 67,
+    marginBottom: 37,
   },
   title: {
     fontSize: 28,
@@ -268,6 +272,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '95%',
     color: '#000000',
+     backgroundColor: 'transparent',
   },
   passInput: {
     alignSelf: 'stretch',
@@ -275,6 +280,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '95%',
     color: '#000000',
+     backgroundColor: 'transparent',
   },
   eyeIcon: {
     marginTop: 5,
@@ -299,7 +305,7 @@ const styles = StyleSheet.create({
     // lineHeight: '18px',
   },
   registerContainer: {
-    width: '90%',
+    width: '100%',
     // paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -314,7 +320,7 @@ const styles = StyleSheet.create({
     // lineHeight:'18px',
   },
   mobileContainer: {
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     paddingHorizontal: 27,
     paddingVertical: 7,
