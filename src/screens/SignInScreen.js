@@ -40,14 +40,12 @@ const SignInScreen = ({ navigation }) => {
         ...data,
         phone_number: val,
         check_textInputChange: true,
-        isValidUser: true,
       });
     } else {
       setData({
         ...data,
         phone_number: val,
         check_textInputChange: false,
-        isValidUser: false,
       });
     }
   };
@@ -154,7 +152,7 @@ const SignInScreen = ({ navigation }) => {
             underlineColorAndroid="transparent"
             selectionColor="#ff0000"
             onChangeText={(val) => textInputChange(val)}
-            // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
