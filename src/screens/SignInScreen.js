@@ -10,8 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
-import * as Animatable from 'react-native-animatable';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { useTheme } from 'react-native-paper';
