@@ -133,13 +133,13 @@ const SignInScreen = ({ navigation }) => {
               underlineColorAndroid="transparent"
               selectionColor="#ff0000"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={(val) => emailInputChange(val)}
+              // onChangeText={(val) => emailInputChange(val)}
             />
-            {data.check_emailInputChange ? (
+            {/* {data.check_emailInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
-            ) : null}
+            ) : null} */}
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
@@ -149,7 +149,7 @@ const SignInScreen = ({ navigation }) => {
               underlineColorAndroid="transparent"
               selectionColor="#ff0000"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={(val) => handlePasswordChange(val)}
+              // onChangeText={(val) => handlePasswordChange(val)}
             />
             <TouchableOpacity onPress={updateSecureTextEntry} style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               {data.secureTextEntry ? (
@@ -160,13 +160,13 @@ const SignInScreen = ({ navigation }) => {
             </TouchableOpacity>
             
           </View>
-          {data.isValidPassword ? null : (
+          {/* {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
               Password must be 8 characters long.
             </Text>
           </Animatable.View>
-        )}
+        )} */}
           <View style={styles.mobileContainer}>
             <PhoneInput
               allowZeroAfterCountryCode={true}
@@ -183,13 +183,13 @@ const SignInScreen = ({ navigation }) => {
               maxLength={20}
               underlineColorAndroid="transparent"
               selectionColor="#ff0000"
-              onChangeText={(val) => numberInputChange(val)}
+              // onChangeText={(val) => numberInputChange(val)}
             />
-            {data.check_numberInputChange ? (
+            {/* {data.check_numberInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
-            ) : null}
+            ) : null} */}
           </View>
           <View style={styles.registerContainer}>
             <TouchableOpacity

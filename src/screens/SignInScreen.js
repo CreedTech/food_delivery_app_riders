@@ -151,20 +151,20 @@ const SignInScreen = ({ navigation }) => {
             maxLength={20}
             underlineColorAndroid="transparent"
             selectionColor="#ff0000"
-            onChangeText={(val) => textInputChange(val)}
-            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+            // onChangeText={(val) => textInputChange(val)}
+            // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
-          {data.check_textInputChange ? (
+          {/* {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               <Feather name="check-circle" color="green" size={20} />
             </Animatable.View>
-          ) : null}
+          ) : null} */}
         </View>
-        {data.isValidUser ? null : (
+        {/* {data.isValidUser ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>Invalid Phone Number</Text>
           </Animatable.View>
-        )}
+        )} */}
         <View style={styles.mobileContainer}>
           <TextInput
             secureTextEntry={data.secureTextEntry ? true : false}
@@ -173,7 +173,7 @@ const SignInScreen = ({ navigation }) => {
             placeholderStyle={{ fontSize: 40, color: 'red' }}
             autoCapitalize="none"
             selectionColor="#ff0000"
-            onChangeText={(val) => handlePasswordChange(val)}
+            // onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
             {data.secureTextEntry ? (
@@ -183,13 +183,13 @@ const SignInScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View>
-        {data.isValidPassword ? null : (
+        {/* {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
               Password must be 8 characters long.
             </Text>
           </Animatable.View>
-        )}
+        )} */}
         <View style={styles.forgotPass}>
           <TouchableOpacity>
             <Text style={styles.passwordForgotten}>Forgot Password?</Text>
