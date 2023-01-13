@@ -197,12 +197,23 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
           </ScrollView>
+          <View style={styles.requestButton}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('DeliveriesScreen')
+            }}
+            >
+              <View
+                style={styles.requestText}
+              >
+                <Text style={{ color: '#ffffff' }}>Requests</Text>
+                <View style={styles.badge}>
+                  <Text>2</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-        {/* <Text style={{ color: colors.text }}>Home Screen</Text>
-        <Button
-          title="Go to details screen"
-          onPress={() => navigation.navigate('Details')}
-        /> */}
       </View>
     </View>
   );
@@ -220,7 +231,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     flexDirection: 'column',
     // alignItems: 'flex-end',
-    marginTop: '20%',
+    marginTop: '15%',
     paddingVertical: 20,
     paddingHorizontal: 30,
   },
@@ -273,4 +284,40 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
   },
+  requestButton: {
+    display: 'flex',
+    justifyContent:"center",
+    margin: 20,
+    padding: 20,
+    borderRadius: 50,
+    position: 'relative',
+    top: '20%',
+    bottom: '3%',
+    alignItems: 'center',
+    color: '#ffffff',
+    width: '80%',
+    borderBottomWidth: 0,
+    backgroundColor: '#ff0000',
+    shadowColor: 'transparent',
+    shadowRadius: 0,
+    shadowOffset: {
+      height: 0,
+    },
+  },
+  badge: {
+    color: '#000000',
+    borderRadius: 200,
+    backgroundColor: '#ffffff',
+    width: 16,
+    height: 16,
+    // padding: 5,
+    textAlign: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginLeft:10
+  },
+  requestText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });

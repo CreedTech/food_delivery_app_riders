@@ -16,6 +16,7 @@ import { AuthContext } from './src/components/context';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
 import HomeScreen from './src/screens/HomeScreen';
+import DeliveriesScreen from './src/screens/DeliveriesScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -186,16 +187,12 @@ const App = () => {
               <Drawer.Screen
                 name="HomeScreen"
                 component={HomeScreen}
-                // options={{
-                //   headerRight: () => (
-                //     <Icon.Button
-                //       name="ios-menu"
-                //       size={25}
-                //       backgroundColor="#009387"
-                //       onPress={() => navigation.openDrawer()}
-                //     ></Icon.Button>
-                //   ),
-                // }}
+               
+              />
+              <Drawer.Screen
+                name="DeliveriesScreen"
+                component={DeliveriesScreen}
+               
               />
               {/* <Drawer.Screen name="SupportScreen" component={SupportScreen} /> */}
               {/* <Drawer.Screen name="SettingsScreen" component={SettingsScreen} /> */}
