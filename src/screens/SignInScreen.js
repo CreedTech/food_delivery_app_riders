@@ -149,7 +149,7 @@ const SignInScreen = ({ navigation }) => {
             keyboardType="numeric"
             maxLength={20}
             underlineColorAndroid="transparent"
-            selectionColor="#ff0000"
+            selectionColor="#FD264F"
             // onChangeText={(val) => textInputChange(val)}
             // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
@@ -171,7 +171,7 @@ const SignInScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderStyle={{ fontSize: 40, color: 'red' }}
             autoCapitalize="none"
-            selectionColor="#ff0000"
+            selectionColor="#FD264F"
             // onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>

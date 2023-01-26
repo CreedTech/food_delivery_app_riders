@@ -17,6 +17,9 @@ import RootStackScreen from './src/screens/RootStackScreen';
 import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
 import HomeScreen from './src/screens/HomeScreen';
 import DeliveriesScreen from './src/screens/DeliveriesScreen';
+import WalletScreen from './src/screens/WalletScreen';
+import MyTripsScreen from './src/screens/MyTripsScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -192,6 +195,21 @@ const App = () => {
               <Drawer.Screen
                 name="DeliveriesScreen"
                 component={DeliveriesScreen}
+               
+              />
+              <Drawer.Screen
+                name="WalletScreen"
+                component={WalletScreen}
+               
+              />
+              <Drawer.Screen
+                name="MyTripsScreen"
+                component={MyTripsScreen}
+               
+              />
+              <Drawer.Screen
+                name="EditProfileScreen"
+                component={EditProfileScreen}
                
               />
               {/* <Drawer.Screen name="SupportScreen" component={SupportScreen} /> */}

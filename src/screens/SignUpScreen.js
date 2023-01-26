@@ -113,14 +113,14 @@ const SignInScreen = ({ navigation }) => {
               placeholder="First Name"
               placeholderStyle={{ fontSize: 40 }}
               underlineColorAndroid="transparent"
-              selectionColor="#ff0000"
+              selectionColor="#FD264F"
             />
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Last Name"
-              selectionColor="#ff0000"
+              selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
             />
@@ -130,7 +130,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.input}
               placeholder="Email"
               underlineColorAndroid="transparent"
-              selectionColor="#ff0000"
+              selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
               // onChangeText={(val) => emailInputChange(val)}
             />
@@ -146,7 +146,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.passInput}
               placeholder="Enter Password"
               underlineColorAndroid="transparent"
-              selectionColor="#ff0000"
+              selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
               // onChangeText={(val) => handlePasswordChange(val)}
             />
@@ -181,7 +181,7 @@ const SignInScreen = ({ navigation }) => {
               keyboardType="numeric"
               maxLength={20}
               underlineColorAndroid="transparent"
-              selectionColor="#ff0000"
+              selectionColor="#FD264F"
               // onChangeText={(val) => numberInputChange(val)}
             />
             {/* {data.check_numberInputChange ? (

@@ -52,7 +52,7 @@ export function DrawerContent(props) {
               )}
               label="Edit"
               style={styles.drawerItem}
-              // onPress={() => {props.navigation.navigate('Edit-Profile')}}
+              onPress={() => {props.navigation.navigate('EditProfileScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -61,7 +61,7 @@ export function DrawerContent(props) {
               )}
               label="Wallet"
               style={styles.drawerItem}
-              // onPress={() => {props.navigation.navigate('Wallet')}}
+              onPress={() => {props.navigation.navigate('WalletScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -70,7 +70,7 @@ export function DrawerContent(props) {
               )}
               label="My Trips"
               style={styles.drawerItem}
-              // onPress={() => {props.navigation.navigate('My Tripscreen')}}
+              onPress={() => {props.navigation.navigate('MyTripsScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     width: '80%',
     borderBottomWidth: 0,
-    backgroundColor: '#ff0000',
+    backgroundColor: '#FD264F',
     shadowColor: 'transparent',
     shadowRadius: 0,
     shadowOffset: {

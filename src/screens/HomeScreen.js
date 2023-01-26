@@ -195,6 +195,181 @@ const HomeScreen = ({ navigation }) => {
                   </View>
                 </View>
               </View>
+              <View style={styles.trips}>
+                <View>
+                  <Avatar.Image
+                    style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+                    source={require('../assets/images/profile.png')}
+                    size={50}
+                  />
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      26 Okotie samson close...
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                      13 Nov, 13:06
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      N600
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: '#6EB088',
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.trips}>
+                <View>
+                  <Avatar.Image
+                    style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+                    source={require('../assets/images/profile.png')}
+                    size={50}
+                  />
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      26 Okotie samson close...
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                      13 Nov, 13:06
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      N600
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: '#6EB088',
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.trips}>
+                <View>
+                  <Avatar.Image
+                    style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+                    source={require('../assets/images/profile.png')}
+                    size={50}
+                  />
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      26 Okotie samson close...
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                      13 Nov, 13:06
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      N600
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: '#6EB088',
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.trips}>
+                <View>
+                  <Avatar.Image
+                    style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+                    source={require('../assets/images/profile.png')}
+                    size={50}
+                  />
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      26 Okotie samson close...
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                      13 Nov, 13:06
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      N600
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: '#6EB088',
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.trips}>
+                <View>
+                  <Avatar.Image
+                    style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+                    source={require('../assets/images/profile.png')}
+                    size={50}
+                  />
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      26 Okotie samson close...
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                      13 Nov, 13:06
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                      N600
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: '#6EB088',
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </View>
+                </View>
+              </View>
             </View>
           </ScrollView>
           <View style={styles.requestButton}>
@@ -231,7 +406,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     flexDirection: 'column',
     // alignItems: 'flex-end',
-    marginTop: '15%',
+    marginTop: '10%',
     paddingVertical: 20,
     paddingHorizontal: 30,
   },
@@ -291,13 +466,13 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     position: 'relative',
-    top: '20%',
-    bottom: '3%',
+    // top: '20%',
+    // bottom: '3%',
     alignItems: 'center',
     color: '#ffffff',
     width: '80%',
     borderBottomWidth: 0,
-    backgroundColor: '#ff0000',
+    backgroundColor: '#FD264F',
     shadowColor: 'transparent',
     shadowRadius: 0,
     shadowOffset: {

@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/fudap_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ff0000"
+      "backgroundColor": "#FD264F"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +24,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/fudap_logo.png",
-        "backgroundColor": "#FF0000"
+        "backgroundColor": "#FD264F"
       },
       "package": "com.lazyprogrammer.fudapridersapp"
     },
