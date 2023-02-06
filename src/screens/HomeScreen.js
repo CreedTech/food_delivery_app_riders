@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '800',
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Bold'
   },
   overview: {
     marginVertical: 50,
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     position: 'relative',
-    top: '5%',
+    // top: '10%',
     bottom: '0%',
     alignItems: 'center',
     color: '#ffffff',
