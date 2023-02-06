@@ -15,6 +15,7 @@
     "@react-navigation/stack": "^6.3.9",
     "add": "^2.0.6",
     "expo": "~47.0.8",
+    "expo-font": "^11.0.1",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "expo-updates": "~0.15.6",

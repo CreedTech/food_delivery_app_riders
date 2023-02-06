@@ -2,30 +2,17 @@ import React from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   StatusBar,
-  TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  TouchableRipple,
-  Switch,
   Divider,
   Appbar,
 } from 'react-native-paper';
-import { useWindowDimensions } from 'react-native';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
 const DeliveriesScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -95,7 +82,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -133,7 +120,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      flexGrow: '1',
+                      flexGrow: 1,
                     }}
                   >
                     <View
@@ -174,7 +161,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -209,7 +196,7 @@ const DeliveriesScreen = ({ navigation }) => {
                         : 'CMS Garage, Marina Road, Lagos, Nigeria'}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: 'row', flexGrow: '1' }}>
+                  <View style={{ flexDirection: 'row', flexGrow: 1 }}>
                     <View
                       style={{
                         justifyContent: 'center',
@@ -299,7 +286,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -337,7 +324,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      flexGrow: '1',
+                      flexGrow: 1,
                     }}
                   >
                     <View
@@ -378,7 +365,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -413,7 +400,7 @@ const DeliveriesScreen = ({ navigation }) => {
                         : 'CMS Garage, Marina Road, Lagos, Nigeria'}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: 'row', flexGrow: '1' }}>
+                  <View style={{ flexDirection: 'row', flexGrow: 1 }}>
                     <View
                       style={{
                         justifyContent: 'center',
@@ -503,7 +490,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -541,7 +528,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      flexGrow: '1',
+                      flexGrow: 1,
                     }}
                   >
                     <View
@@ -582,7 +569,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -617,7 +604,7 @@ const DeliveriesScreen = ({ navigation }) => {
                         : 'CMS Garage, Marina Road, Lagos, Nigeria'}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: 'row', flexGrow: '1' }}>
+                  <View style={{ flexDirection: 'row', flexGrow: 1 }}>
                     <View
                       style={{
                         justifyContent: 'center',
@@ -707,7 +694,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -745,7 +732,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      flexGrow: '1',
+                      flexGrow: 1,
                     }}
                   >
                     <View
@@ -786,7 +773,7 @@ const DeliveriesScreen = ({ navigation }) => {
                     // gap: 4,
                   }}
                 >
-                  <View style={{ flexGrow: '9' }}>
+                  <View style={{ flexGrow: 9 }}>
                     <Text
                       style={{
                         color: '#930101',
@@ -821,7 +808,7 @@ const DeliveriesScreen = ({ navigation }) => {
                         : 'CMS Garage, Marina Road, Lagos, Nigeria'}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: 'row', flexGrow: '1' }}>
+                  <View style={{ flexDirection: 'row', flexGrow: 1 }}>
                     <View
                       style={{
                         justifyContent: 'center',
@@ -880,15 +867,18 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    fontFamily: 'Poppins-Black'
   },
   backIcon: {
     // marginBottom: 57,
+    fontFamily: 'Poppins-Black'
   },
 
   title: {
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '800',
+    fontFamily: 'Poppins-Black'
   },
   overview: {
     marginVertical: 50,
@@ -921,10 +911,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    fontFamily: 'Poppins-Black'
   },
   tripsMade: {
     textAlign: 'center',
     alignItems: 'center',
+    fontFamily: 'Poppins-Black',
     fontSize: 32,
     backgroundColor: '#130102',
     // borderTopLeftRadius: 12,
@@ -938,16 +930,15 @@ const styles = StyleSheet.create({
   },
   stepperContainer: {
     flexDirection: 'row',
+    fontFamily: 'Poppins-Black'
     // paddingHorizontal:10
   },
   singleStepper: {
-    // flexDirection: 'column',
-    // paddingHorizontal: 5,
-    // justifyContent: 'space-between',
     width: '90%',
   },
   stepper: {
     paddingRight: 5,
+    fontFamily: 'Poppins-Black'
   },
   elipsis: {
     transform: [{ rotate: '90deg' }],
@@ -958,5 +949,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     color: '#979595',
+    fontFamily: 'Poppins-Black'
   },
 });

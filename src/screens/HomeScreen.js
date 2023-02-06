@@ -28,11 +28,11 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+        {/* <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} /> */}
         <View style={styles.header}>
           <View style={{ flexDirection: 'row' }}>
             <Avatar.Image
-              style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
+              // style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
               source={require('../assets/images/profile.png')}
               size={72}
             />
@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
               <Title style={styles.title}>John Mark</Title>
             </View>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity style={{alignContent:'center', alignItems:'center'}}>
             <Icon
               name="ios-menu"
               size={35}
@@ -51,8 +51,8 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.overview}>
           <View style={styles.boardContainer}>
             <View style={styles.board}>
-              <Text style={{ color: '#ffffff' }}>Earning Today</Text>
-              <Text style={{ color: '#ffffff' }}>Total Trips Today</Text>
+              <Text style={{ color: '#ffffff',fontSize: 10,fontFamily: 'Poppins-Regular' }}>Earning Today</Text>
+              <Text style={{ color: '#ffffff',fontSize: 8,fontFamily: 'Poppins-Regular' }}>Total Trips Today</Text>
             </View>
             <View style={[styles.board, styles.tripsMade]}>
               <Text
@@ -62,6 +62,7 @@ const HomeScreen = ({ navigation }) => {
                   fontWeight: '900',
                   alignItems: 'center',
                   textAlign: 'center',
+                  fontFamily: 'Unbounded-Regular',
                 }}
               >
                 N7,000
@@ -74,13 +75,14 @@ const HomeScreen = ({ navigation }) => {
                   alignItems: 'center',
                   textAlign: 'center',
                   paddingRight: 30,
+                  fontFamily: 'Unbounded-Regular',
                 }}
               >
                 7
               </Text>
             </View>
           </View>
-          <View style={{ marginVertical: 50 }}>
+          <View style={{ marginVertical: 30 }}>
             <Text style={{ fontSize: 14, fontWeight: '900' }}>
               Recent Trips
             </Text>
@@ -95,23 +97,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -130,23 +132,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -165,23 +167,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -200,23 +202,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -235,23 +237,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -270,23 +272,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -305,23 +307,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -340,23 +342,23 @@ const HomeScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
                     source={require('../assets/images/profile.png')}
-                    size={50}
+                    size={35}
                   />
                 </View>
                 <View>
-                  <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  <View style={{paddingHorizontal:10}}>
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
                       26 Okotie samson close...
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: '400' }}>
+                    <Text style={{ fontSize: 12, fontWeight: '400',fontFamily: 'Poppins-Medium' }}>
                       13 Nov, 13:06
                     </Text>
                   </View>
                 </View>
                 <View>
                   <View>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      N600
+                    <Text style={{ fontSize: 16, fontWeight: '500',fontFamily: 'Poppins-Medium' }}>
+                      #600
                     </Text>
                     <Text
                       style={{
@@ -383,7 +385,7 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Text style={{ color: '#ffffff' }}>Requests</Text>
                 <View style={styles.badge}>
-                  <Text>2</Text>
+                  <Text style={styles.badgeText}>2</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -408,12 +410,15 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
     marginTop: '10%',
     paddingVertical: 20,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   header: {
     // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 20,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   backIcon: {
     // marginBottom: 57,
@@ -426,14 +431,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '800',
+    fontFamily: 'Poppins-Black'
   },
   overview: {
     marginVertical: 50,
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     justifyContent: 'space-around',
   },
   boardContainer: {
-    padding: 30,
+    padding: 20,
     alignContent: 'center',
     alignItems: 'stretch',
     flexDirection: 'column',
@@ -458,6 +464,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Poppins-Black'
   },
   requestButton: {
     display: 'flex',
@@ -466,14 +473,15 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     position: 'relative',
-    // top: '20%',
-    // bottom: '3%',
+    top: '5%',
+    bottom: '0%',
     alignItems: 'center',
     color: '#ffffff',
     width: '80%',
     borderBottomWidth: 0,
     backgroundColor: '#FD264F',
     shadowColor: 'transparent',
+    fontFamily: 'Poppins-Black',
     shadowRadius: 0,
     shadowOffset: {
       height: 0,
@@ -483,16 +491,18 @@ const styles = StyleSheet.create({
     color: '#000000',
     borderRadius: 200,
     backgroundColor: '#ffffff',
-    width: 16,
-    height: 16,
+    width: 20,
+    height: 20,
     // padding: 5,
     textAlign: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    marginLeft:10
+    marginLeft: 10,
+    fontFamily: 'Poppins-Black'
   },
   requestText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
+    fontFamily: 'Poppins-Black'
+  },
 });

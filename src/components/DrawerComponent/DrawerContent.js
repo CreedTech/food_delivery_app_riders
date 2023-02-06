@@ -50,6 +50,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="account" color="#000000" size={size} />
               )}
+              labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Edit"
               style={styles.drawerItem}
               onPress={() => {props.navigation.navigate('EditProfileScreen')}}
@@ -59,6 +60,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="wallet" color="#000000" size={size} />
               )}
+              labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Wallet"
               style={styles.drawerItem}
               onPress={() => {props.navigation.navigate('WalletScreen')}}
@@ -68,6 +70,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="car" color="#000000" size={size} />
               )}
+              labelStyle={{fontFamily: 'Poppins-Light'}}
               label="My Trips"
               style={styles.drawerItem}
               onPress={() => {props.navigation.navigate('MyTripsScreen')}}
@@ -77,6 +80,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="dialpad" color="#000000" size={size} />
               )}
+              labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Set Password"
               style={styles.drawerItem}
               // onPress={() => {props.navigation.navigate('Set PassScreen')}}
@@ -95,7 +99,8 @@ export function DrawerContent(props) {
         </TouchableOpacity>
         {/* <DrawerItem
           
-          label="Sign Out"
+ 
+ labelStyle={{fontFamily: 'Poppins-Light'}}         label="Sign Out"
           onPress={() => {
             signOut();
           }}
@@ -117,6 +122,7 @@ const styles = StyleSheet.create({
     color: '#1A1A1A',
     // marginTop: 3,
     fontWeight: '600',
+    fontFamily: 'Poppins-Medium'
   },
   caption: {
     color: '#100F0F',
@@ -137,10 +143,12 @@ const styles = StyleSheet.create({
   paragraph: {
     fontWeight: 'bold',
     marginRight: 3,
+    fontFamily: 'Poppins-Light'
   },
   drawerItem: {
     fontSize: 13,
-    padding:5,
+    padding: 5,
+    fontFamily: 'Poppins-Light'
   },
   drawerSection: {
     marginTop: 15,
@@ -165,6 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FD264F',
     shadowColor: 'transparent',
     shadowRadius: 0,
+    fontFamily: 'Poppins-Light',
     shadowOffset: {
       height: 0,
     },
@@ -174,5 +183,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
+    fontFamily: 'Poppins-Light'
   },
 });

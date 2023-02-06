@@ -5,6 +5,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
 } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   Provider as PaperProvider,
@@ -21,9 +22,22 @@ import WalletScreen from './src/screens/WalletScreen';
 import MyTripsScreen from './src/screens/MyTripsScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 
-const Drawer = createDrawerNavigator();
 
+const Drawer = createDrawerNavigator();
+let customFonts = {
+  'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
+  'Poppins-Regular': require('./src/assets/fonts/Poppins-Regular.ttf'),
+  'Poppins-SemiBold': require('./src/assets/fonts/Poppins-SemiBold.ttf'),
+  'Poppins-Bold': require('./src/assets/fonts/Poppins-Bold.ttf'),
+  'Poppins-Medium': require('./src/assets/fonts/Poppins-Medium.ttf'),
+  'Poppins-Light': require('./src/assets/fonts/Poppins-Light.ttf'),
+  'Poppins-Thin': require('./src/assets/fonts/Poppins-Thin.ttf'),
+  'Unbounded-Regular': require('./src/assets/fonts/Unbounded-Regular.ttf'),
+  'Unbounded-Bold': require('./src/assets/fonts/Unbounded-Bold.ttf'),
+};
 const App = () => {
+  
+  const [isLoaded] = useFonts(customFonts);
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
 
@@ -170,7 +184,7 @@ const App = () => {
     );
   }
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={theme} style={{ fontFamily: 'Poppins-Black' }}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
           {userToken !== null ? (

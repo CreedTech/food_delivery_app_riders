@@ -18,7 +18,7 @@ const OnBoardingScreen = ({navigation}) => {
 
     return (
         <View style={styles.wrapper}>
-            <StatusBar backgroundColor='#ffffff' barStyle="light-content"/>
+            {/* <StatusBar backgroundColor='#ffffff' barStyle="light-content"/> */}
         <View style={styles.container}>
           <ImageBackground
             source={require('../assets/images/onboarding.png')}
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         // textAlign: 'center',
         backgroundColor: '#000000a0',
+        fontFamily: 'Poppins-Black'
       },
       login: {
         // marginRight: 10,
