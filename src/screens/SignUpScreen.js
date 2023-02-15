@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,19 +9,26 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
-  StatusBar,
   KeyboardAvoidingView,
   
 } from 'react-native';
+import { StatusBar } from "expo-status-bar";
 import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import { AuthContext } from '../components/context';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const SignInScreen = ({ navigation }) => {
-  const [data, setData] = React.useState({
-    firstname: '',
-    lastname: '',
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [data, setData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     phone_number: '',
@@ -31,6 +38,7 @@ const SignInScreen = ({ navigation }) => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
+  const {isLoading, register} = useContext(AuthContext);
 
   const numberInputChange = (val) => {
     if (val.length > 10) {
@@ -87,9 +95,12 @@ const SignInScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
- style={styles.wrapper} enabled >
-          <ScrollView>
+    // <SafeAreaView style={styles.container}>
+    //   <StatusBar style="auto" />
+    
+          <ScrollView showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}>
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
         {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
         <View style={styles.container}>
           <TouchableOpacity>
@@ -107,32 +118,38 @@ const SignInScreen = ({ navigation }) => {
               Please provide details below to register
             </Text>
           </View>
+          <Spinner visible={isLoading} />
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
+              value={firstName}
               placeholder="First Name"
               placeholderStyle={{ fontSize: 40 }}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
+              onChangeText={text => setFirstName(text)}
             />
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Last Name"
+              value={lastName}
               selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
+              onChangeText={text => setLastName(text)}
             />
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Email"
+              value={email}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
-              // onChangeText={(val) => emailInputChange(val)}
+              onChangeText={text => setEmail(text)}
             />
             {/* {data.check_emailInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -144,11 +161,12 @@ const SignInScreen = ({ navigation }) => {
             <TextInput
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.passInput}
+              value={password}
               placeholder="Enter Password"
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
-              // onChangeText={(val) => handlePasswordChange(val)}
+              onChangeText={(val) => setPassword(val)}
             />
             <TouchableOpacity onPress={updateSecureTextEntry} style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               {data.secureTextEntry ? (
@@ -167,22 +185,23 @@ const SignInScreen = ({ navigation }) => {
           </Animatable.View>
         )} */}
           <View style={styles.mobileContainer}>
-            <PhoneInput
+            {/* <PhoneInput
               allowZeroAfterCountryCode={true}
               style={styles.countrCode}
               initialCountry={'ng'}
               useRef="phone"
-            />
+            /> */}
             {/* <CallingCodePicker onValueChange={() => {}} /> */}
             {/* <PhoneInput/> */}
             <TextInput
               style={styles.textInputMobile}
               placeholder="Phone Number"
+              value={phone}
               keyboardType="numeric"
               maxLength={20}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              // onChangeText={(val) => numberInputChange(val)}
+              onChangeText={(val) => setPhone(val)}
             />
             {/* {data.check_numberInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -194,7 +213,9 @@ const SignInScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.registerButton}
               onPress={() => {
-                navigation.navigate('VerifyPhoneScreen');
+                console.log(firstName, lastName, email, password, phone);
+                register(firstName,lastName, email, password, phone);
+                // navigation.navigate('VerifyPhoneScreen');
               }}
             >
               <Text style={styles.registerText}>Register</Text>
@@ -205,6 +226,7 @@ const SignInScreen = ({ navigation }) => {
               Already have an account?{' '}
               <TouchableOpacity
                 onPress={() => {
+                  
                   navigation.navigate('SignInScreen');
                 }}
               >
@@ -217,8 +239,10 @@ const SignInScreen = ({ navigation }) => {
 
           {/* <ActivityIndicator size="large" /> */}
         </View>
+         </KeyboardAvoidingView>
         </ScrollView>
-        </KeyboardAvoidingView>
+     
+      // </SafeAreaView>
   );
 };
 

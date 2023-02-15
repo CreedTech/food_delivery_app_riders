@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import {
   NavigationContainer,
@@ -12,15 +12,8 @@ import {
   DefaultTheme as PaperDefaultTheme,
   DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './src/components/context';
-import RootStackScreen from './src/screens/RootStackScreen';
-import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
-import HomeScreen from './src/screens/HomeScreen';
-import DeliveriesScreen from './src/screens/DeliveriesScreen';
-import WalletScreen from './src/screens/WalletScreen';
-import MyTripsScreen from './src/screens/MyTripsScreen';
-import EditProfileScreen from './src/screens/EditProfileScreen';
+import { AuthProvider } from './src/components/context';
+import Navigation from './src/components/Navigation';
 
 
 const Drawer = createDrawerNavigator();
@@ -39,7 +32,7 @@ const App = () => {
   
   const [isLoaded] = useFonts(customFonts);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
+  // const [userToken, setUserToken] = React.useState(null);
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
@@ -73,93 +66,94 @@ const App = () => {
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-    }
-  };
+
+  // const loginReducer = (prevState, action) => {
+  //   switch (action.type) {
+  //     case 'RETRIEVE_TOKEN':
+  //       return {
+  //         ...prevState,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //     case 'LOGIN':
+  //       return {
+  //         ...prevState,
+  //         userName: action.id,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //     case 'LOGOUT':
+  //       return {
+  //         ...prevState,
+  //         userName: null,
+  //         userToken: null,
+  //         isLoading: false,
+  //       };
+  //     case 'REGISTER':
+  //       return {
+  //         ...prevState,
+  //         userName: action.id,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //   }
+  // };
 
   // const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
-  const authContext = React.useMemo(
-    () => ({
-      // signIn: async(foundUser) => {
-      //     const userToken = String(foundUser[0].userToken);
-      //     const userName = foundUser[0].username;
+  // const authContext = React.useMemo(
+  //   () => ({
+  //     // signIn: async(foundUser) => {
+  //     //     const userToken = String(foundUser[0].userToken);
+  //     //     const userName = foundUser[0].username;
 
-      //     try {
-      //       await AsyncStorage.setItem('userToken', userToken);
-      //     } catch(e) {
-      //       console.log(e);
-      //     }
-      //     console.log('user token: ', userToken);
-      //     dispatch({ type: 'LOGIN', id: userName, token: userToken });
-      //   },
-      signIn: () => {
-        setUserToken('fhdh');
-        setIsLoading(false);
-        // const userToken = String(foundUser[0].userToken);
-        // const userName = foundUser[0].username;
+  //     //     try {
+  //     //       await AsyncStorage.setItem('userToken', userToken);
+  //     //     } catch(e) {
+  //     //       console.log(e);
+  //     //     }
+  //     //     console.log('user token: ', userToken);
+  //     //     dispatch({ type: 'LOGIN', id: userName, token: userToken });
+  //     //   },
+  //     signIn: () => {
+  //       setUserToken('fhdh');
+  //       setIsLoading(false);
+  //       // const userToken = String(foundUser[0].userToken);
+  //       // const userName = foundUser[0].username;
 
-        // try {
-        //   await AsyncStorage.setItem('userToken', userToken);
-        // } catch(e) {
-        //   console.log(e);
-        // }
-        // console.log('user token: ', userToken);
-        // dispatch({ type: 'LOGIN', id: userName, token: userToken });
-      },
-      signOut: () => {
-        setUserToken(null);
-        setIsLoading(false);
-        // try {
-        //   await AsyncStorage.removeItem('userToken');
-        // } catch(e) {
-        //   console.log(e);
-        // }
-        // dispatch({ type: 'LOGOUT' });
-      },
-      signUp: () => {
-        setUserToken('fgkj');
-        setIsLoading(false);
-      },
-      toggleTheme: () => {
-        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
-      },
-    }),
-    []
-  );
-  useEffect(() => {
-    setTimeout(async () => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+  //       // try {
+  //       //   await AsyncStorage.setItem('userToken', userToken);
+  //       // } catch(e) {
+  //       //   console.log(e);
+  //       // }
+  //       // console.log('user token: ', userToken);
+  //       // dispatch({ type: 'LOGIN', id: userName, token: userToken });
+  //     },
+  //     signOut: () => {
+  //       setUserToken(null);
+  //       setIsLoading(false);
+  //       // try {
+  //       //   await AsyncStorage.removeItem('userToken');
+  //       // } catch(e) {
+  //       //   console.log(e);
+  //       // }
+  //       // dispatch({ type: 'LOGOUT' });
+  //     },
+  //     signUp: () => {
+  //       setUserToken('fgkj');
+  //       setIsLoading(false);
+  //     },
+  //     toggleTheme: () => {
+  //       setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+  //     },
+  //   }),
+  //   []
+  // );
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     setIsLoading(false);
+  //   }, 1000);
+  // }, []);
 
   // useEffect(() => {
   //   setTimeout(async() => {
@@ -176,65 +170,18 @@ const App = () => {
   //   }, 1000);
   // }, []);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
   return (
     <PaperProvider theme={theme} style={{ fontFamily: 'Poppins-Black' }}>
-      <AuthContext.Provider value={authContext}>
-        <NavigationContainer theme={theme}>
-          {userToken !== null ? (
-            <Drawer.Navigator
-              screenOptions={{
-                headerShown:false,
-                headerStyle: {
-                  backgroundColor: '#009387',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                },
-              }}
-              drawerContent={(props) => <DrawerContent {...props} />}
-            >
-              <Drawer.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-               
-              />
-              <Drawer.Screen
-                name="DeliveriesScreen"
-                component={DeliveriesScreen}
-               
-              />
-              <Drawer.Screen
-                name="WalletScreen"
-                component={WalletScreen}
-               
-              />
-              <Drawer.Screen
-                name="MyTripsScreen"
-                component={MyTripsScreen}
-               
-              />
-              <Drawer.Screen
-                name="EditProfileScreen"
-                component={EditProfileScreen}
-               
-              />
-              {/* <Drawer.Screen name="SupportScreen" component={SupportScreen} /> */}
-              {/* <Drawer.Screen name="SettingsScreen" component={SettingsScreen} /> */}
-              {/* <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} /> */}
-            </Drawer.Navigator>
-          ) : (
-            <RootStackScreen />
-          )}
-        </NavigationContainer>
-      </AuthContext.Provider>
+      <AuthProvider>
+        <Navigation/>
+      </AuthProvider>
     </PaperProvider>
   );
 };
