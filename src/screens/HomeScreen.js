@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import {
   View,
   Text,
@@ -19,11 +19,50 @@ import {
   TouchableRipple,
   Switch,
 } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../components/context';
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
-
+  const { getUserData } = React.useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState('');
+  const [parsed, setParsed] = useState('');
   const theme = useTheme();
+  useEffect(() => {
+    
+    try {
+      let user =  AsyncStorage.getItem('userInfo');
+      // setParsed(JSON.parse(user.userId));  
+      // console.log(parsed.firstName);
+      setUserInfo(user);
+      console.log(user.userId);
+      getUserData(user.userId);
+      // console.log(user);
+      
+    } catch (e) {
+      console.log(e);
+    }
+    
+    // setTimeout(async () => {
+    //   // setIsLoading(false);
+    //   // let userToken;
+    //   // userToken = null;
+    //   try {
+    //     let user = await AsyncStorage.getItem('userInfo');
+    //     setParsed(JSON.parse(user.id));  
+    //     // console.log(parsed.firstName);
+    //     setUserInfo(user);
+    //     console.log(parsed.userId);
+
+    //     // console.log(user);
+        
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }, 1000);
+    
+    
+  }, []);
 
   return (
     <View style={styles.wrapper}>
@@ -37,7 +76,7 @@ const HomeScreen = ({ navigation }) => {
               size={72}
             />
             <View style={styles.user}>
-              <Title style={styles.title}>John Mark</Title>
+              <Title style={styles.title}>{parsed.firstName} {parsed.lastName}</Title>
             </View>
           </View>
           <TouchableOpacity style={{alignContent:'center', alignItems:'center'}}>

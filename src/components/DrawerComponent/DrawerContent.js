@@ -21,7 +21,7 @@ import { AuthContext } from '../context';
 export function DrawerContent(props) {
   const paperTheme = useTheme();
 
-  const { logout } = React.useContext(AuthContext);
+  const { signOut } = React.useContext(AuthContext);
 
   return (
     <View style={{ flex: 1 }}>
@@ -92,7 +92,7 @@ export function DrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
           onPress={() => {
-            logout();
+            signOut();
           }}
         >
           <Text style={{ color: '#ffffff' }}>Log out</Text>

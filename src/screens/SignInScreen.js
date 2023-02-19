@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
+  SafeAreaView,
   TouchableOpacity,
   TextInput,
   Platform,
@@ -12,6 +13,7 @@ import {
 import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { useTheme } from 'react-native-paper';
 
@@ -20,6 +22,8 @@ import { AuthContext } from '../components/context';
 import Users from '../model/users';
 
 const SignInScreen = ({ navigation }) => {
+  const [password, setPassword] = useState(null);
+  const [phone, setPhone] = useState(null);
   const [data, setData] = React.useState({
     phone_number: '',
     password: '',
@@ -31,7 +35,9 @@ const SignInScreen = ({ navigation }) => {
 
   const { colors } = useTheme();
 
-  const { signIn } = React.useContext(AuthContext);
+  // const { login, isLoading } = React.useContext(AuthContext);
+  const { signIn ,isLoading} = React.useContext(AuthContext);
+  // const [loading, setLoading] = React.useState(false);
 
   const textInputChange = (val) => {
     if (val.trim().length >= 10) {
@@ -85,10 +91,10 @@ const SignInScreen = ({ navigation }) => {
       });
     }
   };
-  const loginHandle = () => {
-    signIn();
-    // signIn();
-  };
+  // const loginHandle = () => {
+  //   signIn();
+  //   // signIn();
+  // };
 
   //     const loginHandle = (phone_number, password) => {
   //         const foundUser = Users.filter((item) => {
@@ -116,10 +122,11 @@ const SignInScreen = ({ navigation }) => {
   //   };
 
   return (
-    <View style={styles.wrapper}>
-      <StatusBar backgroundColor="#ffffff" barStyle="light-content" />
-      <View style={styles.container}>
-        <TouchableOpacity>
+    <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
+      <StatusBar style="auto" />
+      <Spinner visible={isLoading} />
+      <View style={{ paddingTop: 50, paddingHorizontal: 30 }}>
+      <TouchableOpacity>
           <Feather
             name="chevron-left"
             color="black"
@@ -134,22 +141,27 @@ const SignInScreen = ({ navigation }) => {
             Please provide details below to login
           </Text>
         </View>
+      
+      <View style={{ marginVertical: 20, marginTop: 50 }}>
+        
         <View style={styles.mobileContainer}>
-          <PhoneInput
+          {/* <PhoneInput
             allowZeroAfterCountryCode={true}
             style={styles.countrCode}
             initialCountry={'ng'}
             useRef="phone"
-          />
+          /> */}
           {/* <CallingCodePicker onValueChange={() => {}} /> */}
           {/* <PhoneInput/> */}
           <TextInput
-            style={styles.textInputMobile}
+              style={styles.textInputMobile}
+              value={phone}
             placeholder="Phone Number"
             keyboardType="numeric"
             maxLength={20}
             underlineColorAndroid="transparent"
-            selectionColor="#FD264F"
+              selectionColor="#FD264F"
+              onChangeText={(val) => setPhone(val)}
             // onChangeText={(val) => textInputChange(val)}
             // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
@@ -168,10 +180,12 @@ const SignInScreen = ({ navigation }) => {
           <TextInput
             secureTextEntry={data.secureTextEntry ? true : false}
             style={styles.passwordInput}
-            placeholder="Password"
+              placeholder="Password"
+              value={password}
             placeholderStyle={{ fontSize: 40, color: 'red' }}
             autoCapitalize="none"
-            selectionColor="#FD264F"
+              selectionColor="#FD264F"
+              onChangeText={(val) => setPassword(val)}
             // onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -197,10 +211,10 @@ const SignInScreen = ({ navigation }) => {
         <View style={styles.loginContainer}>
           <TouchableOpacity
             style={styles.LoginButton}
-            // onPress={() => {
-            //   signIn();
-            // }}
-            onPress={() => navigation.navigate('FinishSetupScreen')}
+            onPress={() => {
+              signIn(phone, password);
+            }}
+            // onPress={() => navigation.navigate('FinishSetupScreen')}
           >
             <Text style={styles.loginText}>Sign in</Text>
           </TouchableOpacity>
@@ -209,7 +223,7 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.noAccountText}>
             Don’t have an account?{' '}
             <TouchableOpacity
-              onPress={() => navigation.navigate('SignUpScreen')}
+              onPress={() => login(phone, password)}
             >
               <Text style={{ fontWeight: '600', color: '#FD264F' }}>
                 Register
@@ -219,128 +233,9 @@ const SignInScreen = ({ navigation }) => {
         </View>
 
         {/* <ActivityIndicator size="large" /> */}
-      </View>
-    </View>
-    //   <View style={styles.container}>
-    //       <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-    //     <View style={styles.header}>
-    //         <Text style={styles.text_header}>Welcome!</Text>
-    //     </View>
-    //     <Animatable.View
-    //         animation="fadeInUpBig"
-    //         style={[styles.footer, {
-    //             backgroundColor: colors.background
-    //         }]}
-    //     >
-    //         <Text style={[styles.text_footer, {
-    //             color: colors.text
-    //         }]}>phone_number</Text>
-    //         <View style={styles.action}>
-    //             <FontAwesome
-    //                 name="user-o"
-    //                 color={colors.text}
-    //                 size={20}
-    //             />
-    //             <TextInput
-    //                 placeholder="Your phone_number"
-    //                 placeholderTextColor="#666666"
-    //                 style={[styles.textInput, {
-    //                     color: colors.text
-    //                 }]}
-    //                 autoCapitalize="none"
-    //                 onChangeText={(val) => textInputChange(val)}
-    //                 onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-    //             />
-    //             {data.check_textInputChange ?
-    //             <Animatable.View
-    //                 animation="bounceIn"
-    //             >
-    //                 <Feather
-    //                     name="check-circle"
-    //                     color="green"
-    //                     size={20}
-    //                 />
-    //             </Animatable.View>
-    //             : null}
-    //         </View>
-    //         { data.isValidUser ? null :
-    //         <Animatable.View animation="fadeInLeft" duration={500}>
-    //         <Text style={styles.errorMsg}>phone_number must be 4 characters long.</Text>
-    //         </Animatable.View>
-    //         }
-
-    //         <Text style={[styles.text_footer, {
-    //             color: colors.text,
-    //             marginTop: 35
-    //         }]}>Password</Text>
-    //         <View style={styles.action}>
-    //             <Feather
-    //                 name="lock"
-    //                 color={colors.text}
-    //                 size={20}
-    //             />
-    //             <TextInput
-    //                 placeholder="Your Password"
-    //                 placeholderTextColor="#666666"
-    //                 secureTextEntry={data.secureTextEntry ? true : false}
-    //                 style={[styles.textInput, {
-    //                     color: colors.text
-    //                 }]}
-    //                 autoCapitalize="none"
-    //                 onChangeText={(val) => handlePasswordChange(val)}
-    //             />
-    //             <TouchableOpacity
-    //                 onPress={updateSecureTextEntry}
-    //             >
-    //                 {data.secureTextEntry ?
-    //                 <Feather
-    //                     name="eye-off"
-    //                     color="grey"
-    //                     size={20}
-    //                 />
-    //                 :
-    //                 <Feather
-    //                     name="eye"
-    //                     color="grey"
-    //                     size={20}
-    //                 />
-    //                 }
-    //             </TouchableOpacity>
-    //         </View>
-    //         { data.isValidPassword ? null :
-    //         <Animatable.View animation="fadeInLeft" duration={500}>
-    //         <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
-    //         </Animatable.View>
-    //         }
-
-    //         <TouchableOpacity>
-    //             <Text style={{color: '#009387', marginTop:15}}>Forgot password?</Text>
-    //         </TouchableOpacity>
-    //         <View style={styles.button}>
-    //             <TouchableOpacity
-    //                 style={styles.signIn}
-    //                 onPress={() => {loginHandle( data.phone_number, data.password )}}
-    //             >
-    //                 <Text style={[styles.textSign, {
-    //                     color:'#fff'
-    //                 }]}>Sign In</Text>
-    //             </TouchableOpacity>
-
-    //             <TouchableOpacity
-    //                 onPress={() => navigation.navigate('SignUpScreen')}
-    //                 style={[styles.signIn, {
-    //                     borderColor: '#009387',
-    //                     borderWidth: 1,
-    //                     marginTop: 15
-    //                 }]}
-    //             >
-    //                 <Text style={[styles.textSign, {
-    //                     color: '#009387'
-    //                 }]}>Sign Up</Text>
-    //             </TouchableOpacity>
-    //         </View>
-    //     </Animatable.View>
-    //   </View>
+        </View>
+        </View>
+     </SafeAreaView>
   );
 };
 

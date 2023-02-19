@@ -9,7 +9,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Image,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from 'react-native';
 import {
   CodeField,
@@ -17,11 +18,23 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import axios from 'axios';
+import { BASE_URL } from '../config';
+import { AuthContext } from '../components/context';
+import { StatusBar } from "expo-status-bar";
 // import OTPTextInput from 'react-native-otp-textinput';
 
 const VerifyPhoneScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const CELL_COUNT = 6;
   const RESEND_OTP_TIME_LIMIT = 20;
+  const [verification_code, setValue] = useState("");
+  const ref = useBlurOnFulfill({ verification_code, cellCount: CELL_COUNT });
+  const {signUp} = useContext(AuthContext);
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    verification_code,
+    setValue,
+  });
 
   let resendOtpTimerInterval;
 
@@ -56,12 +69,74 @@ const VerifyPhoneScreen = ({ navigation }) => {
   };
 
   //declarations for input field
-  const [value, setValue] = useState("");
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+  
+
+
+  const handleVerifyOtp = async (
+    verification_code
+  ) => {
+    setIsLoading(true);
+    await axios
+      .post(`${BASE_URL}/otp/verifyOtp`, {
+        verification_code
+      })
+      .then((res) => {
+        let otp = res.data;
+        // setUserInfo(userInfo);
+        setIsLoading(false);
+        navigation.navigate("FinishSetupScreen");
+        console.log(otp);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        // console.log(`register error ${e}`);
+        setIsLoading(false);
+      });
+  };
+
+  const handleResendOtp = async (
+    customer_mobile_number
+  ) => {
+    setIsLoading(true);
+    await axios
+      .post(`${BASE_URL}/otp/verifyOtp`, {
+        customer_mobile_number
+      })
+      .then((res) => {
+        let opt = res.data;
+        // setUserInfo(userInfo);
+        setIsLoading(false);
+        navigation.navigate("FinishSetupScreen");
+        console.log(opt);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        // console.log(`register error ${e}`);
+        setIsLoading(false);
+      });
+  };
 
   //start timer on screen on launch
   useEffect(() => {
@@ -74,19 +149,22 @@ const VerifyPhoneScreen = ({ navigation }) => {
   }, [resendButtonDisabledTime]);
 
   return (
-    <ScrollView behavior="padding" style={styles.wrapper}>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Enter the {'\n'}verification code</Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}
+      >
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
+        <Text style={styles.title}>Enter the {'\n'}verification code</Text>
           <Text style={styles.subtitle}>
           Enter the verification code sent to your phone
           </Text>
-        </View>
-        <View style={styles.otpContainer}>
+        <View>
         <CodeField
               ref={ref}
               {...props}
-              value={value}
+              value={verification_code}
               onChangeText={setValue}
               cellCount={CELL_COUNT}
               rootStyle={styles.codeFieldRoot}
@@ -105,33 +183,47 @@ const VerifyPhoneScreen = ({ navigation }) => {
               )}
             />
         </View>
-        <View style={styles.verifyContainer}>
-          <TouchableOpacity
-            style={styles.verifyButton}
-            onPress={() => {
-              navigation.navigate('SignInScreen');
+          <View style={styles.button}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={{
+                height: 55,
+                width: "100%",
+                backgroundColor: '#FD264F',
+                marginVertical: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                console.log(verification_code);
+              handleVerifyOtp(verification_code);
             }}
           >
-            <Text style={styles.verifyText}>Verify</Text>
+            <Text style={{ color: '#fff', fontWeight: "bold", fontSize: 18 }}>Verify</Text>
           </TouchableOpacity>
+           
         </View>
         {resendButtonDisabledTime > 0 ? (
-          <View style={styles.resendCode}>
-              <Text style={styles.resendCodeText}>
-                Resend Code in <Text>{resendButtonDisabledTime}</Text>
-              </Text>
-            </View>
+          <Text style={styles.resendCodeText}>
+          Resend Code in <Text>{resendButtonDisabledTime}</Text>
+        </Text>
         ) : (
           <TouchableOpacity onPress={onResendOtpButtonPress}>
-            <View style={styles.resendCode}>
-              <Text style={styles.resendCodeText}>
-                Resend Code in <Text>{resendButtonDisabledTime}</Text>
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.resendCodeContainer}>
+            <Text style={styles.resendCode}> Resend Code</Text>
+            <Text style={{ marginTop: 40 }}>
+              {" "}
+              in {resendButtonDisabledTime} sec
+            </Text>
+          </View>
+        </TouchableOpacity>
         )}
-      </View>
-    </ScrollView>
+        </KeyboardAvoidingView>
+        
+      </ScrollView>
+        
+      </SafeAreaView>
   );
 };
 const otpField = {
@@ -154,18 +246,43 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
     fontWeight: '900',
     // lineHeight: '34px',
     // letterSpacing: '-0.01px',
     color: '#303030',
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '400',
+    marginVertical: 10,
+    top: 2,
     // lineHeight: '24px',
     // letterSpacing: '-0.01px',
     color: '#ABABB4',
+  },
+  codeFieldRoot: {
+    marginTop: 40,
+    width: "90%",
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  cellRoot: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+  },
+  cellText: {
+    color: "#000",
+    fontSize: 28,
+    textAlign: "center",
+  },
+  focusCell: {
+    borderBottomColor: '#FD264F',
+    borderBottomWidth: 2,
   },
   otpContainer: {
     flex: 1,
@@ -179,21 +296,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   verifyContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: '100%',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    marginTop: 100,
+    // justifyContent: 'flex-end',
+    // alignItems: 'center',
+    // flexDirection: 'row',
+    // width: '100%',
+    // paddingHorizontal: 10,
+    // paddingVertical: 5,
   },
   verifyButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     backgroundColor: '#FD264F',
-    width: '100%',
-    height: 56,
-    marginTop: 15,
-    borderRadius: 8,
+    // width: '100%',
+    // height: 56,
+    // marginTop: 15,
+    // borderRadius: 8,
   },
   resendCode: {
     paddingTop: 14,
@@ -223,5 +341,22 @@ const styles = StyleSheet.create({
   },
   otpInputs: {
     tintColor: '#FD264F',
+  },
+  resendCode: {
+    color: '#FD264F',
+    marginStart: 100,
+    marginTop: 40,
+    fontSize: 12,
+  },
+  resendCodeText: {
+    marginStart: 100,
+    marginTop: 40,
+    color: '#FD264F',
+    fontSize: 12,
+    fontStyle: "normal",
+  },
+  resendCodeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

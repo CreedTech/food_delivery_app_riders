@@ -18,7 +18,7 @@ import { AuthContext } from '../components/context';
 // import { CachedImage } from 'react-native-cached-image';
 
 const FinishSetupScreen = ({ navigation }) => {
-    const { signIn } = React.useContext(AuthContext);
+    const { login } = React.useContext(AuthContext);
 
     return (
         <View style={styles.wrapper}>
@@ -71,7 +71,8 @@ const FinishSetupScreen = ({ navigation }) => {
             <TouchableHighlight
               style={styles.startRiding}
               onPress={() => {
-              signIn();
+              // signIn();
+              navigation.navigate('WalletScreen');
             }}
               underlayColor="#fff"
             >

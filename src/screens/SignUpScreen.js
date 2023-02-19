@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
+  SafeAreaView,
   Button,
   TouchableOpacity,
   Dimensions,
@@ -13,6 +14,8 @@ import {
   
 } from 'react-native';
 import { StatusBar } from "expo-status-bar";
+import axios from 'axios';
+import { BASE_URL } from '../config';
 import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
@@ -20,12 +23,14 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import { AuthContext } from '../components/context';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const SignInScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = useState({});
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
@@ -38,7 +43,7 @@ const SignInScreen = ({ navigation }) => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
-  const {isLoading, register} = useContext(AuthContext);
+  const {signUp} = useContext(AuthContext);
 
   const numberInputChange = (val) => {
     if (val.length > 10) {
@@ -94,15 +99,59 @@ const SignInScreen = ({ navigation }) => {
     });
   };
 
+  const handleAxiosRequest = async (
+    firstName,
+    lastName,
+    email,
+    password,
+    phone,
+    userType = 'VENDOR',
+  ) => {
+    // setUserToken('fgkj');
+    // setIsLoading(false);
+    setIsLoading(true);
+    await axios
+      .post(`${BASE_URL}/user/register`, {
+        firstName,
+        lastName,
+        email,
+        password,
+        phone,
+        userType,
+      })
+      .then((res) => {
+        let userInfo = res.data;
+        setUserInfo(userInfo);
+        setIsLoading(false);
+        navigation.navigate("VerifyPhoneScreen");
+        console.log(userInfo);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        // console.log(`register error ${e}`);
+        setIsLoading(false);
+      });
+  };
+
   return (
-    // <SafeAreaView style={styles.container}>
-    //   <StatusBar style="auto" />
+    <SafeAreaView style={styles.container}>
+       <StatusBar style="auto" />
     
           <ScrollView showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
         {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
-        <View style={styles.container}>
           <TouchableOpacity>
             <AntIcon
               name="left"
@@ -118,6 +167,7 @@ const SignInScreen = ({ navigation }) => {
               Please provide details below to register
             </Text>
           </View>
+        <View style={{ marginVertical: 20 }}>
           <Spinner visible={isLoading} />
           <View style={styles.mobileContainer}>
             <TextInput
@@ -214,7 +264,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.registerButton}
               onPress={() => {
                 console.log(firstName, lastName, email, password, phone);
-                register(firstName,lastName, email, password, phone);
+                handleAxiosRequest(firstName,lastName, email, password, phone);
                 // navigation.navigate('VerifyPhoneScreen');
               }}
             >
@@ -242,11 +292,11 @@ const SignInScreen = ({ navigation }) => {
          </KeyboardAvoidingView>
         </ScrollView>
      
-      // </SafeAreaView>
+      </SafeAreaView>
   );
 };
 
-export default SignInScreen;
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -256,10 +306,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    flexDirection: 'column',
-    marginTop: '15%',
-    paddingTop: 20,
-    paddingHorizontal: 40,
+    // flexDirection: 'column',
+    // marginTop: '15%',
+    // paddingTop: 20,
+    // paddingHorizontal: 40,
   },
   backIcon: {
     marginBottom: 37,
