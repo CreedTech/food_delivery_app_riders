@@ -51,7 +51,7 @@ const OnBoardingScreen = ({navigation}) => {
               <TouchableOpacity
                 style={styles.signup}
                 onPress={() => {
-                  navigation.navigate('SignUpScreen');
+                  navigation.navigate('SignUpBase');
                }}
                 underlayColor="#fff"
               >

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -11,19 +11,33 @@ import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
-  
 } from 'react-native';
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from 'expo-status-bar';
+import authModel from '../model/auth';
 import axios from 'axios';
 import { BASE_URL } from '../config';
+import FlashMessage from 'react-native-flash-message';
+import { showMessage, hideMessage } from "react-native-flash-message";
 import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import { AuthContext } from '../components/context';
+// import { AuthContext } from '../components/context';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const SignUpScreen = ({ navigation }) => {
+function checkEmail(email) {
+  return authModel.checkEmail(email);
+}
+
+// function checkAlert() {
+//   showMessage({
+//       message: 'You must agree to terms to register',
+//       type: 'danger',
+//       position: 'bottom'
+//   });
+// };
+
+const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -43,7 +57,63 @@ const SignUpScreen = ({ navigation }) => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
-  const {signUp} = useContext(AuthContext);
+
+  async function createUser() {
+    // Check if email is valid
+    if (!checkEmail(email)) {
+      showMessage({
+        message: 'Invalid email',
+        type: 'danger',
+        position: 'bottom',
+      });
+    } else {
+      // Prepare user object
+      const user = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        phone: phone,
+        userType: 'VENDOR',
+      };
+
+      // Register user
+      const result = await authModel.register(user);
+
+      // Check if registration successful
+      if (result['type'] === 'success') {
+        logIn();
+      }
+
+      showMessage({
+        message: result['title'],
+        description: result['message'],
+        type: result['type'],
+        position: 'bottom',
+      });
+    }
+  }
+
+  async function logIn() {
+    const userLogin = {
+      phone: phone,
+      password: password,
+    };
+
+    const loginUser = await authModel.login(userLogin);
+    if (Object.prototype.hasOwnProperty.call(loginUser, 'errors')) {
+      showMessage({
+        message: loginUser['errors']['title'],
+        type: 'danger',
+        position: 'bottom',
+      });
+    } else {
+      setToken(loginUser['token']);
+      setIsLoggedIn(true);
+    }
+  }
+
+  // const {signUp} = useContext(AuthContext);
 
   const numberInputChange = (val) => {
     if (val.length > 10) {
@@ -105,7 +175,7 @@ const SignUpScreen = ({ navigation }) => {
     email,
     password,
     phone,
-    userType = 'VENDOR',
+    userType = 'VENDOR'
   ) => {
     // setUserToken('fgkj');
     // setIsLoading(false);
@@ -123,7 +193,7 @@ const SignUpScreen = ({ navigation }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
         setIsLoading(false);
-        navigation.navigate("VerifyPhoneScreen");
+        navigation.navigate('VerifyPhoneScreen');
         console.log(userInfo);
       })
       .catch((error) => {
@@ -145,28 +215,27 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-       <StatusBar style="auto" />
-    
-          <ScrollView showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}>
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}
+    >
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
         {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
-          <TouchableOpacity>
-            <AntIcon
-              name="left"
-              color="black"
-              size={20}
-              style={styles.backIcon}
-              onPress={() => navigation.goBack()}
-            />
-          </TouchableOpacity>
-          <View>
-            <Text style={styles.title}>Register</Text>
-            <Text style={styles.subtitle}>
-              Please provide details below to register
-            </Text>
-          </View>
+        <TouchableOpacity>
+          <AntIcon
+            name="left"
+            color="black"
+            size={20}
+            style={styles.backIcon}
+            onPress={() => navigation.goBack()}
+          />
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.title}>Register</Text>
+          <Text style={styles.subtitle}>
+            Please provide details below to register
+          </Text>
+        </View>
         <View style={{ marginVertical: 20 }}>
           <Spinner visible={isLoading} />
           <View style={styles.mobileContainer}>
@@ -177,7 +246,7 @@ const SignUpScreen = ({ navigation }) => {
               placeholderStyle={{ fontSize: 40 }}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              onChangeText={text => setFirstName(text)}
+              onChangeText={(text) => setFirstName(text)}
             />
           </View>
           <View style={styles.mobileContainer}>
@@ -188,7 +257,7 @@ const SignUpScreen = ({ navigation }) => {
               selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={text => setLastName(text)}
+              onChangeText={(text) => setLastName(text)}
             />
           </View>
           <View style={styles.mobileContainer}>
@@ -199,7 +268,7 @@ const SignUpScreen = ({ navigation }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
-              onChangeText={text => setEmail(text)}
+              onChangeText={(text) => setEmail(text)}
             />
             {/* {data.check_emailInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
@@ -212,20 +281,27 @@ const SignUpScreen = ({ navigation }) => {
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.passInput}
               value={password}
+              keyboardType="numbers-and-punctuation"
               placeholder="Enter Password"
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
               onChangeText={(val) => setPassword(val)}
             />
-            <TouchableOpacity onPress={updateSecureTextEntry} style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
+            <TouchableOpacity
+              onPress={updateSecureTextEntry}
+              style={{
+                alignSelf: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               {data.secureTextEntry ? (
-                <Feather name="eye-off" color="grey" size={25}  />
+                <Feather name="eye-off" color="grey" size={25} />
               ) : (
                 <Feather name="eye" color="grey" size={25} />
               )}
             </TouchableOpacity>
-            
           </View>
           {/* {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
@@ -262,11 +338,7 @@ const SignUpScreen = ({ navigation }) => {
           <View style={styles.registerContainer}>
             <TouchableOpacity
               style={styles.registerButton}
-              onPress={() => {
-                console.log(firstName, lastName, email, password, phone);
-                handleAxiosRequest(firstName,lastName, email, password, phone);
-                // navigation.navigate('VerifyPhoneScreen');
-              }}
+              onPress={createUser}
             >
               <Text style={styles.registerText}>Register</Text>
             </TouchableOpacity>
@@ -276,7 +348,6 @@ const SignUpScreen = ({ navigation }) => {
               Already have an account?{' '}
               <TouchableOpacity
                 onPress={() => {
-                  
                   navigation.navigate('SignInScreen');
                 }}
               >
@@ -289,10 +360,9 @@ const SignUpScreen = ({ navigation }) => {
 
           {/* <ActivityIndicator size="large" /> */}
         </View>
-         </KeyboardAvoidingView>
-        </ScrollView>
-     
-      </SafeAreaView>
+        <FlashMessage position={'top'} />
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -345,7 +415,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '95%',
     color: '#000000',
-     backgroundColor: 'transparent',
+    backgroundColor: 'transparent',
   },
   passInput: {
     alignSelf: 'stretch',
@@ -353,7 +423,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '95%',
     color: '#000000',
-     backgroundColor: 'transparent',
+    backgroundColor: 'transparent',
   },
   eyeIcon: {
     marginTop: 5,
@@ -412,5 +482,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'grey',
   },
- 
 });

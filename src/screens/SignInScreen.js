@@ -14,14 +14,17 @@ import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import Spinner from 'react-native-loading-spinner-overlay';
+import FlashMessage from 'react-native-flash-message';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { useTheme } from 'react-native-paper';
+import authModel from '../model/auth';
 
-import { AuthContext } from '../components/context';
+// import { AuthContext } from '../components/context';
 
-import Users from '../model/users';
+// import Users from '../model/users';
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation,setIsLoggedIn }) => {
   const [password, setPassword] = useState(null);
   const [phone, setPhone] = useState(null);
   const [data, setData] = React.useState({
@@ -33,10 +36,38 @@ const SignInScreen = ({ navigation }) => {
     isValidPassword: true,
   });
 
+  async function logIn() {
+    const userLogin = {
+      phone: phone,
+      password: password,
+      "userType": "VENDOR",
+    };
+
+    const loginUser = await authModel.login(userLogin);
+    
+    if (loginUser['type'] === 'danger') {
+      console.log(loginUser['message']);
+        showMessage({
+            message: loginUser['message'],
+            type: 'danger',
+            position: 'bottom'
+        })
+    } else {
+      console.log(loginUser['message']);
+        showMessage({
+            message: loginUser['message'],
+            type: 'success',
+            position: 'bottom'
+        })
+        setIsLoggedIn(true);
+        
+    }
+};
+
   const { colors } = useTheme();
 
   // const { login, isLoading } = React.useContext(AuthContext);
-  const { signIn ,isLoading} = React.useContext(AuthContext);
+  // const { signIn ,isLoading} = React.useContext(AuthContext);
   // const [loading, setLoading] = React.useState(false);
 
   const textInputChange = (val) => {
@@ -124,7 +155,7 @@ const SignInScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <StatusBar style="auto" />
-      <Spinner visible={isLoading} />
+      {/* <Spinner visible={isLoading} /> */}
       <View style={{ paddingTop: 50, paddingHorizontal: 30 }}>
       <TouchableOpacity>
           <Feather
@@ -211,9 +242,7 @@ const SignInScreen = ({ navigation }) => {
         <View style={styles.loginContainer}>
           <TouchableOpacity
             style={styles.LoginButton}
-            onPress={() => {
-              signIn(phone, password);
-            }}
+            onPress={logIn}
             // onPress={() => navigation.navigate('FinishSetupScreen')}
           >
             <Text style={styles.loginText}>Sign in</Text>
@@ -223,7 +252,9 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.noAccountText}>
             Don’t have an account?{' '}
             <TouchableOpacity
-              onPress={() => login(phone, password)}
+              onPress={() => {
+                navigation.navigate('SignUpBase');
+              }}
             >
               <Text style={{ fontWeight: '600', color: '#FD264F' }}>
                 Register
@@ -234,7 +265,8 @@ const SignInScreen = ({ navigation }) => {
 
         {/* <ActivityIndicator size="large" /> */}
         </View>
-        </View>
+      </View>
+      <FlashMessage position={'top'}/>
      </SafeAreaView>
   );
 };

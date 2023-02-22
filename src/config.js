@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://fudap-staging.herokuapp.com/api/v1';
+export const BASE_URL = 'https://fudap-staging.herokuapp.com/api/v1/';

@@ -15,13 +15,13 @@ const DrawerNav = () => {
     );
 }
 
-const AppStack = () => {
+const AppStack = ({token}) => {
   return (
     <App.Navigator 
       initialRouteName='HomeScreen'
       screenOptions={{ headerShown: false }}
     >
-      <App.Screen name='HomeScreen' component={DrawerNav} />
+      <App.Screen name='HomeScreen' component={DrawerNav} token={token}  />
       {/* <App.Screen name='EditProfile' component={EditProfileScreen} /> */}
       {/* <App.Screen name='MyTrips' component={MyTripsScreen} /> */}
       {/* <App.Screen name='Wallet' component={WalletScreen} /> */}

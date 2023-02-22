@@ -13,14 +13,19 @@ import {
 } from 'react-native-paper';
 import { Avatar, ListItem } from 'react-native-elements';
 import {StackActions} from '@react-navigation/native';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { AuthContext } from '../components/context';
+// import { AuthContext } from '../components/context';
 
 const CustomDrawer = (props) => { 
-  const { signOut } = React.useContext(AuthContext);
+  // const { signOut } = React.useContext(AuthContext);
   
 //   const userInfo = () => {
 //         firestore()
@@ -53,6 +58,7 @@ return (
             </ListItem>
           </View>
         </View>
+        <DrawerItemList {...props} />
 
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
@@ -92,16 +98,14 @@ return (
             labelStyle={{fontFamily: 'Poppins-Light'}}
             label="Set Password"
             style={styles.drawerItem}
-            // onPress={() => {props.navigation.navigate('Set PassScreen')}}
           />
-          {/* <Divider /> */}
         </Drawer.Section>
       </View>
     </DrawerContentScrollView>
     <Drawer.Section style={styles.bottomDrawerSection}>
       <TouchableOpacity
         onPress={() => {
-          signOut();
+          // signOut();
           // props.navigation.dispatch(StackActions.popToTop())
           // props.navigation.navigate('OnboardingScreen')
         }}

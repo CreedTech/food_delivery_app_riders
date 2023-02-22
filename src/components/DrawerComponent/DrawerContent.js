@@ -16,12 +16,12 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { AuthContext } from '../context';
+// import { AuthContext } from '../context';
 
 export function DrawerContent(props) {
   const paperTheme = useTheme();
 
-  const { signOut } = React.useContext(AuthContext);
+  // const { signOut } = React.useContext(AuthContext);
 
   return (
     <View style={{ flex: 1 }}>
@@ -92,7 +92,7 @@ export function DrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
           onPress={() => {
-            signOut();
+            // signOut();
           }}
         >
           <Text style={{ color: '#ffffff' }}>Log out</Text>
