@@ -515,7 +515,7 @@ const App = () => {
                 fontWeight: 'bold',
               },
             }}
-            drawerContent={(props) => <DrawerContent {...props} />}
+            drawerContent={(props) => <DrawerContent {...props} setIsLoggedIn={setIsLoggedIn} />}
           >
             {isLoggedIn ? (
               <Drawer.Screen name="Home" component={HomeScreen} />

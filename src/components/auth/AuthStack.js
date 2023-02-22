@@ -23,10 +23,10 @@ export default function AuthStack({setToken, setIsLoggedIn}) {
                 {(screenProps) => <SignInScreen {...screenProps}  setIsLoggedIn={setIsLoggedIn}></SignInScreen>}
             </Stack.Screen>
             <Stack.Screen name="VerifyPhoneScreen">
-                {(screenProps) => <VerifyPhoneScreen {...screenProps}  setIsLoggedIn={setIsLoggedIn}></VerifyPhoneScreen>}
+                {(screenProps) => <VerifyPhoneScreen {...screenProps} ></VerifyPhoneScreen>}
             </Stack.Screen>
             <Stack.Screen name="FinishSetupScreen">
-                {(screenProps) => <FinishSetupScreen {...screenProps}  setIsLoggedIn={setIsLoggedIn}></FinishSetupScreen>}
+                {(screenProps) => <FinishSetupScreen {...screenProps} ></FinishSetupScreen>}
             </Stack.Screen>
         </Stack.Navigator>
         );

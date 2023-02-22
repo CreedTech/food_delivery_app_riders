@@ -20,7 +20,6 @@ import {
 } from "react-native-confirmation-code-field";
 import axios from 'axios';
 import { BASE_URL } from '../config';
-import { AuthContext } from '../components/context';
 import { StatusBar } from "expo-status-bar";
 // import OTPTextInput from 'react-native-otp-textinput';
 
@@ -30,7 +29,6 @@ const VerifyPhoneScreen = ({ navigation }) => {
   const RESEND_OTP_TIME_LIMIT = 20;
   const [verification_code, setValue] = useState("");
   const ref = useBlurOnFulfill({ verification_code, cellCount: CELL_COUNT });
-  const {signUp} = useContext(AuthContext);
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     verification_code,
     setValue,
@@ -77,7 +75,7 @@ const VerifyPhoneScreen = ({ navigation }) => {
   ) => {
     setIsLoading(true);
     await axios
-      .post(`${BASE_URL}/otp/verifyOtp`, {
+      .post(`${BASE_URL}otp/verifyOtp`, {
         verification_code
       })
       .then((res) => {
@@ -110,14 +108,14 @@ const VerifyPhoneScreen = ({ navigation }) => {
   ) => {
     setIsLoading(true);
     await axios
-      .post(`${BASE_URL}/otp/verifyOtp`, {
+      .post(`${BASE_URL}otp/resendOtp`, {
         customer_mobile_number
       })
       .then((res) => {
         let opt = res.data;
         // setUserInfo(userInfo);
         setIsLoading(false);
-        navigation.navigate("FinishSetupScreen");
+        // navigation.navigate("FinishSetupScreen");
         console.log(opt);
       })
       .catch((error) => {

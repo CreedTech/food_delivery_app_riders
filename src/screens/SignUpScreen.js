@@ -82,7 +82,8 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
 
       // Check if registration successful
       if (result['type'] === 'success') {
-        logIn();
+        // logIn();
+        navigation.navigate("VerifyPhoneScreen");
       }
 
       showMessage({

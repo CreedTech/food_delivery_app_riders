@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useContext, useEffect, useState } from 'react';
 import { View, StyleSheet,TouchableOpacity } from 'react-native';
 import {
   useTheme,
@@ -11,15 +11,26 @@ import {
   Switch,
     Divider,
 } from 'react-native-paper';
+import authModel from '../../model/auth';
 import { Avatar, ListItem } from 'react-native-elements';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import FlashMessage from 'react-native-flash-message';
 
+import { showMessage, hideMessage } from "react-native-flash-message";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import { AuthContext } from '../context';
 
-export function DrawerContent(props) {
+export function DrawerContent({props,navigation, setIsLoggedIn}) {
   const paperTheme = useTheme();
+  // const {navigation} = props;
+  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  async function logout() {        
+    await authModel.logout();
+    setIsLoggedIn(false);
+    navigation.navigate('Auth');
+};
 
   // const { signOut } = React.useContext(AuthContext);
 
@@ -91,9 +102,7 @@ export function DrawerContent(props) {
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
-          onPress={() => {
-            // signOut();
-          }}
+          onPress={logout}
         >
           <Text style={{ color: '#ffffff' }}>Log out</Text>
         </TouchableOpacity>

@@ -14,11 +14,11 @@ import {
   ActivityIndicator,
   Pressable,
 } from 'react-native';
-import { AuthContext } from '../components/context';
+// import { AuthContext } from '../components/context';
 // import { CachedImage } from 'react-native-cached-image';
 
 const FinishSetupScreen = ({ navigation }) => {
-    const { login } = React.useContext(AuthContext);
+    // const { login } = React.useContext(AuthContext);
 
     return (
         <View style={styles.wrapper}>

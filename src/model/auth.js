@@ -13,7 +13,8 @@ const authModel = {
             },
         });
         
-        const result = await response.json();                
+        const result = await response.json();         
+        console.log(result);
         if (Object.prototype.hasOwnProperty.call(result, 'errors')) {
             return {
                 title: result.errors.title,
@@ -81,7 +82,30 @@ const authModel = {
     },
 
     logout: async function logout() {
+        const response = await fetch(`${config.base_url}auth/logout`, {
+            method: 'GET',
+            // body: JSON.stringify(user),
+            headers: {
+                'content-type': 'application/json'
+            },
+        });
+        
+        const result = await response.json();         
+        console.log(result);
         await storage.deleteToken();
+        if (Object.prototype.hasOwnProperty.call(result, 'errors')) {
+            return {
+                title: result.errors.title,
+                message: result.errors.detail,
+                type: "danger",
+            };
+        }
+
+        return {
+            title: "Logout",
+            message: "Logged out Successfully",
+            type: "success",
+        };   
     },
 };
 
