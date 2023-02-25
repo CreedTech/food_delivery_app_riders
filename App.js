@@ -21,7 +21,7 @@ import {
   DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
 import { BASE_URL } from './src/config';
-// import { AuthProvider } from './src/components/context';
+import { AuthProvider } from './src/components/context';
 // import Navigation from './src/components/Navigation';
 // import Providers from './src/navigation';
 // import {useNavigation} from '@react-navigation/native';
@@ -39,6 +39,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './src/components/HomeNavigator';
 import AuthStack from './src/components/auth/AuthStack';
 import CustomDrawer from './src/navigation/CustomDrawer';
+// import userModel from './src/model/user';
 
 let customFonts = {
   'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
@@ -141,6 +142,7 @@ const App = () => {
   //   userToken: null,
   // };
 
+
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
     ...PaperDefaultTheme,
@@ -162,6 +164,8 @@ const App = () => {
       text: '#ffffff',
     },
   };
+
+
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
@@ -491,6 +495,7 @@ const App = () => {
     //   <Providers />
     // </PaperProvider>
     <PaperProvider theme={theme}>
+      <AuthProvider>
       <View style={{flex:1}}>
         <NavigationContainer>
           {/* {isLoggedIn ? (
@@ -504,7 +509,8 @@ const App = () => {
                     setIsLoggedIn={setIsLoggedIn}
                   />
             )} */}
-          <Drawer.Navigator
+            {isLoggedIn ? (
+            <Drawer.Navigator
             screenOptions={{
               headerShown: false,
               headerStyle: {
@@ -517,9 +523,8 @@ const App = () => {
             }}
             drawerContent={(props) => <DrawerContent {...props} setIsLoggedIn={setIsLoggedIn} />}
           >
-            {isLoggedIn ? (
-              <Drawer.Screen name="Home" component={HomeScreen} />
-              //   {/* {(screenProps) => <HomeStack {...screenProps} token={token} />} */}
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            {/* {isLoggedIn ? (
               // </Drawer.Screen>
             ) : (
               <Drawer.Screen name="Auth">
@@ -530,7 +535,7 @@ const App = () => {
                   />
                 )}
               </Drawer.Screen>
-            )}
+            )} */}
 
             <Drawer.Screen name="EditProfileScreen" component={EditProfileScreen} setIsLoggedIn={setIsLoggedIn} />
               {/* {(screenProps) => (
@@ -559,10 +564,17 @@ const App = () => {
               )}
             </Drawer.Screen> */}
           </Drawer.Navigator>
+            )
+              : (
+                <AuthStack setToken={setToken} setIsLoggedIn={setIsLoggedIn} />
+              )
+          }
         </NavigationContainer>
 
         <FlashMessage position={'top'} />
       </View>
+      </AuthProvider>
+      
     </PaperProvider>
   );
 };

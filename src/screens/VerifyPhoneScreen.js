@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,13 +18,18 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import { AuthContext } from '../components/context';
 import axios from 'axios';
 import { BASE_URL } from '../config';
 import { StatusBar } from "expo-status-bar";
+import userModel from '../model/user';
+import FlashMessage from 'react-native-flash-message';
+import { showMessage, hideMessage } from "react-native-flash-message";
 // import OTPTextInput from 'react-native-otp-textinput';
 
 const VerifyPhoneScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = useState('');
   const CELL_COUNT = 6;
   const RESEND_OTP_TIME_LIMIT = 20;
   const [verification_code, setValue] = useState("");
@@ -33,6 +38,18 @@ const VerifyPhoneScreen = ({ navigation }) => {
     verification_code,
     setValue,
   });
+  const { VerifyOtp } = useContext(AuthContext);
+
+  useEffect(() => {
+    async function getUser() {
+        const result = await userModel.getProfile();
+        
+      setUserInfo(result);
+      console.log(userInfo);
+
+    };
+    getUser();
+}, []);
 
   let resendOtpTimerInterval;
 
@@ -69,39 +86,64 @@ const VerifyPhoneScreen = ({ navigation }) => {
   //declarations for input field
   
 
+  async function handleVerifyOtp() {
+    const result = await VerifyOtp(verification_code);
+    console.log(result);
 
-  const handleVerifyOtp = async (
-    verification_code
-  ) => {
-    setIsLoading(true);
-    await axios
-      .post(`${BASE_URL}otp/verifyOtp`, {
-        verification_code
-      })
-      .then((res) => {
-        let otp = res.data;
-        // setUserInfo(userInfo);
-        setIsLoading(false);
-        navigation.navigate("FinishSetupScreen");
-        console.log(otp);
-      })
-      .catch((error) => {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        // console.log(`register error ${e}`);
-        setIsLoading(false);
-      });
-  };
+      if (result['type'] === 'danger') {
+        console.log('yo1');
+        console.log(result['message']);
+          showMessage({
+              message: result['message'],
+              type: 'danger',
+              position: 'bottom'
+          })
+      } else {
+        console.log(result['message']);
+          showMessage({
+              message: result['message'],
+              type: 'success',
+              position: 'bottom'
+          })
+          setIsLoading(false);
+          navigation.navigate("FinishSetupScreen");
+          // navigation.navigate("VerifyPhoneScreen");
+          
+      }
+  }
+
+  // const handleVerifyOtp = async (
+    // verification_code
+  // ) => {
+  //   setIsLoading(true);
+  //   await axios
+  //     .post(`${BASE_URL}otp/verifyOtp`, {
+  //       verification_code
+  //     })
+  //     .then((res) => {
+  //       let otp = res.data;
+  //       // setUserInfo(userInfo);
+  //       setIsLoading(false);
+  //       navigation.navigate("FinishSetupScreen");
+  //       console.log(otp);
+  //     })
+  //     .catch((error) => {
+  //       if (error.response) {
+  //         // Request made and server responded
+  //         console.log(error.response.data);
+  //         console.log(error.response.status);
+  //         console.log(error.response.headers);
+  //       } else if (error.request) {
+  //         // The request was made but no response was received
+  //         console.log(error.request);
+  //       } else {
+  //         // Something happened in setting up the request that triggered an Error
+  //         console.log('Error', error.message);
+  //       }
+  //       // console.log(`register error ${e}`);
+  //       setIsLoading(false);
+  //     });
+  // };
 
   const handleResendOtp = async (
     customer_mobile_number
@@ -220,7 +262,7 @@ const VerifyPhoneScreen = ({ navigation }) => {
         </KeyboardAvoidingView>
         
       </ScrollView>
-        
+      <FlashMessage position={'top'}/>
       </SafeAreaView>
   );
 };

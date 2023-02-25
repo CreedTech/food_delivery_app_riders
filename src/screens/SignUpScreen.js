@@ -12,8 +12,9 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
+  import { AuthContext } from '../components/context';
 import { StatusBar } from 'expo-status-bar';
-import authModel from '../model/auth';
+// import authModel from '../model/auth';
 import axios from 'axios';
 import { BASE_URL } from '../config';
 import FlashMessage from 'react-native-flash-message';
@@ -22,11 +23,12 @@ import PhoneInput from 'react-native-phone-input';
 // import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import * as EmailValidator from 'email-validator';
 // import { AuthContext } from '../components/context';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 function checkEmail(email) {
-  return authModel.checkEmail(email);
+  return EmailValidator.validate(email);
 }
 
 // function checkAlert() {
@@ -58,6 +60,12 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     confirm_secureTextEntry: true,
   });
 
+  const { register } = useContext(AuthContext);
+
+  // const handleRegister = () => {
+  //   register(firstName,lastName, email, password,phone);
+  // };
+
   async function createUser() {
     // Check if email is valid
     if (!checkEmail(email)) {
@@ -78,41 +86,60 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
       };
 
       // Register user
-      const result = await authModel.register(user);
+      const result = await register(user);
 
-      // Check if registration successful
-      if (result['type'] === 'success') {
-        // logIn();
-        navigation.navigate("VerifyPhoneScreen");
+      if (result['type'] === 'danger') {
+        console.log('yo1');
+        console.log(result['message']);
+          showMessage({
+              message: result['message'],
+              type: 'danger',
+              position: 'bottom'
+          })
+      } else {
+        console.log(result['message']);
+          showMessage({
+              message: result['message'],
+              type: 'success',
+              position: 'bottom'
+          })
+          navigation.navigate("VerifyPhoneScreen");
+          
       }
 
-      showMessage({
-        message: result['title'],
-        description: result['message'],
-        type: result['type'],
-        position: 'bottom',
-      });
+      // Check if registration successful
+      // if (result['type'] === 'success') {
+      //   // logIn();
+      //   navigation.navigate("VerifyPhoneScreen");
+      // }
+
+      // showMessage({
+      //   message: result['title'],
+      //   description: result['message'],
+      //   type: result['type'],
+      //   position: 'bottom',
+      // });
     }
   }
 
-  async function logIn() {
-    const userLogin = {
-      phone: phone,
-      password: password,
-    };
+  // async function logIn() {
+  //   const userLogin = {
+  //     phone: phone,
+  //     password: password,
+  //   };
 
-    const loginUser = await authModel.login(userLogin);
-    if (Object.prototype.hasOwnProperty.call(loginUser, 'errors')) {
-      showMessage({
-        message: loginUser['errors']['title'],
-        type: 'danger',
-        position: 'bottom',
-      });
-    } else {
-      setToken(loginUser['token']);
-      setIsLoggedIn(true);
-    }
-  }
+  //   const loginUser = await authModel.login(userLogin);
+  //   if (Object.prototype.hasOwnProperty.call(loginUser, 'errors')) {
+  //     showMessage({
+  //       message: loginUser['error']['title'],
+  //       type: 'danger',
+  //       position: 'bottom',
+  //     });
+  //   } else {
+  //     setToken(loginUser['token']);
+  //     setIsLoggedIn(true);
+  //   }
+  // }
 
   // const {signUp} = useContext(AuthContext);
 
@@ -248,6 +275,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               onChangeText={(text) => setFirstName(text)}
+              // onChangeText={setFirstName}
             />
           </View>
           <View style={styles.mobileContainer}>
@@ -258,6 +286,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
+              // onChangeText={setLastName}
               onChangeText={(text) => setLastName(text)}
             />
           </View>
@@ -269,6 +298,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
+              // onChangeText={setEmail}
               onChangeText={(text) => setEmail(text)}
             />
             {/* {data.check_emailInputChange ? (
@@ -287,6 +317,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
+              // onChangeText={setPassword}
               onChangeText={(val) => setPassword(val)}
             />
             <TouchableOpacity
@@ -328,6 +359,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               maxLength={20}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
+              // onChangeText={setPhone}
               onChangeText={(val) => setPhone(val)}
             />
             {/* {data.check_numberInputChange ? (

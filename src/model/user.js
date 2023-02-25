@@ -2,178 +2,173 @@ import config from '../config/config.json';
 import storage from './storage';
 
 const userModel = {
-    getUserData: async function getUserData(userData) {
-        const token = await storage.readToken();                
-        const user = userData['userData']
-        
-        const response = await fetch(`${config.base_url}user/${user['userId']}`, {
-            method: 'GET',
-            // headers: {
-            //     'x-access-token': token['token']
-            // }
-        });
-        
-        const result = await response.json();
+  getUserData: async function getUserData(userData) {
+    // const token = await storage.readToken();
+    const user = userData['userData'];
 
-        return result;
-    },
+    const response = await fetch(`${config.base_url}user/${user.userId}`, {
+      method: 'GET',
+      // headers: {
+      //     'x-access-token': token['token']
+      // }
+    });
 
-    // getBalance: async function getBalance() {
-    //     const userData = await storage.readUser();        
-    //     const user = await userModel.getUserData(userData);
-        
-    //     const userBalance = user['user']['balance'];
-        
-    //     return userBalance;
-    // },
+    const result = await response.json();
 
-    // getHistory: async function getHistory() {
-    //     const user = await storage.readUser();
-    //     const userId = user['userData']['id']
-        
+    return result;
+  },
 
-    //     const token = await storage.readToken();                
-    //     const respone = await fetch(`${config.base_url}users/${userId}?api_key=${API_KEY}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'x-access-token': token['token']
-    //         }
-    //     }
-    //     );
+  // getBalance: async function getBalance() {
+  //     const userData = await storage.readUser();
+  //     const user = await userModel.getUserData(userData);
 
-    //     const result = await respone.json();
+  //     const userBalance = user['user']['balance'];
 
-    //     const userData = result['user'];
-                
-    //     const userHistory = userData['history'];
-        
-    //     return userHistory;
-    // },
+  //     return userBalance;
+  // },
 
-    // addFunds: async function addFunds(prepaid) {
-    //     const token = await storage.readToken();
-    //     const user = await storage.readUser();        
-    //     const userData = await userModel.getUserData(user);
+  // getHistory: async function getHistory() {
+  //     const user = await storage.readUser();
+  //     const userId = user['userData']['id']
 
-    //     const userId = userData['user']['_id'];
-        
-    //     const requestBody = {
-    //         'user_id': userId,
-    //         'prepaid_code': prepaid
-    //     };            
-        
-    //     const response = await fetch(`${config.base_url}users/addfund?api_key=${API_KEY}`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'x-access-token': token['token']
-    //         },
-    //         body: JSON.stringify(requestBody)
-    //     });
+  //     const token = await storage.readToken();
+  //     const respone = await fetch(`${config.base_url}users/${userId}?api_key=${API_KEY}`, {
+  //         method: 'GET',
+  //         headers: {
+  //             'x-access-token': token['token']
+  //         }
+  //     }
+  //     );
 
-    //     const result = await response;        
-        
-    //     return result;
-    // },
+  //     const result = await respone.json();
 
-    getProfile: async function getProfile() {
-        const userData = await storage.readUser();        
-        const user = await userModel.getUserData(userData);
+  //     const userData = result['user'];
 
-        return user;
-    },
+  //     const userHistory = userData['history'];
 
-    updateUser: async function updateUser(userData) {
-        const token = await storage.readToken();
-        const userId = await storage.readUser();
-        const user = await userModel.getUserData(userId);
-        
-        const body = {
-            'userId': user['user']['userId'],
-            'firstName': userData['firstName'],
-            'lastName': userData['lastName'],
-            'phone': userData['phone'],
-            'email': userData['email'],
-            'api_key': API_KEY
-        };
+  //     return userHistory;
+  // },
 
-        
+  // addFunds: async function addFunds(prepaid) {
+  //     const token = await storage.readToken();
+  //     const user = await storage.readUser();
+  //     const userData = await userModel.getUserData(user);
 
-        // Prepare body to be urlencoded
-        const formBody = [];
+  //     const userId = userData['user']['_id'];
 
-        for (const property in body) {
-            const encodedKey = encodeURIComponent(property);
-            const encodedValue = encodeURIComponent(body[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
-        };
-        
-        const requestBody = formBody.join("&");
+  //     const requestBody = {
+  //         'user_id': userId,
+  //         'prepaid_code': prepaid
+  //     };
 
-        const response = await fetch(`${config.base_url}users`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                'x-access-token': token['token']
-            },
-            body: requestBody
-        });
+  //     const response = await fetch(`${config.base_url}users/addfund?api_key=${API_KEY}`, {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //             'x-access-token': token['token']
+  //         },
+  //         body: JSON.stringify(requestBody)
+  //     });
 
-        if (response.status === 204) {
-            const message = {
-                message: 'Profile Changed',
-            };
+  //     const result = await response;
 
-            return message;
-        };
+  //     return result;
+  // },
 
-        const result = await response.json();
+  getProfile: async function getProfile() {
+    const userData = await storage.readUser();
+    const user = await userModel.getUserData(userData);
 
-        return result;
-        
-    },
+    return user;
+  },
 
-    // deleteAccount: async function deleteAccount() {
-    //     const token = await storage.readToken();
-    //     const user = await storage.readUser();
-        
-    //     const userId = user['userData']['id'];
+  updateUser: async function updateUser(userData) {
+    const token = await storage.readToken();
+    const userId = await storage.readUser();
+    const user = await userModel.getUserData(userId);
 
-    //     const body = {
-    //         'user_id': userId,
-    //     };
+    const body = {
+      userId: user.userId,
+      firstName: userData['firstName'],
+      lastName: userData['lastName'],
+      phone: userData['phone'],
+      email: userData['email'],
+    };
 
-    //     const formBody = [];
+    // Prepare body to be urlencoded
+    const formBody = [];
 
-    //     for (const property in body) {
-    //         const encodedKey = encodeURIComponent(property);
-    //         const encodedValue = encodeURIComponent(body[property]);
-    //             formBody.push(encodedKey + "=" + encodedValue);
-    //     };
-        
-    //     const requestBody = formBody.join("&");
+    for (const property in body) {
+      const encodedKey = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(body[property]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
 
-    //     const response = await fetch(`${config.base_url}users`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    //             'x-access-token': token['token']
-    //         },
-    //         body: requestBody
-    //     });
+    const requestBody = formBody.join('&');
 
-    //     if (response.status === 204) {
-    //         const message = {
-    //             message: 'Account deleted',
-    //         };
+    const response = await fetch(`${config.base_url}users`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'x-access-token': token['token'],
+      },
+      body: requestBody,
+    });
 
-    //         return message;
-    //     };
+    if (response.status === 204) {
+      const message = {
+        message: 'Profile Changed',
+      };
 
-    //     const result = await response.json();
+      return message;
+    }
 
-    //     return result;
-    // }
+    const result = await response.json();
+
+    return result;
+  },
+
+  // deleteAccount: async function deleteAccount() {
+  //     const token = await storage.readToken();
+  //     const user = await storage.readUser();
+
+  //     const userId = user['userData']['id'];
+
+  //     const body = {
+  //         'user_id': userId,
+  //     };
+
+  //     const formBody = [];
+
+  //     for (const property in body) {
+  //         const encodedKey = encodeURIComponent(property);
+  //         const encodedValue = encodeURIComponent(body[property]);
+  //             formBody.push(encodedKey + "=" + encodedValue);
+  //     };
+
+  //     const requestBody = formBody.join("&");
+
+  //     const response = await fetch(`${config.base_url}users`, {
+  //         method: 'DELETE',
+  //         headers: {
+  //             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+  //             'x-access-token': token['token']
+  //         },
+  //         body: requestBody
+  //     });
+
+  //     if (response.status === 204) {
+  //         const message = {
+  //             message: 'Account deleted',
+  //         };
+
+  //         return message;
+  //     };
+
+  //     const result = await response.json();
+
+  //     return result;
+  // }
 };
 
 export default userModel;

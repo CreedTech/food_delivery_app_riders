@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import { useTheme } from 'react-native-paper';
 import authModel from '../model/auth';
 
-// import { AuthContext } from '../components/context';
+import { AuthContext } from '../components/context';
 
 // import Users from '../model/users';
 
@@ -35,6 +35,11 @@ const SignInScreen = ({ navigation,setIsLoggedIn }) => {
     isValidUser: true,
     isValidPassword: true,
   });
+  const { login,forgot_password } = useContext(AuthContext);
+
+  const handleLogin = () => {
+    login(phone, password);
+  };
 
   async function logIn() {
     const userLogin = {
@@ -43,7 +48,7 @@ const SignInScreen = ({ navigation,setIsLoggedIn }) => {
       "userType": "VENDOR",
     };
 
-    const loginUser = await authModel.login(userLogin);
+    const loginUser = await login(userLogin);
     
     if (loginUser['type'] === 'danger') {
       console.log(loginUser['message']);
@@ -64,6 +69,52 @@ const SignInScreen = ({ navigation,setIsLoggedIn }) => {
     }
 };
 
+async function resetPassword() {
+  // const passwordReset = {
+  //   email: email,
+  //   // password: password,
+  //   // "userType": "VENDOR",
+  // };
+
+  const passwordReset = await forgot_password(email);
+  if (passwordReset['type'] === 'danger') {
+    console.log('yo1');
+    console.log(passwordReset['message']);
+      showMessage({
+          message: passwordReset['message'],
+          type: 'danger',
+          position: 'bottom'
+      })
+  } else {
+    console.log(passwordReset['message']);
+      showMessage({
+          message: passwordReset['message'],
+          type: 'success',
+          position: 'bottom'
+      })
+      // navigation.navigate("VerifyPhoneScreen");
+      
+  }
+  
+  // if (passwordReset['type'] === 'danger') {
+  //   console.log(passwordReset['message']);
+  //     showMessage({
+  //         message: passwordReset['message'],
+  //         type: 'danger',
+  //         position: 'bottom'
+  //     })
+  // } else {
+  //   console.log(passwordReset['message']);
+  //     showMessage({
+  //         message: passwordReset['message'],
+  //         type: 'success',
+  //         position: 'bottom'
+  //     })
+  //     setIsLoggedIn(true);
+      
+  // }
+};
+  
   const { colors } = useTheme();
 
   // const { login, isLoading } = React.useContext(AuthContext);
@@ -193,6 +244,7 @@ const SignInScreen = ({ navigation,setIsLoggedIn }) => {
             underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               onChangeText={(val) => setPhone(val)}
+              // onChangeText={setPhone}
             // onChangeText={(val) => textInputChange(val)}
             // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
@@ -217,6 +269,7 @@ const SignInScreen = ({ navigation,setIsLoggedIn }) => {
             autoCapitalize="none"
               selectionColor="#FD264F"
               onChangeText={(val) => setPassword(val)}
+              // onChangeText={setPassword}
             // onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>

@@ -20,6 +20,9 @@ import {
   Switch,
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import userModel from '../model/user';
+import FlashMessage from 'react-native-flash-message';
+import { showMessage, hideMessage } from "react-native-flash-message";
 // import { AuthContext } from '../components/context';
 
 const HomeScreen = ({ navigation }) => {
@@ -28,6 +31,22 @@ const HomeScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState('');
   const [parsed, setParsed] = useState('');
   const theme = useTheme();
+  useEffect(() => {
+    async function getUser() {
+        const result = await userModel.getProfile();
+        
+        // const profile = result['user'];
+      setUserInfo(result);
+r
+        // setFirstname(profile['firstName']);
+        // setLastname(profile['lastName']);
+        // setEmail(profile['email']);
+        // setPhonenumber(profile['phoneNumber']);
+      // console.log(result.email);
+
+    };
+    getUser();
+}, []);
   // useEffect(() => {
     
   //   try {
@@ -76,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
               size={72}
             />
             <View style={styles.user}>
-              <Title style={styles.title}></Title>
+              <Title style={styles.title}>{userInfo.firstName} { userInfo.lastName}</Title>
             </View>
           </View>
           <TouchableOpacity style={{alignContent:'center', alignItems:'center'}}>

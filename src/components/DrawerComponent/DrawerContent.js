@@ -11,7 +11,8 @@ import {
   Switch,
     Divider,
 } from 'react-native-paper';
-import authModel from '../../model/auth';
+import userModel from '../../model/user';
+import { AuthContext } from '../context';
 import { Avatar, ListItem } from 'react-native-elements';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import FlashMessage from 'react-native-flash-message';
@@ -23,13 +24,33 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function DrawerContent({props,navigation, setIsLoggedIn}) {
   const paperTheme = useTheme();
+  const [userInfo, setUserInfo] = useState('');
+    useEffect(() => {
+    async function getUser() {
+        const result = await userModel.getProfile();
+        
+        // const profile = result['user'];
+      setUserInfo(result);
+
+        // setFirstname(profile['firstName']);
+        // setLastname(profile['lastName']);
+        // setEmail(profile['email']);
+        // setPhonenumber(profile['phoneNumber']);
+      console.log(result.email);
+
+    };
+    getUser();
+}, []);
+  
   // const {navigation} = props;
   // const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  async function logout() {        
-    await authModel.logout();
+  const { logout } = useContext(AuthContext);
+
+  async function logOut() {        
+    await logout();
     setIsLoggedIn(false);
-    navigation.navigate('Auth');
+    // navigation.navigate('Auth');
 };
 
   // const { signOut } = React.useContext(AuthContext);
@@ -49,7 +70,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
                   }
                 />
                 <View style={{ marginLeft: 5, flexDirection: 'column' }}>
-                  <Text style={styles.title}>John Mark</Text>
+                  <Text style={styles.title}>{userInfo.firstName} { userInfo.lastName}</Text>
                   <Caption style={styles.caption}>#4389Rider</Caption>
                 </View>
               </ListItem>
@@ -64,7 +85,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
               labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Edit"
               style={styles.drawerItem}
-              onPress={() => {props.navigation.navigate('EditProfileScreen')}}
+              onPress={() => {navigation.navigate('EditProfileScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -74,7 +95,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
               labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Wallet"
               style={styles.drawerItem}
-              onPress={() => {props.navigation.navigate('WalletScreen')}}
+              onPress={() => {navigation.navigate('WalletScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -84,7 +105,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
               labelStyle={{fontFamily: 'Poppins-Light'}}
               label="My Trips"
               style={styles.drawerItem}
-              onPress={() => {props.navigation.navigate('MyTripsScreen')}}
+              onPress={() => {navigation.navigate('MyTripsScreen')}}
             />
             <Divider />
             <DrawerItem
@@ -94,7 +115,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
               labelStyle={{fontFamily: 'Poppins-Light'}}
               label="Set Password"
               style={styles.drawerItem}
-              // onPress={() => {props.navigation.navigate('Set PassScreen')}}
+              // onPress={() => {navigation.navigate('Set PassScreen')}}
             />
             {/* <Divider /> */}
           </Drawer.Section>
@@ -102,7 +123,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
-          onPress={logout}
+          onPress={logOut}
         >
           <Text style={{ color: '#ffffff' }}>Log out</Text>
         </TouchableOpacity>
