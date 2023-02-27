@@ -210,12 +210,14 @@ const AuthProvider = ({ children }) => {
       headers: {
         'content-type': 'application/json',
       },
-    });
+         });
+         setLoading(true);
 
     const result = await response.json();
+    console.log('yo');
     console.log(result);
-
-    if (Object.prototype.hasOwnProperty.call(result, 'error')) {
+    setLoading(false);
+      if (Object.prototype.hasOwnProperty.call(result, 'error')) {
       console.log(result);
       return {
         title: result.error,
@@ -225,21 +227,24 @@ const AuthProvider = ({ children }) => {
     }
 
     //Store userdata
-    const userData = result.User;
+      const userData = result.user;
+      console.log('y1');
+    console.log(userData);
 
     await storage.storeUser(userData);
 
     //Store token
-    const phone = result.phone;
+    const phone = result.user.phone;
     console.log(phone);
 
-    await storage.storeToken(phone);
-
+      await storage.storeToken(phone);
+      setLoading(false);
     return {
       title: 'Login',
       message: 'Logged in Successfully',
       type: 'success',
     };
+      
         // axios
         // .post(`${config.base_url}auth/login`, {
         //   body: JSON.stringify(user),
@@ -358,10 +363,13 @@ const AuthProvider = ({ children }) => {
                 'content-type': 'application/json'
             },
         });
+        setLoading(true);
         
         const result = await response.json(); 
-        console.log(result);
-        if (Object.prototype.hasOwnProperty.call(result, 'error')) {
+      console.log(result);
+      setLoading(false);
+      if (Object.prototype.hasOwnProperty.call(result, 'error')) {
+        
             console.log('yo');
             console.log(result.error);
             return {
@@ -380,6 +388,7 @@ const AuthProvider = ({ children }) => {
                 type: "danger",
             };
         }
+        setLoading(false);
 
         return {
             title: "Login",
@@ -572,7 +581,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout,forgot_password,VerifyOtp,ResendOtp }}>
+    <AuthContext.Provider value={{ user, loading,setLoading, login, register, logout,forgot_password,VerifyOtp,ResendOtp }}>
       {children}
     </AuthContext.Provider>
   );

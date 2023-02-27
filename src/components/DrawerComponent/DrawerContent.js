@@ -16,6 +16,7 @@ import { AuthContext } from '../context';
 import { Avatar, ListItem } from 'react-native-elements';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import FlashMessage from 'react-native-flash-message';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -24,6 +25,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function DrawerContent({props,navigation, setIsLoggedIn}) {
   const paperTheme = useTheme();
+  const [isLoading, setIsLoading] = React.useState(true);
   const [userInfo, setUserInfo] = useState('');
     useEffect(() => {
     async function getUser() {
@@ -36,7 +38,8 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
         // setLastname(profile['lastName']);
         // setEmail(profile['email']);
         // setPhonenumber(profile['phoneNumber']);
-      console.log(result.email);
+      // console.log(result.email);
+      setIsLoading(false);
 
     };
     getUser();
@@ -59,8 +62,9 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
+          <Spinner visible={isLoading} />
           <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: 'row', marginTop: 15 }}>
+            <View style={{ flexDirection: 'row', marginTop: 15,width: '50%' }}>
               <ListItem>
                 <Avatar
                   size={65}
@@ -69,8 +73,33 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
                     require("../../assets/images/profile.png")
                   }
                 />
-                <View style={{ marginLeft: 5, flexDirection: 'column' }}>
-                  <Text style={styles.title}>{userInfo.firstName} { userInfo.lastName}</Text>
+                <View style={{ padding: 1, flexDirection: 'column' }}>
+                  <Text style={styles.title} numberOfLines={1}>
+                    {/* if (userInfo) {
+                      `${userInfo.firstName.slice(
+                        0,
+                        11
+                      )}...`
+
+                      `${userInfo.lastName.slice(
+                        0,
+                        4
+                      )}...`
+                    } else {
+                      
+                    } */}
+                    {/* {`${userInfo.firstName.slice(
+                            0,
+                            11
+                          )}...`} */}
+                    {userInfo.firstName} {userInfo.lastName}
+                    {/* {userInfo.lastName.length > 4
+                          ? `${userInfo.lastName.slice(
+                              0,
+                              4
+                            )}...`
+                      : userInfo.lastName} */}
+                  </Text>
                   <Caption style={styles.caption}>#4389Rider</Caption>
                 </View>
               </ListItem>
@@ -146,13 +175,16 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingLeft: 20,
+    width: '80%'
   },
   title: {
-    fontSize: 28,
+    fontSize: 20,
     color: '#1A1A1A',
     // marginTop: 3,
     fontWeight: '600',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
+    // width: '75%'
+    // flex: 1
   },
   caption: {
     color: '#100F0F',

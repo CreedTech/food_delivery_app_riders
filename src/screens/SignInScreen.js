@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, {useState,useContext,useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,10 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  Keyboard
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
-// import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FlashMessage from 'react-native-flash-message';
@@ -24,33 +25,41 @@ import { AuthContext } from '../components/context';
 
 // import Users from '../model/users';
 
-const SignInScreen = ({ navigation,setIsLoggedIn }) => {
-  const [password, setPassword] = useState(null);
-  const [phone, setPhone] = useState(null);
+const SignInScreen = ({ navigation, setIsLoggedIn }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  // const [password, setPassword] = useState(null);
+  // const [phone, setPhone] = useState(null);
   const [data, setData] = React.useState({
-    phone_number: '',
+    phone: '',
     password: '',
     check_textInputChange: false,
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
   });
-  const { login,forgot_password } = useContext(AuthContext);
+  const { login,forgot_password ,loading,setLoading} = useContext(AuthContext);
+  
+  useEffect(() => {
+    setLoading(false);
 
+  }, []);
   const handleLogin = () => {
-    login(phone, password);
+    login(data.phone, data.password);
   };
 
   async function logIn() {
+    Keyboard.dismiss();
+    setLoading(true);
     const userLogin = {
-      phone: phone,
-      password: password,
+      phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
+      password: data.password,
       "userType": "VENDOR",
     };
 
     const loginUser = await login(userLogin);
     
     if (loginUser['type'] === 'danger') {
+      console.log('y2');
       console.log(loginUser['message']);
         showMessage({
             message: loginUser['message'],
@@ -122,23 +131,25 @@ async function resetPassword() {
   // const [loading, setLoading] = React.useState(false);
 
   const textInputChange = (val) => {
-    if (val.trim().length >= 10) {
+    if (val.trim().length >= 10 && !isNaN(+val)) {
       setData({
         ...data,
-        phone_number: val,
+        phone: val,
         check_textInputChange: true,
+        isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        phone_number: val,
+        phone: val,
         check_textInputChange: false,
+        isValidUser: false,
       });
     }
   };
 
   const handlePasswordChange = (val) => {
-    if (val.trim().length >= 8) {
+    if (val.trim().length >= 6) {
       setData({
         ...data,
         password: val,
@@ -161,7 +172,7 @@ async function resetPassword() {
   };
 
   const handleValidUser = (val) => {
-    if (val.trim().length >= 10) {
+    if (val.trim().length >= 10 && !isNaN(+val)) {
       setData({
         ...data,
         isValidUser: true,
@@ -206,7 +217,7 @@ async function resetPassword() {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <StatusBar style="auto" />
-      {/* <Spinner visible={isLoading} /> */}
+      <Spinner visible={loading} />
       <View style={{ paddingTop: 50, paddingHorizontal: 30 }}>
       <TouchableOpacity>
           <Feather
@@ -227,50 +238,50 @@ async function resetPassword() {
       <View style={{ marginVertical: 20, marginTop: 50 }}>
         
         <View style={styles.mobileContainer}>
-          {/* <PhoneInput
+          <PhoneInput
             allowZeroAfterCountryCode={true}
             style={styles.countrCode}
             initialCountry={'ng'}
             useRef="phone"
-          /> */}
+          />
           {/* <CallingCodePicker onValueChange={() => {}} /> */}
-          {/* <PhoneInput/> */}
+           {/* <PhoneInput/> */}
           <TextInput
               style={styles.textInputMobile}
-              value={phone}
+              value={data.phone}
             placeholder="Phone Number"
             keyboardType="numeric"
             maxLength={20}
             underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              onChangeText={(val) => setPhone(val)}
+              // onChangeText={(val) => setPhone(val)}
               // onChangeText={setPhone}
-            // onChangeText={(val) => textInputChange(val)}
+            onChangeText={(val) => textInputChange(val)}
             // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
-          {/* {data.check_textInputChange ? (
+          {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
               <Feather name="check-circle" color="green" size={20} />
             </Animatable.View>
-          ) : null} */}
+          ) : null}
         </View>
-        {/* {data.isValidUser ? null : (
+        {data.isValidUser ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>Invalid Phone Number</Text>
           </Animatable.View>
-        )} */}
+        )}
         <View style={styles.mobileContainer}>
           <TextInput
             secureTextEntry={data.secureTextEntry ? true : false}
             style={styles.passwordInput}
               placeholder="Password"
-              value={password}
+              value={data.password}
             placeholderStyle={{ fontSize: 40, color: 'red' }}
             autoCapitalize="none"
               selectionColor="#FD264F"
-              onChangeText={(val) => setPassword(val)}
+              // onChangeText={(val) => setPassword(val)}
               // onChangeText={setPassword}
-            // onChangeText={(val) => handlePasswordChange(val)}
+            onChangeText={(val) => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
             {data.secureTextEntry ? (
@@ -280,13 +291,13 @@ async function resetPassword() {
             )}
           </TouchableOpacity>
         </View>
-        {/* {data.isValidPassword ? null : (
+        {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
-              Password must be 8 characters long.
+              Password must be more than or equal to 6 characters long.
             </Text>
           </Animatable.View>
-        )} */}
+        )}
         <View style={styles.forgotPass}>
           <TouchableOpacity>
             <Text style={styles.passwordForgotten}>Forgot Password?</Text>
@@ -295,7 +306,8 @@ async function resetPassword() {
         <View style={styles.loginContainer}>
           <TouchableOpacity
             style={styles.LoginButton}
-            onPress={logIn}
+              onPress={logIn}
+              disabled={!data.phone && !data.password}
             // onPress={() => navigation.navigate('FinishSetupScreen')}
           >
             <Text style={styles.loginText}>Sign in</Text>
@@ -447,4 +459,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'grey',
   },
+  errorMsg: {
+    color:'red'
+  }
 });

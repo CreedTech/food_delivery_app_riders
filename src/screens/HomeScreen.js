@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
         
         // const profile = result['user'];
       setUserInfo(result);
-r
+
         // setFirstname(profile['firstName']);
         // setLastname(profile['lastName']);
         // setEmail(profile['email']);
@@ -88,17 +88,28 @@ r
       <View style={styles.container}>
         {/* <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} /> */}
         <View style={styles.header}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row',width: '70%' }}>
             <Avatar.Image
               // style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
               source={require('../assets/images/profile.png')}
               size={72}
             />
             <View style={styles.user}>
-              <Title style={styles.title}>{userInfo.firstName} { userInfo.lastName}</Title>
+              <Text style={styles.title} numberOfLines={1}>
+                {/* {`${userInfo.firstName.slice(
+                            0,
+                            8
+                          )}...`} */}
+                {userInfo.firstName} {userInfo.lastName}
+                {/* {`${userInfo.lastName.slice(
+                            0,
+                            6
+                          )}...`} */}
+              
+              </Text>
             </View>
           </View>
-          <TouchableOpacity style={{alignContent:'center', alignItems:'center'}}>
+          <TouchableOpacity style={{alignContent:'center', alignItems:'center',width: '10%'}}>
             <Icon
               name="ios-menu"
               size={35}
@@ -477,6 +488,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     alignContent: 'center',
     alignItems: 'center',
+    width: '90%',
+    // flexBasis:'30%'
   },
   backIcon: {
     // marginBottom: 57,
@@ -489,7 +502,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '800',
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
+    // width: '60%'
   },
   overview: {
     marginVertical: 50,

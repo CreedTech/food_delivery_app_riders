@@ -73,7 +73,8 @@ const authModel = {
         const result = res.data;
         console.log('yo');
         console.log(result);
-        const userData = result['user'];
+        const userData = result.user;
+        console.log(userData);
 
          storage.storeUser(userData);
 

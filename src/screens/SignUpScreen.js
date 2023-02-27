@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
+  Keyboard
 } from 'react-native';
   import { AuthContext } from '../components/context';
 import { StatusBar } from 'expo-status-bar';
@@ -20,7 +21,7 @@ import { BASE_URL } from '../config';
 import FlashMessage from 'react-native-flash-message';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import PhoneInput from 'react-native-phone-input';
-// import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import * as EmailValidator from 'email-validator';
@@ -52,23 +53,31 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     lastName: '',
     email: '',
     password: '',
-    phone_number: '',
-    check_textInputChange: false,
+    phone: '',
+    check_firstNameInputChange: true,
+    check_lastNameInputChange: true,
     check_numberInputChange: false,
     check_emailInputChange: false,
     secureTextEntry: true,
     confirm_secureTextEntry: true,
+    isValidPassword: true,
   });
 
-  const { register } = useContext(AuthContext);
+  const { register, loading,setLoading } = useContext(AuthContext);
 
   // const handleRegister = () => {
   //   register(firstName,lastName, email, password,phone);
   // };
+  useEffect(() => {
+    setLoading(false);
+
+  }, []);
 
   async function createUser() {
+    Keyboard.dismiss();
+    setLoading(true);
     // Check if email is valid
-    if (!checkEmail(email)) {
+    if (!checkEmail(data.email)) {
       showMessage({
         message: 'Invalid email',
         type: 'danger',
@@ -77,11 +86,11 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     } else {
       // Prepare user object
       const user = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-        phone: phone,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+        phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
         userType: 'VENDOR',
       };
 
@@ -143,24 +152,56 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
 
   // const {signUp} = useContext(AuthContext);
 
-  const numberInputChange = (val) => {
-    if (val.length > 10) {
+  const firstNameInputChange = (val) => {
+    if (val.trim().length >= 6 && val.trim().length <= 25) {
       setData({
         ...data,
-        phone_number: val,
+        firstName: val,
+        check_firstNameInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        firstName: val,
+        check_firstNameInputChange: false,
+      });
+    }
+  };
+
+  const lastNameInputChange = (val) => {
+    if (val.trim().length >= 6 && val.trim().length <= 25) {
+      setData({
+        ...data,
+        lastName: val,
+        check_lastNameInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        lastName: val,
+        check_lastNameInputChange: false,
+      });
+    }
+  };
+
+  const numberInputChange = (val) => {
+    if (val.trim().length == 10 && !isNaN(+val)) {
+      setData({
+        ...data,
+        phone: val,
         check_numberInputChange: true,
       });
     } else {
       setData({
         ...data,
-        phone_number: val,
+        phone: val,
         check_numberInputChange: false,
       });
     }
   };
 
   const emailInputChange = (val) => {
-    if (val.length > 5) {
+    if (checkEmail(val)) {
       setData({
         ...data,
         email: val,
@@ -176,7 +217,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
   };
 
   const handlePasswordChange = (val) => {
-    if (val.trim().length >= 8) {
+    if (val.trim().length >= 6) {
       setData({
         ...data,
         password: val,
@@ -249,6 +290,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     >
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
         {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
+        <Spinner visible={loading} />
         <TouchableOpacity>
           <AntIcon
             name="left"
@@ -269,56 +311,66 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
-              value={firstName}
+              value={data.firstName}
               placeholder="First Name"
               placeholderStyle={{ fontSize: 40 }}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              onChangeText={(text) => setFirstName(text)}
+              onChangeText={(text) => firstNameInputChange(text)}
               // onChangeText={setFirstName}
             />
           </View>
+          {data.check_firstNameInputChange ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMsg}>First Name must be more than 6 characters and less than 25 characters long.</Text>
+          </Animatable.View>
+        )}
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Last Name"
-              value={lastName}
+              value={data.lastName}
               selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
               // onChangeText={setLastName}
-              onChangeText={(text) => setLastName(text)}
+              onChangeText={(text) => lastNameInputChange(text)}
             />
           </View>
+          {data.check_lastNameInputChange ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMsg}>Last Name must be more than 6 characters and less than 25 characters long.</Text>
+          </Animatable.View>
+        )}
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
               placeholder="Email"
-              value={email}
+              value={data.email}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
               // onChangeText={setEmail}
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={(text) => emailInputChange(text)}
             />
-            {/* {data.check_emailInputChange ? (
+            {data.check_emailInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
-            ) : null} */}
+            ) : null}
           </View>
           <View style={styles.mobileContainer}>
             <TextInput
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.passInput}
-              value={password}
+              value={data.password}
               keyboardType="numbers-and-punctuation"
               placeholder="Enter Password"
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
               // onChangeText={setPassword}
-              onChangeText={(val) => setPassword(val)}
+              onChangeText={(val) => handlePasswordChange(val)}
             />
             <TouchableOpacity
               onPress={updateSecureTextEntry}
@@ -335,43 +387,44 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               )}
             </TouchableOpacity>
           </View>
-          {/* {data.isValidPassword ? null : (
+          {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
-              Password must be 8 characters long.
+            Password must be more than or equal to 6 characters long.
             </Text>
           </Animatable.View>
-        )} */}
+        )}
           <View style={styles.mobileContainer}>
-            {/* <PhoneInput
+            <PhoneInput
               allowZeroAfterCountryCode={true}
               style={styles.countrCode}
               initialCountry={'ng'}
               useRef="phone"
-            /> */}
+            />
             {/* <CallingCodePicker onValueChange={() => {}} /> */}
             {/* <PhoneInput/> */}
             <TextInput
               style={styles.textInputMobile}
               placeholder="Phone Number"
-              value={phone}
+              value={data.phone}
               keyboardType="numeric"
               maxLength={20}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               // onChangeText={setPhone}
-              onChangeText={(val) => setPhone(val)}
+              onChangeText={(val) => numberInputChange(val)}
             />
-            {/* {data.check_numberInputChange ? (
+            {data.check_numberInputChange ? (
               <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
-            ) : null} */}
+            ) : null}
           </View>
           <View style={styles.registerContainer}>
             <TouchableOpacity
               style={styles.registerButton}
               onPress={createUser}
+              disabled={!data.phone && !data.password &&  !data.email && !data.firstName && !data.lastName}
             >
               <Text style={styles.registerText}>Register</Text>
             </TouchableOpacity>
@@ -515,4 +568,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'grey',
   },
+  errorMsg: {
+    color:'red'
+  }
 });
