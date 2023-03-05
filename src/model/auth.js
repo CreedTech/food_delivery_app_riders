@@ -79,7 +79,7 @@ const authModel = {
          storage.storeUser(userData);
 
         //Store token
-        const token = result['token'];
+        const token = result.userId;
         console.log('yo token');
         console.log(token);
 

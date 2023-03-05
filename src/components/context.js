@@ -234,15 +234,16 @@ const AuthProvider = ({ children }) => {
     await storage.storeUser(userData);
 
     //Store token
-    const phone = result.user.phone;
-    console.log(phone);
+    const id = result.user.userId;
+    console.log(id);
 
-      await storage.storeToken(phone);
+      await storage.storeToken(id);
       setLoading(false);
     return {
       title: 'Login',
       message: 'Logged in Successfully',
       type: 'success',
+      id: result.user.userId,
     };
       
         // axios
@@ -493,10 +494,11 @@ const AuthProvider = ({ children }) => {
       };  
     };
   
-    const VerifyOtp = async (verification_code) => {
+  const VerifyOtp = async (verification_code) => {
+    console.log(verification_code);
       const response = await fetch(`${config.base_url}otp/verifyOtp`, {
           method: 'POST',
-          verification_code,
+          body: JSON.stringify(verification_code),
           headers: {
               'content-type': 'application/json'
           },
@@ -509,12 +511,12 @@ const AuthProvider = ({ children }) => {
           console.log(result.error);
           return {
               title: result.error,
-              message: result.message,
+              message: result.message.join('\n'),
               type: "danger",
           };
       }
 
-      if (result.statusCode >= 400) {
+      if (result.code >= 400) {
           console.log('yo');
           console.log(result.error);
           return {
@@ -525,8 +527,8 @@ const AuthProvider = ({ children }) => {
       }
 
       return {
-          title: "Password Reset",
-          message: result.msg,
+          title: "Otp Verification",
+          message: "Otp Verified",
           type: "success",
       };  
     };
@@ -573,12 +575,38 @@ const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get(`${config.base_url}auth/logout`);
         await storage.deleteToken();
-          console.log(response);
+          // console.log(response);
       setUser(null);
     } catch (error) {
       console.log('Error logging out', error);
     }
   };
+//   const deleteUser = async () => {
+//     try {
+//       const response = await axios.get(`${config.base_url}user/delete`);
+//       // await storage.deleteToken();
+//       // logout();
+//         console.log(response);
+//     setUser(null);
+//   } catch (error) {
+//     if (error.response) {
+//       console.log('yo1');
+//       // Request made and server responded
+//       console.log(error.response.data);
+//       console.log('yo2');
+//       console.log(error.response.status);
+//       console.log('yo3');
+//       console.log(error.response.headers);
+//       console.log('Error', error.response.data.message);
+//     } else if (error.request) {
+//       console.log('yo4');
+//       console.log(error.request);
+//     } else {
+//       console.log('yo5');
+//       console.log('Error', error.response.data.message);
+//     }
+//   }
+// };
 
   return (
     <AuthContext.Provider value={{ user, loading,setLoading, login, register, logout,forgot_password,VerifyOtp,ResendOtp }}>

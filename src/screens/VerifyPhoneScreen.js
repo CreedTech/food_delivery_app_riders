@@ -87,7 +87,10 @@ const VerifyPhoneScreen = ({ navigation }) => {
   
 
   async function handleVerifyOtp() {
-    const result = await VerifyOtp(verification_code);
+    const code = {
+      verification_code: verification_code
+    }
+    const result = await VerifyOtp(code);
     console.log(result);
 
       if (result['type'] === 'danger') {

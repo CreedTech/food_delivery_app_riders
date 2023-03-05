@@ -63,7 +63,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     isValidPassword: true,
   });
 
-  const { register, loading,setLoading } = useContext(AuthContext);
+  const { register, loading,setLoading ,login} = useContext(AuthContext);
 
   // const handleRegister = () => {
   //   register(firstName,lastName, email, password,phone);
@@ -112,13 +112,14 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               type: 'success',
               position: 'bottom'
           })
+          logIn();
           navigation.navigate("VerifyPhoneScreen");
-          
+          // setIsLoggedIn(true);
       }
 
       // Check if registration successful
       // if (result['type'] === 'success') {
-      //   // logIn();
+        // logIn();
       //   navigation.navigate("VerifyPhoneScreen");
       // }
 
@@ -131,24 +132,27 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     }
   }
 
-  // async function logIn() {
-  //   const userLogin = {
-  //     phone: phone,
-  //     password: password,
-  //   };
+  async function logIn() {
+    const userLogin = {
+      phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
+      password: data.password,
+      userType: 'VENDOR',
+    };
 
-  //   const loginUser = await authModel.login(userLogin);
-  //   if (Object.prototype.hasOwnProperty.call(loginUser, 'errors')) {
-  //     showMessage({
-  //       message: loginUser['error']['title'],
-  //       type: 'danger',
-  //       position: 'bottom',
-  //     });
-  //   } else {
-  //     setToken(loginUser['token']);
-  //     setIsLoggedIn(true);
-  //   }
-  // }
+    const loginUser = await login(userLogin);
+    if (Object.prototype.hasOwnProperty.call(loginUser, 'errors')) {
+      showMessage({
+        message: loginUser['error']['title'],
+        type: 'danger',
+        position: 'bottom',
+      });
+    } else {
+      console.log("id part");
+      console.log(loginUser['id']);
+      setToken(loginUser['id']);
+      // setIsLoggedIn(true);
+    }
+  }
 
   // const {signUp} = useContext(AuthContext);
 

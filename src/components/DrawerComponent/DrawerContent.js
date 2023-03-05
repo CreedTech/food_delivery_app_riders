@@ -54,7 +54,13 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
     await logout();
     setIsLoggedIn(false);
     // navigation.navigate('Auth');
-};
+  };
+//   async function deleteUserProfile() {        
+//     await deleteUser();
+//     // await logout();
+//     // setIsLoggedIn(false);
+//     // navigation.navigate('Auth');
+// };
 
   // const { signOut } = React.useContext(AuthContext);
 
@@ -150,6 +156,13 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
+      {/* <Drawer.Section style={styles.bottomDrawerSection}>
+        <TouchableOpacity
+          onPress={deleteUserProfile}
+        >
+          <Text style={{ color: '#ffffff' }}>Delete Profile</Text>
+        </TouchableOpacity>
+      </Drawer.Section> */}
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
           onPress={logOut}

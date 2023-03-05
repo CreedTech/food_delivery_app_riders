@@ -22,7 +22,7 @@ export default function Routes() {
 
   return (
     <NavigationContainer>
-      {userInfo.token === null ? <AuthStack /> : <AuthStack />}
+      {userInfo.token === null ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
 
     );

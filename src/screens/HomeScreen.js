@@ -29,20 +29,27 @@ const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   // const { getUserData } = React.useContext(AuthContext);
   const [userInfo, setUserInfo] = useState('');
+  const [userBalance, setUserBalance] = useState('');
   const [parsed, setParsed] = useState('');
   const theme = useTheme();
   useEffect(() => {
     async function getUser() {
-        const result = await userModel.getProfile();
+      const result = await userModel.getProfile();
+      const walletBalance = await userModel.getBalance();
+      const requestRides = await userModel.requestRide();
         
         // const profile = result['user'];
       setUserInfo(result);
+      setUserBalance(walletBalance);
+
 
         // setFirstname(profile['firstName']);
         // setLastname(profile['lastName']);
         // setEmail(profile['email']);
         // setPhonenumber(profile['phoneNumber']);
-      // console.log(result.email);
+      // console.log(walletBalance);
+      console.log("Yes");
+      console.log(requestRides);
 
     };
     getUser();
@@ -134,7 +141,7 @@ const HomeScreen = ({ navigation }) => {
                   fontFamily: 'Unbounded-Regular',
                 }}
               >
-                N7,000
+                N{userBalance.balance}
               </Text>
               <Text
                 style={{

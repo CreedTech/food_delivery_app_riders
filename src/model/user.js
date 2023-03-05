@@ -18,14 +18,73 @@ const userModel = {
     return result;
   },
 
-  // getBalance: async function getBalance() {
-  //     const userData = await storage.readUser();
-  //     const user = await userModel.getUserData(userData);
+  getBalance: async function getBalance() {
+    const userData = await storage.readUser();
+    const user = await userModel.getUserData(userData);
+    console.log("yo");
+    console.log(user.userId);
 
-  //     const userBalance = user['user']['balance'];
+    // const userBalance = user['user']['balance'];
 
-  //     return userBalance;
-  // },
+    // return userBalance;
+    // const user = userData['userData'];
+
+    const response = await fetch(`${config.base_url}wallet/balance/${user.userId}`, {
+      method: 'GET',
+      // headers: {
+      //     'x-access-token': token['token']
+      // }
+    });
+
+    const result = await response.json();
+
+    return result;
+  },
+
+  requestRide: async function requestRide() {
+    const userData = await storage.readUser();
+    const user = await userModel.getUserData(userData);
+    console.log("yo");
+    console.log(user.userId);
+
+    // const userBalance = user['user']['balance'];
+
+    // return userBalance;
+    // const user = userData['userData'];
+    const request = {
+      requestType: "EXPRESS",
+      senderAddress: "Quarry",
+      senderLocationLatLng: "7.1361098,3.3250559",
+      senderLandMark: "Quarry",
+      senderName: "Test",
+      senderPhone: "+2348126435378",
+      recipientAddress: "asero",
+      recipientLocationLatLng: "7.145244,3.327695",
+      recipientLandMark: "Asero",
+      recipientName: "Ayoola",
+      recipientPhone: "+2349137104825",
+      packageDetails: "Fod",
+      pickupTime: "12:00",
+      userId: "6462f24a-c42e-4ad0-a53d-e3592fdb93e0"
+    }
+    console.log(request);
+
+    const response = await fetch(`${config.base_url}request-ride`, {
+      method: 'POST',
+      body: JSON.stringify(
+        request
+      ),
+      // headers: {
+      //     'x-access-token': token['token']
+      // }
+    });
+
+    const result = await response.json();
+    console.log("YesSS");
+    console.log(result);
+
+    return result;
+  },
 
   // getHistory: async function getHistory() {
   //     const user = await storage.readUser();
@@ -85,7 +144,7 @@ const userModel = {
   updateUser: async function updateUser(userData) {
     const token = await storage.readToken();
     const userId = await storage.readUser();
-    const user = await userModel.getUserData(userId);
+    const user = await userModel.getUserData(token);
 
     const body = {
       userId: user.userId,
