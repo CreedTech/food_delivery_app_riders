@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -136,12 +137,72 @@ const App = () => {
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  };
+
+  useEffect(() => {
+    if (requestUserPermission) {
+      // return fcm token for device
+      messaging()
+        .getToken()
+        .then((token) => {
+          console.log('====================================');
+          console.log(token);
+          console.log('====================================');
+        });
+    } else {
+      console.log('====================================');
+      console.log('Failed to get device token status', authStatus);
+      console.log('====================================');
+    }
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification
+          );
+          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        // setLoading(false);
+      });
+
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification
+      );
+      // navigation.navigate(remoteMessage.data.type);
+    });
+
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
   // const initialLoginState = {
   //   isLoading: true,
   //   userInfo: null,
   //   userToken: null,
   // };
-
 
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
@@ -164,8 +225,6 @@ const App = () => {
       text: '#ffffff',
     },
   };
-
-
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
@@ -487,7 +546,7 @@ const App = () => {
   });
 
   if (!fontsLoaded) {
-    return (null);
+    return null;
   }
 
   return (
@@ -496,9 +555,9 @@ const App = () => {
     // </PaperProvider>
     <PaperProvider theme={theme}>
       <AuthProvider>
-      <View style={{flex:1}}>
-        <NavigationContainer>
-          {/* {isLoggedIn ? (
+        <View style={{ flex: 1 }}>
+          <NavigationContainer>
+            {/* {isLoggedIn ? (
             <Home.Screen name="HomeScreen">
             {(screenProps) => <HomeStack {...screenProps} token={token} />}
           </Home.Screen>
@@ -510,21 +569,23 @@ const App = () => {
                   />
             )} */}
             {isLoggedIn ? (
-            <Drawer.Navigator
-            screenOptions={{
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: '#009387',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
-            drawerContent={(props) => <DrawerContent {...props} setIsLoggedIn={setIsLoggedIn} />}
-          >
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            {/* {isLoggedIn ? (
+              <Drawer.Navigator
+                screenOptions={{
+                  headerShown: false,
+                  headerStyle: {
+                    backgroundColor: '#009387',
+                  },
+                  headerTintColor: '#fff',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                }}
+                drawerContent={(props) => (
+                  <DrawerContent {...props} setIsLoggedIn={setIsLoggedIn} />
+                )}
+              >
+                <Drawer.Screen name="Home" component={HomeScreen} />
+                {/* {isLoggedIn ? (
               // </Drawer.Screen>
             ) : (
               <Drawer.Screen name="Auth">
@@ -537,25 +598,41 @@ const App = () => {
               </Drawer.Screen>
             )} */}
 
-            <Drawer.Screen name="EditProfileScreen" component={EditProfileScreen} setIsLoggedIn={setIsLoggedIn} />
-              {/* {(screenProps) => (
+                <Drawer.Screen
+                  name="EditProfileScreen"
+                  component={EditProfileScreen}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
+                {/* {(screenProps) => (
                 <EditProfileScreen
                   {...screenProps}
                   setIsLoggedIn={setIsLoggedIn}
                 />
               )}
             </Drawer.Screen> */}
-            <Drawer.Screen name="WalletScreen" component={WalletScreen} setIsLoggedIn={setIsLoggedIn} />
-            {/* <Drawer.Screen name="Wallet">
+                <Drawer.Screen
+                  name="WalletScreen"
+                  component={WalletScreen}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
+                {/* <Drawer.Screen name="Wallet">
               {(screenProps) => <WalletScreen {...screenProps} />}
             </Drawer.Screen> */}
-            <Drawer.Screen name="MyTripsScreen" component={MyTripsScreen} setIsLoggedIn={setIsLoggedIn} />
-            <Drawer.Screen name="DeliveriesScreen" component={DeliveriesScreen} setIsLoggedIn={setIsLoggedIn} />
-            {/* <Drawer.Screen name="MyTrips">
+                <Drawer.Screen
+                  name="MyTripsScreen"
+                  component={MyTripsScreen}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
+                <Drawer.Screen
+                  name="DeliveriesScreen"
+                  component={DeliveriesScreen}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
+                {/* <Drawer.Screen name="MyTrips">
               {(screenProps) => <MyTripsScreen {...screenProps} />}
             </Drawer.Screen> */}
-            
-            {/* <Drawer.Screen name="SetPassword">
+
+                {/* <Drawer.Screen name="SetPassword">
               {(screenProps) => (
                 <EditProfileScreen
                   {...screenProps}
@@ -563,18 +640,15 @@ const App = () => {
                 />
               )}
             </Drawer.Screen> */}
-          </Drawer.Navigator>
-            )
-              : (
-                <AuthStack setToken={setToken} setIsLoggedIn={setIsLoggedIn} />
-              )
-          }
-        </NavigationContainer>
+              </Drawer.Navigator>
+            ) : (
+              <AuthStack setToken={setToken} setIsLoggedIn={setIsLoggedIn} />
+            )}
+          </NavigationContainer>
 
-        <FlashMessage position={'top'} />
-      </View>
+          <FlashMessage position={'top'} />
+        </View>
       </AuthProvider>
-      
     </PaperProvider>
   );
 };

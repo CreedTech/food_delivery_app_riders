@@ -37,10 +37,14 @@ const HomeScreen = ({ navigation }) => {
       const result = await userModel.getProfile();
       const walletBalance = await userModel.getBalance();
       const requestRides = await userModel.requestRide();
+      // const rides =  await userModel.getRides();
         
         // const profile = result['user'];
       setUserInfo(result);
       setUserBalance(walletBalance);
+      console.log("Yes");
+    // console.log(requestRides);
+    // console.log(rides);
 
 
         // setFirstname(profile['firstName']);
@@ -48,11 +52,14 @@ const HomeScreen = ({ navigation }) => {
         // setEmail(profile['email']);
         // setPhonenumber(profile['phoneNumber']);
       // console.log(walletBalance);
-      console.log("Yes");
-      console.log(requestRides);
+     
+      
 
     };
     getUser();
+    // const requestRides = userModel.requestRide();
+    // console.log("Yes");
+    // console.log(requestRides);
 }, []);
   // useEffect(() => {
     
