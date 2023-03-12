@@ -90,7 +90,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-        phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
+        phone: "+234" + data.phone.replace(" ","").slice(-10),
         userType: 'VENDOR',
       };
 
@@ -134,7 +134,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
 
   async function logIn() {
     const userLogin = {
-      phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
+      phone: "+234" + data.phone.replace(" ","").slice(-10),
       password: data.password,
       userType: 'VENDOR',
     };
@@ -409,7 +409,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
             {/* <PhoneInput/> */}
             <TextInput
               style={styles.textInputMobile}
-              placeholder="Phone Number"
+              placeholder="Phone Number"   
               value={data.phone}
               keyboardType="numeric"
               maxLength={20}

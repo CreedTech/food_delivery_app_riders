@@ -51,7 +51,7 @@ const SignInScreen = ({ navigation, setIsLoggedIn }) => {
     Keyboard.dismiss();
     setLoading(true);
     const userLogin = {
-      phone: "+234" + data.phone.replaceAll(" ","").slice(-10),
+      phone: "+234" + data.phone.replace(" ","").slice(-10),
       password: data.password,
       "userType": "VENDOR",
     };

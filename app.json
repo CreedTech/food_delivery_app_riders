@@ -26,10 +26,16 @@
         "foregroundImage": "./assets/fudap_logo.png",
         "backgroundColor": "#FD264F"
       },
-      "package": "com.lazyprogrammer.fudapridersapp"
+      "package": "com.lazyprogrammer.fudapridersapp",
+      "googleServicesFile": "./google-services.json"
     },
+    "plugins": [
+      "@react-native-firebase/app"
+      // "@react-native-firebase/perf",
+      // "@react-native-firebase/crashlytics"
+    ],
     "web": {
-      "favicon": "./assets/udap_logo.png"
+      "favicon": "./assets/fudap_logo.png"
     },
     "extra": {
       "eas": {

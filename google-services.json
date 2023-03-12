@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "395946524889",
+    "firebase_url": "https://fudap-70850-default-rtdb.firebaseio.com",
+    "project_id": "fudap-70850",
+    "storage_bucket": "fudap-70850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395946524889:android:543820a07ed042f97a7ec8",
+        "android_client_info": {
+          "package_name": "com.fudapridersapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "395946524889-8s2cuhd668sp8u3s17fj6faocvs71qsu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fudapridersapp",
+            "certificate_hash": "72913c38b739fe306b37216f79a1eabd48ed90fb"
+          }
+        },
+        {
+          "client_id": "395946524889-r9mim72eer4p4vje2ptqkhsmglae4mgj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fudapridersapp",
+            "certificate_hash": "4f5c75c24eac5ab2a41809f93b3ba7bbd21ec572"
+          }
+        },
+        {
+          "client_id": "395946524889-oo6a79otk7nhm18ufbjrro4s27pbpct4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2nnHeLkUy4njPTMF_2jBOc9b-nklLIM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "395946524889-oo6a79otk7nhm18ufbjrro4s27pbpct4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

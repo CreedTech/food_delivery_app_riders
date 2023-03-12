@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ActivityIndicator, Text } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+import { View, ActivityIndicator, Text,Alert } from 'react-native';
+// import messaging from '@react-native-firebase/messaging';
+import { firebase } from '@react-native-firebase/app';
+// import firebase from 'firebase/app';
+// import 'firebase/messaging';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+// import { initializeApp } from 'firebase/app';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -13,7 +20,6 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-// import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import FlashMessage from 'react-native-flash-message';
 import {
@@ -23,24 +29,16 @@ import {
 } from 'react-native-paper';
 import { BASE_URL } from './src/config';
 import { AuthProvider } from './src/components/context';
-// import Navigation from './src/components/Navigation';
-// import Providers from './src/navigation';
-// import {useNavigation} from '@react-navigation/native';
-// import { AuthContext } from './src/components/context';
-// import RootStackScreen from './src/screens/RootStackScreen';
 import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
 import HomeScreen from './src/screens/HomeScreen';
 import DeliveriesScreen from './src/screens/DeliveriesScreen';
 import WalletScreen from './src/screens/WalletScreen';
 import MyTripsScreen from './src/screens/MyTripsScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './src/components/HomeNavigator';
 import AuthStack from './src/components/auth/AuthStack';
 import CustomDrawer from './src/navigation/CustomDrawer';
-// import userModel from './src/model/user';
 
 let customFonts = {
   'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
@@ -133,71 +131,238 @@ const App = () => {
   const [isLoaded] = useFonts(customFonts);
   const [isLoading, setIsLoading] = React.useState(true);
   // const [userToken, setUserToken] = React.useState(null);
-  // const navigation = useNavigation();
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  };
-
   useEffect(() => {
-    if (requestUserPermission) {
-      // return fcm token for device
-      messaging()
-        .getToken()
-        .then((token) => {
-          console.log('====================================');
-          console.log(token);
-          console.log('====================================');
-        });
-    } else {
-      console.log('====================================');
-      console.log('Failed to get device token status', authStatus);
-      console.log('====================================');
+    // Initialize Firebase
+     const firebaseConfig = {
+      apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
+      authDomain: "fudap-70850.firebaseapp.com",
+      databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
+      projectId: "fudap-70850",
+      storageBucket: "fudap-70850.appspot.com",
+      messagingSenderId: "395946524889",
+      appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
+    };
+
+    // initializeApp(firebaseConfig);
+
+    if (firebase.apps.length === 0) {
+      firebase.initializeApp(firebaseConfig);
     }
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(async (remoteMessage) => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification
-          );
-          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+
+    // Get the device's FCM token
+    const messaging = firebase.messaging();
+
+    const getFCMToken = async () => {
+      try {
+        const settings = await Notifications.getPermissionsAsync();
+        if (settings.granted) {
+          const token = await messaging.getToken();
+          console.log('FCM token:', token);
+        } else {
+          const { status } = await Notifications.requestPermissionsAsync();
+          if (status === 'granted') {
+            const token = await messaging.getToken();
+            console.log('FCM token:', token);
+          }
         }
-        // setLoading(false);
-      });
+      } catch (error) {
+        console.log('Error getting FCM token:', error);
+      }
+    };
 
-    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    // Request permissions to receive FCM push notifications
+    const requestPermissions = async () => {
+      try {
+        await Notifications.requestPermissionsAsync({
+          ios: {
+            allowAlert: true,
+            allowBadge: true,
+            allowSound: true,
+            allowAnnouncements: true,
+          },
+        });
+      } catch (error) {
+        console.log('Error requesting permissions:', error);
+      }
+    };
 
-    messaging().onNotificationOpenedApp(async (remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification
-      );
-      // navigation.navigate(remoteMessage.data.type);
-    });
+    // Subscribe to FCM push notifications
+    const subscribeToNotifications = async () => {
+      try {
+        const expoPushToken = await Notifications.getExpoPushTokenAsync();
+        console.log('Expo push token:', expoPushToken.data);
 
-    // Register background handler
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
+        if (Platform.OS === 'android') {
+          const channel = await Notifications.setNotificationChannelAsync('default', {
+            name: 'Default channel',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+          });
+        }
 
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
+        await messaging().subscribeToTopic('all');
+      } catch (error) {
+        console.log('Error subscribing to notifications:', error);
+      }
+    };
 
-    return unsubscribe;
+    // Call the functions to get the FCM token, request permissions and subscribe to notifications
+    getFCMToken();
+    requestPermissions();
+    subscribeToNotifications();
+
+    // Handle incoming FCM push notifications when the app is in the foreground
+    const handleForegroundMessage = async (message) => {
+      console.log('Foreground message:', message);
+      Notifications.setBadgeCountAsync(1);
+    };
+
+    const unsubscribeForeground = messaging().onMessage(handleForegroundMessage);
+
+    // Handle incoming FCM push notifications when the app is in the background or closed
+    const handleBackgroundMessage = async (message) => {
+      console.log('Background message:', message);
+      Notifications.setBadgeCountAsync(1);
+    };
+
+    const unsubscribeBackground = Notifications.addNotificationReceivedListener(handleBackgroundMessage);
+
+    // Clean up the subscriptions when the component unmounts
+    return () => {
+      unsubscribeForeground();
+      unsubscribeBackground.remove();
+    };
   }, []);
+
+  // useEffect(async () => {
+  //   const firebaseConfig = {
+  //     apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
+  //     authDomain: "fudap-70850.firebaseapp.com",
+  //     databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
+  //     projectId: "fudap-70850",
+  //     storageBucket: "fudap-70850.appspot.com",
+  //     messagingSenderId: "395946524889",
+  //     appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
+  //   };
+    
+  //   firebase.initializeApp(firebaseConfig);
+    
+  //   Notifications.setNotificationHandler({
+  //     handleNotification: async () => ({
+  //       shouldShowAlert: true,
+  //       shouldPlaySound: true,
+  //       shouldSetBadge: true,
+  //     }),
+  //   });
+    
+  //   async function registerForPushNotificationsAsync() {
+  //     let token;
+  //     if (Platform.OS === 'android') {
+  //       const { status } = await Notifications.getPermissionsAsync();
+  //       if (status !== 'granted') {
+  //         const { status } = await Notifications.requestPermissionsAsync();
+  //         if (status !== 'granted') {
+  //           return;
+  //         }
+  //       }
+  //       token = await Notifications.getExpoPushTokenAsync();
+  //     } else {
+  //       const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  //       let finalStatus = existingStatus;
+  //       if (existingStatus !== 'granted') {
+  //         const { status } = await Notifications.requestPermissionsAsync();
+  //         finalStatus = status;
+  //       }
+  //       if (finalStatus !== 'granted') {
+  //         return;
+  //       }
+  //       token = (await Notifications.getExpoPushTokenAsync({ ios: { requireApnsPusher: true } }))?.data;
+  //     }
+  //     return token;
+  //   }
+    
+  //   async function saveTokenToDatabase(token) {
+  //     // Add your code for saving the token to your database here
+  //   }
+    
+  //   async function onMessageReceived(message) {
+  //     // Add your code for handling incoming messages here
+  //   }
+    
+  //   const messaging = firebase.messaging();
+  //   messaging.onMessage(onMessageReceived);
+    
+  //   const token = await registerForPushNotificationsAsync();
+  //   if (token) {
+  //     await saveTokenToDatabase(token);
+  //   }
+  // }, []);
+
+  // const requestUserPermission = async () => {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  //   if (enabled) {
+  //     console.log('Authorization status:', authStatus);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (requestUserPermission) {
+  //     // return fcm token for device
+  //     messaging()
+  //       .getToken()
+  //       .then((token) => {
+  //         console.log('====================================');
+  //         console.log(token);
+  //         console.log('====================================');
+  //       });
+  //   } else {
+  //     console.log('====================================');
+  //     console.log('Failed to get device token status', authStatus);
+  //     console.log('====================================');
+  //   }
+  //   // Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(async (remoteMessage) => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification
+  //         );
+  //         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //       }
+  //       // setLoading(false);
+  //     });
+
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification
+  //     );
+  //     // navigation.navigate(remoteMessage.data.type);
+  //   });
+
+  //   // Register background handler
+  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //   });
+
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
   // const initialLoginState = {
   //   isLoading: true,
   //   userInfo: null,
