@@ -19,21 +19,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lazyprogrammer.fudapridersapp"
+      "bundleIdentifier": "com.fudapridersapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/fudap_logo.png",
         "backgroundColor": "#FD264F"
       },
-      "package": "com.lazyprogrammer.fudapridersapp",
+      "package": "com.fudapridersapp",
       "googleServicesFile": "./google-services.json"
     },
-    "plugins": [
-      "@react-native-firebase/app"
-      // "@react-native-firebase/perf",
-      // "@react-native-firebase/crashlytics"
-    ],
     "web": {
       "favicon": "./assets/fudap_logo.png"
     },

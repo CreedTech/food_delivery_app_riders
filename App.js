@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text,Alert } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-// import { firebase } from '@react-native-firebase/app';
-// import firebase from 'firebase/app';
-// import 'firebase/messaging';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-// import { initializeApp } from 'firebase/app';
 import { Linking } from 'react-native';
 import {
   NavigationContainer,
@@ -299,16 +295,16 @@ const App = () => {
   //   }
   // }, []);
 
-  // const requestUserPermission = async () => {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // };
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  };
 
   useEffect(() => {
     if (requestUserPermission) {
@@ -719,48 +715,50 @@ const App = () => {
     <PaperProvider theme={theme}>
       <AuthProvider>
         <View style={{ flex: 1 }}>
-          <NavigationContainer linking={{
-        config: {
-          // Configuration for linking
-        },
-        async getInitialURL() {
-          // First, you may want to do the default deep link handling
-          // Check if app was opened from a deep link
-          const url = await Linking.getInitialURL();
+          <NavigationContainer
+        //     linking={{
+        // config: {
+        //   // Configuration for linking
+        // },
+        // async getInitialURL() {
+        //   // First, you may want to do the default deep link handling
+        //   // Check if app was opened from a deep link
+        //   const url = await Linking.getInitialURL();
 
-          if (url != null) {
-            return url;
-          }
+        //   if (url != null) {
+        //     return url;
+        //   }
 
-          // Handle URL from expo push notifications
-          const response = await Notifications.getLastNotificationResponseAsync();
+        //   // Handle URL from expo push notifications
+        //   const response = await Notifications.getLastNotificationResponseAsync();
                          
-          return response?.notification.request.content.data.url;
-        },
-        subscribe(listener) {
-          const onReceiveURL = ({ url }) => listener(url);
+        //   return response?.notification.request.content.data.url;
+        // },
+        // subscribe(listener) {
+        //   const onReceiveURL = ({ url }) => listener(url);
 
-          // Listen to incoming links from deep linking
-          Linking.addEventListener('url', onReceiveURL);
+        //   // Listen to incoming links from deep linking
+        //   Linking.addEventListener('url', onReceiveURL);
 
-          // Listen to expo push notifications
-          const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-            const url = response.notification.request.content.data.url;
+        //   // Listen to expo push notifications
+        //   const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+        //     const url = response.notification.request.content.data.url;
 
-            // Any custom logic to see whether the URL needs to be handled
-            //...
+        //     // Any custom logic to see whether the URL needs to be handled
+        //     //...
 
-            // Let React Navigation handle the URL
-            listener(url);
-          });
+        //     // Let React Navigation handle the URL
+        //     listener(url);
+        //   });
 
-          return () => {
-            // Clean up the event listeners
-            Linking.removeEventListener('url', onReceiveURL);
-            subscription.remove();
-          };
-        },
-      }}>
+        //   return () => {
+        //     // Clean up the event listeners
+        //     Linking.removeEventListener('url', onReceiveURL);
+        //     subscription.remove();
+        //   };
+        // },
+        //     }}
+          >
             {/* {isLoggedIn ? (
             <Home.Screen name="HomeScreen">
             {(screenProps) => <HomeStack {...screenProps} token={token} />}
