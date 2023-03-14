@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text,Alert } from 'react-native';
-// import messaging from '@react-native-firebase/messaging';
-import { firebase } from '@react-native-firebase/app';
+import messaging from '@react-native-firebase/messaging';
+// import { firebase } from '@react-native-firebase/app';
 // import firebase from 'firebase/app';
 // import 'firebase/messaging';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 // import { initializeApp } from 'firebase/app';
+import { Linking } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -16,11 +17,7 @@ import {
 import { useFonts } from 'expo-font';
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
 } from '@react-navigation/drawer';
-import axios from 'axios';
 import FlashMessage from 'react-native-flash-message';
 import {
   Provider as PaperProvider,
@@ -134,109 +131,109 @@ const App = () => {
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  useEffect(() => {
-    // Initialize Firebase
-     const firebaseConfig = {
-      apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
-      authDomain: "fudap-70850.firebaseapp.com",
-      databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
-      projectId: "fudap-70850",
-      storageBucket: "fudap-70850.appspot.com",
-      messagingSenderId: "395946524889",
-      appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
-    };
+  // useEffect(() => {
+  //   // Initialize Firebase
+  //    const firebaseConfig = {
+  //     apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
+  //     authDomain: "fudap-70850.firebaseapp.com",
+  //     databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
+  //     projectId: "fudap-70850",
+  //     storageBucket: "fudap-70850.appspot.com",
+  //     messagingSenderId: "395946524889",
+  //     appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
+  //   };
 
-    // initializeApp(firebaseConfig);
+  //   // initializeApp(firebaseConfig);
 
-    if (firebase.apps.length === 0) {
-      firebase.initializeApp(firebaseConfig);
-    }
+  //   if (firebase.apps.length === 0) {
+  //     firebase.initializeApp(firebaseConfig);
+  //   }
 
-    // Get the device's FCM token
-    const messaging = firebase.messaging();
+  //   // Get the device's FCM token
+  //   const messaging = firebase.messaging();
 
-    const getFCMToken = async () => {
-      try {
-        const settings = await Notifications.getPermissionsAsync();
-        if (settings.granted) {
-          const token = await messaging.getToken();
-          console.log('FCM token:', token);
-        } else {
-          const { status } = await Notifications.requestPermissionsAsync();
-          if (status === 'granted') {
-            const token = await messaging.getToken();
-            console.log('FCM token:', token);
-          }
-        }
-      } catch (error) {
-        console.log('Error getting FCM token:', error);
-      }
-    };
+  //   const getFCMToken = async () => {
+  //     try {
+  //       const settings = await Notifications.getPermissionsAsync();
+  //       if (settings.granted) {
+  //         const token = await messaging.getToken();
+  //         console.log('FCM token:', token);
+  //       } else {
+  //         const { status } = await Notifications.requestPermissionsAsync();
+  //         if (status === 'granted') {
+  //           const token = await messaging.getToken();
+  //           console.log('FCM token:', token);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log('Error getting FCM token:', error);
+  //     }
+  //   };
 
-    // Request permissions to receive FCM push notifications
-    const requestPermissions = async () => {
-      try {
-        await Notifications.requestPermissionsAsync({
-          ios: {
-            allowAlert: true,
-            allowBadge: true,
-            allowSound: true,
-            allowAnnouncements: true,
-          },
-        });
-      } catch (error) {
-        console.log('Error requesting permissions:', error);
-      }
-    };
+  //   // Request permissions to receive FCM push notifications
+  //   const requestPermissions = async () => {
+  //     try {
+  //       await Notifications.requestPermissionsAsync({
+  //         ios: {
+  //           allowAlert: true,
+  //           allowBadge: true,
+  //           allowSound: true,
+  //           allowAnnouncements: true,
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.log('Error requesting permissions:', error);
+  //     }
+  //   };
 
-    // Subscribe to FCM push notifications
-    const subscribeToNotifications = async () => {
-      try {
-        const expoPushToken = await Notifications.getExpoPushTokenAsync();
-        console.log('Expo push token:', expoPushToken.data);
+  //   // Subscribe to FCM push notifications
+  //   const subscribeToNotifications = async () => {
+  //     try {
+  //       const expoPushToken = await Notifications.getExpoPushTokenAsync();
+  //       console.log('Expo push token:', expoPushToken.data);
 
-        if (Platform.OS === 'android') {
-          const channel = await Notifications.setNotificationChannelAsync('default', {
-            name: 'Default channel',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-          });
-        }
+  //       if (Platform.OS === 'android') {
+  //         const channel = await Notifications.setNotificationChannelAsync('default', {
+  //           name: 'Default channel',
+  //           importance: Notifications.AndroidImportance.MAX,
+  //           vibrationPattern: [0, 250, 250, 250],
+  //           lightColor: '#FF231F7C',
+  //         });
+  //       }
 
-        await messaging().subscribeToTopic('all');
-      } catch (error) {
-        console.log('Error subscribing to notifications:', error);
-      }
-    };
+  //       await messaging().subscribeToTopic('all');
+  //     } catch (error) {
+  //       console.log('Error subscribing to notifications:', error);
+  //     }
+  //   };
 
-    // Call the functions to get the FCM token, request permissions and subscribe to notifications
-    getFCMToken();
-    requestPermissions();
-    subscribeToNotifications();
+  //   // Call the functions to get the FCM token, request permissions and subscribe to notifications
+  //   getFCMToken();
+  //   requestPermissions();
+  //   subscribeToNotifications();
 
-    // Handle incoming FCM push notifications when the app is in the foreground
-    const handleForegroundMessage = async (message) => {
-      console.log('Foreground message:', message);
-      Notifications.setBadgeCountAsync(1);
-    };
+  //   // Handle incoming FCM push notifications when the app is in the foreground
+  //   const handleForegroundMessage = async (message) => {
+  //     console.log('Foreground message:', message);
+  //     Notifications.setBadgeCountAsync(1);
+  //   };
 
-    const unsubscribeForeground = messaging().onMessage(handleForegroundMessage);
+  //   const unsubscribeForeground = messaging().onMessage(handleForegroundMessage);
 
-    // Handle incoming FCM push notifications when the app is in the background or closed
-    const handleBackgroundMessage = async (message) => {
-      console.log('Background message:', message);
-      Notifications.setBadgeCountAsync(1);
-    };
+  //   // Handle incoming FCM push notifications when the app is in the background or closed
+  //   const handleBackgroundMessage = async (message) => {
+  //     console.log('Background message:', message);
+  //     Notifications.setBadgeCountAsync(1);
+  //   };
 
-    const unsubscribeBackground = Notifications.addNotificationReceivedListener(handleBackgroundMessage);
+  //   const unsubscribeBackground = Notifications.addNotificationReceivedListener(handleBackgroundMessage);
 
-    // Clean up the subscriptions when the component unmounts
-    return () => {
-      unsubscribeForeground();
-      unsubscribeBackground.remove();
-    };
-  }, []);
+  //   // Clean up the subscriptions when the component unmounts
+  //   return () => {
+  //     unsubscribeForeground();
+  //     unsubscribeBackground.remove();
+  //   };
+  // }, []);
 
   // useEffect(async () => {
   //   const firebaseConfig = {
@@ -313,56 +310,57 @@ const App = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   if (requestUserPermission) {
-  //     // return fcm token for device
-  //     messaging()
-  //       .getToken()
-  //       .then((token) => {
-  //         console.log('====================================');
-  //         console.log(token);
-  //         console.log('====================================');
-  //       });
-  //   } else {
-  //     console.log('====================================');
-  //     console.log('Failed to get device token status', authStatus);
-  //     console.log('====================================');
-  //   }
-  //   // Check whether an initial notification is available
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           'Notification caused app to open from quit state:',
-  //           remoteMessage.notification
-  //         );
-  //         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-  //       }
-  //       // setLoading(false);
-  //     });
+  useEffect(() => {
+    if (requestUserPermission) {
+      // return fcm token for device
+      messaging()
+        .getToken()
+        .then((token) => {
+          console.log('====================================');
+          console.log(token);
+          console.log('====================================');
+        });
+      
+    } else {
+      console.log('====================================');
+      console.log('Failed to get device token status', authStatus);
+      console.log('====================================');
+    }
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification
+          );
+          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        // setLoading(false);
+      });
 
-  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
-  //     console.log(
-  //       'Notification caused app to open from background state:',
-  //       remoteMessage.notification
-  //     );
-  //     // navigation.navigate(remoteMessage.data.type);
-  //   });
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification
+      );
+      // navigation.navigate(remoteMessage.data.type);
+    });
 
-  //   // Register background handler
-  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  //     console.log('Message handled in the background!', remoteMessage);
-  //   });
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
 
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //   });
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
 
-  //   return unsubscribe;
-  // }, []);
+    return unsubscribe;
+  }, []);
   // const initialLoginState = {
   //   isLoading: true,
   //   userInfo: null,
@@ -721,7 +719,48 @@ const App = () => {
     <PaperProvider theme={theme}>
       <AuthProvider>
         <View style={{ flex: 1 }}>
-          <NavigationContainer>
+          <NavigationContainer linking={{
+        config: {
+          // Configuration for linking
+        },
+        async getInitialURL() {
+          // First, you may want to do the default deep link handling
+          // Check if app was opened from a deep link
+          const url = await Linking.getInitialURL();
+
+          if (url != null) {
+            return url;
+          }
+
+          // Handle URL from expo push notifications
+          const response = await Notifications.getLastNotificationResponseAsync();
+                         
+          return response?.notification.request.content.data.url;
+        },
+        subscribe(listener) {
+          const onReceiveURL = ({ url }) => listener(url);
+
+          // Listen to incoming links from deep linking
+          Linking.addEventListener('url', onReceiveURL);
+
+          // Listen to expo push notifications
+          const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+            const url = response.notification.request.content.data.url;
+
+            // Any custom logic to see whether the URL needs to be handled
+            //...
+
+            // Let React Navigation handle the URL
+            listener(url);
+          });
+
+          return () => {
+            // Clean up the event listeners
+            Linking.removeEventListener('url', onReceiveURL);
+            subscription.remove();
+          };
+        },
+      }}>
             {/* {isLoggedIn ? (
             <Home.Screen name="HomeScreen">
             {(screenProps) => <HomeStack {...screenProps} token={token} />}
