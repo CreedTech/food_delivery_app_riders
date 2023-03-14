@@ -3321,11 +3321,6 @@ expo-constants@~14.0.0, expo-constants@~14.0.2:
     "@expo/config" "~7.0.2"
     uuid "^3.3.2"
 
-expo-core@~2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/expo-core/-/expo-core-2.0.2.tgz#61e1e5cc6c4341a834a0d7f37c68887cee8d971f"
-  integrity sha512-QKkICJ06m/J1PxTJqtVu03+fUXwjLqb2YPF5J9DT7W4EknPq1sHY3ZKJgAr1PhK24fzvVoxWOKqiIstliZdBOA==
-
 expo-dev-client@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-2.0.1.tgz#f5878807c96a60d90fc219b6535654cb6ddb9214"
@@ -3375,21 +3370,6 @@ expo-file-system@~15.1.0, expo-file-system@~15.1.1:
   integrity sha512-MYYDKxjLo9VOkvGHqym5EOAUS+ero9O66X5zI+EXJzqNznKvnfScdXeeAaQzShmWtmLkdVDCoYFGOaTvTA1wTQ==
   dependencies:
     uuid "^3.4.0"
-
-expo-firebase-app@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/expo-firebase-app/-/expo-firebase-app-2.0.0.tgz#1c2158c6423cd2a1bdb7749b96cc52b678126866"
-  integrity sha512-rhKErhQybgL5Vbv8HndYVzwoXikL62iCd5e8k5cZZhs6S0TiWEx0anKhALvI2eCGBzQmYHM2sIzbi8DeUemuCw==
-  dependencies:
-    expo-core "~2.0.0"
-
-expo-firebase-messaging@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/expo-firebase-messaging/-/expo-firebase-messaging-2.0.0.tgz#0950c226fe485530ac9e6cca7cd2fc61ce9ce8a3"
-  integrity sha512-LRl0oiVNxIM8/M3tXbyz27mOR1GTHIxGlcJKcPuKe1b8wmojghpqKrtdQ/0ePks2xYzOhjbRCmpu0CMd3Uag2w==
-  dependencies:
-    expo-core "~2.0.0"
-    expo-firebase-app "~2.0.0"
 
 expo-font@^11.0.1, expo-font@~11.0.1:
   version "11.0.1"
