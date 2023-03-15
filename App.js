@@ -117,7 +117,7 @@ const Drawer = createDrawerNavigator();
 //     </DrawerContentScrollView>
 //   );
 // }
-const App = () => {
+ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
   const [toggleDrawer, setToggelDrawer] = useState(false);
