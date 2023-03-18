@@ -299,7 +299,11 @@ async function resetPassword() {
           </Animatable.View>
         )}
         <View style={styles.forgotPass}>
-          <TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ForgotPasswordScreen');
+            }}
+            >
             <Text style={styles.passwordForgotten}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>

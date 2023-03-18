@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>395946524889-pdgbrik5tprb1kp2463bvtb8kmjdkp2g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.395946524889-pdgbrik5tprb1kp2463bvtb8kmjdkp2g</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>395946524889-3o821ogqmsji9ruffkf0e8uc5dr06a9q.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA4Ag7MY6kuhxDUUgcxYj_vvR0au4IM-vM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>395946524889</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fudapridersapp</string>
+	<key>PROJECT_ID</key>
+	<string>fudap-70850</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fudap-70850.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:395946524889:ios:708cbabfa8312e097a7ec8</string>
+	<key>DATABASE_URL</key>
+	<string>https://fudap-70850-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

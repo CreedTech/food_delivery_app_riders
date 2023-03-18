@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text,Alert } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import { Platform } from 'react-native';
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import { Linking } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,

@@ -6,6 +6,7 @@ import SignInScreen from '../../screens/SignInScreen';
 import VerifyPhoneScreen from '../../screens/VerifyPhoneScreen';
 import FinishSetupScreen from '../../screens/FinishSetup';
 import SignUpBase from '../../screens/SignUpBase';
+import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,9 @@ export default function AuthStack({setToken, setIsLoggedIn}) {
 
             <Stack.Screen name="SignInScreen">
                 {(screenProps) => <SignInScreen {...screenProps}  setIsLoggedIn={setIsLoggedIn}></SignInScreen>}
+            </Stack.Screen>
+            <Stack.Screen name="ForgotPasswordScreen">
+                {(screenProps) => <ForgotPasswordScreen {...screenProps}  setIsLoggedIn={setIsLoggedIn}></ForgotPasswordScreen>}
             </Stack.Screen>
             <Stack.Screen name="VerifyPhoneScreen">
                 {(screenProps) => <VerifyPhoneScreen {...screenProps} ></VerifyPhoneScreen>}

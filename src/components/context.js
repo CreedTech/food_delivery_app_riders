@@ -456,10 +456,11 @@ const AuthProvider = ({ children }) => {
     // }
     };
   
-    const forgot_password = async (email) => {
+  const forgot_password = async (email) => {
+    console.log(email);
       const response = await fetch(`${config.base_url}auth/forgot-password`, {
           method: 'POST',
-          email,
+          body: JSON.stringify(email),
           headers: {
               'content-type': 'application/json'
           },
@@ -467,6 +468,7 @@ const AuthProvider = ({ children }) => {
       
       const result = await response.json(); 
       console.log(result);
+      setLoading(false);
       if (Object.prototype.hasOwnProperty.call(result, 'error')) {
           console.log('yo');
           console.log(result.error);
@@ -476,6 +478,7 @@ const AuthProvider = ({ children }) => {
               type: "danger",
           };
       }
+      setLoading(false);
 
       if (result.statusCode >= 400) {
           console.log('yo');
@@ -486,6 +489,7 @@ const AuthProvider = ({ children }) => {
               type: "danger",
           };
       }
+      setLoading(false);
 
       return {
           title: "Password Reset",
@@ -565,7 +569,7 @@ const AuthProvider = ({ children }) => {
       }
 
       return {
-          title: "Password Reset",
+          title: "Otp Resend",
           message: result.msg,
           type: "success",
       };  

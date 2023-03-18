@@ -19,7 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fudapridersapp"
+      "bundleIdentifier": "com.fudapridersapp",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+         "UIBackgroundModes": [
+           "fetch",
+           "remote-notification"
+         ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -36,6 +43,9 @@
       "eas": {
         "projectId": "42b4d55e-00fe-41aa-ac86-8784ac1d3fdd"
       }
-    }
+    },
+    "plugins": [
+      "@react-native-firebase/app"
+    ]
   }
 }

@@ -6036,6 +6036,13 @@ react-native-elements@^3.4.2:
     react-native-ratings "8.0.4"
     react-native-size-matters "^0.3.1"
 
+react-native-expo-fancy-alerts@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-expo-fancy-alerts/-/react-native-expo-fancy-alerts-2.1.1.tgz#2cf514d12ee8b0680e3ea4581113d486a1803876"
+  integrity sha512-oaB1Eyca0EeAiCbM7xMwyxMOjJA4bhMZCLoGKHIYXu5ZQAIn/h281wT+0g3fpGurBXDwn6P5uMx18q7dFFoC2A==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-flash-message@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-native-flash-message/-/react-native-flash-message-0.4.0.tgz#22781a8d3c4d12498fb5ff778efeda2044cf6040"
