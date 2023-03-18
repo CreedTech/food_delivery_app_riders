@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "395946524889-8s2cuhd668sp8u3s17fj6faocvs71qsu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fudapridersapp",
-            "certificate_hash": "72913c38b739fe306b37216f79a1eabd48ed90fb"
-          }
-        },
-        {
-          "client_id": "395946524889-r9mim72eer4p4vje2ptqkhsmglae4mgj.apps.googleusercontent.com",
+          "client_id": "395946524889-apisdvea1r7mu3165id231ee9mbntar8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fudapridersapp",
             "certificate_hash": "4f5c75c24eac5ab2a41809f93b3ba7bbd21ec572"
+          }
+        },
+        {
+          "client_id": "395946524889-nduj14tfhdcesoai47kish9sn635k1dk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fudapridersapp",
+            "certificate_hash": "87b568cc30e147e92a0b2cbd79d51f48fe5e2f2d"
           }
         },
         {
@@ -46,6 +46,13 @@
             {
               "client_id": "395946524889-oo6a79otk7nhm18ufbjrro4s27pbpct4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "395946524889-pdgbrik5tprb1kp2463bvtb8kmjdkp2g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fudapridersapp"
+              }
             }
           ]
         }
