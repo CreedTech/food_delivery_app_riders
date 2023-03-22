@@ -2,26 +2,19 @@ import React,{ useContext, useEffect, useState } from 'react';
 import { View, StyleSheet,TouchableOpacity } from 'react-native';
 import {
   useTheme,
-  Title,
   Caption,
-  Paragraph,
   Drawer,
   Text,
-  TouchableRipple,
-  Switch,
     Divider,
 } from 'react-native-paper';
 import userModel from '../../model/user';
 import { AuthContext } from '../context';
 import { Avatar, ListItem } from 'react-native-elements';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import FlashMessage from 'react-native-flash-message';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import { showMessage, hideMessage } from "react-native-flash-message";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// import { AuthContext } from '../context';
 
 export function DrawerContent({props,navigation, setIsLoggedIn}) {
   const paperTheme = useTheme();
@@ -31,38 +24,19 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
     async function getUser() {
         const result = await userModel.getProfile();
         
-        // const profile = result['user'];
       setUserInfo(result);
-
-        // setFirstname(profile['firstName']);
-        // setLastname(profile['lastName']);
-        // setEmail(profile['email']);
-        // setPhonenumber(profile['phoneNumber']);
-      // console.log(result.email);
       setIsLoading(false);
 
     };
     getUser();
 }, []);
-  
-  // const {navigation} = props;
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
-
   const { logout } = useContext(AuthContext);
 
-  async function logOut() {        
+  async function logOut() {
     await logout();
     setIsLoggedIn(false);
-    // navigation.navigate('Auth');
   };
-//   async function deleteUserProfile() {        
-//     await deleteUser();
-//     // await logout();
-//     // setIsLoggedIn(false);
-//     // navigation.navigate('Auth');
-// };
 
-  // const { signOut } = React.useContext(AuthContext);
 
   return (
     <View style={{ flex: 1 }}>
@@ -81,30 +55,7 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
                 />
                 <View style={{ padding: 1, flexDirection: 'column' }}>
                   <Text style={styles.title} numberOfLines={1}>
-                    {/* if (userInfo) {
-                      `${userInfo.firstName.slice(
-                        0,
-                        11
-                      )}...`
-
-                      `${userInfo.lastName.slice(
-                        0,
-                        4
-                      )}...`
-                    } else {
-                      
-                    } */}
-                    {/* {`${userInfo.firstName.slice(
-                            0,
-                            11
-                          )}...`} */}
                     {userInfo.firstName} {userInfo.lastName}
-                    {/* {userInfo.lastName.length > 4
-                          ? `${userInfo.lastName.slice(
-                              0,
-                              4
-                            )}...`
-                      : userInfo.lastName} */}
                   </Text>
                   <Caption style={styles.caption}>#4389Rider</Caption>
                 </View>
@@ -156,27 +107,12 @@ export function DrawerContent({props,navigation, setIsLoggedIn}) {
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
-      {/* <Drawer.Section style={styles.bottomDrawerSection}>
-        <TouchableOpacity
-          onPress={deleteUserProfile}
-        >
-          <Text style={{ color: '#ffffff' }}>Delete Profile</Text>
-        </TouchableOpacity>
-      </Drawer.Section> */}
       <Drawer.Section style={styles.bottomDrawerSection}>
         <TouchableOpacity
           onPress={logOut}
         >
           <Text style={{ color: '#ffffff' }}>Log out</Text>
         </TouchableOpacity>
-        {/* <DrawerItem
-          
- 
- labelStyle={{fontFamily: 'Poppins-Light'}}         label="Sign Out"
-          onPress={() => {
-            signOut();
-          }}
-        /> */}
       </Drawer.Section>
     </View>
   );
@@ -193,16 +129,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: '#1A1A1A',
-    // marginTop: 3,
     fontWeight: '600',
     fontFamily: 'Poppins-Medium',
-    // width: '75%'
-    // flex: 1
   },
   caption: {
     color: '#100F0F',
     fontSize: 16,
-    // lineHeight: 10,
     fontWeight: '600',
   },
   row: {
@@ -228,7 +160,6 @@ const styles = StyleSheet.create({
   drawerSection: {
     marginTop: 15,
     borderBottomColor: 'transparent',
-    //   borderBottomWidth: 0,
     borderBottomWidth: 0,
     shadowColor: 'transparent',
     shadowRadius: 0,

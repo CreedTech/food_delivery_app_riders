@@ -51,11 +51,9 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
   }, []);
 
   async function resetPassword() {
-    // const passwordReset = {
-    //   email: email,
-    //   // password: password,
-    //   // "userType": "VENDOR",
-    // };
+    const passwordMail = {
+      email: data.email,
+    };
     Keyboard.dismiss();
     setLoading(true);
     // Check if email is valid
@@ -66,7 +64,7 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
         position: 'bottom',
       });
     } else {
-      const passwordReset = await forgot_password(data.email);
+      const passwordReset = await forgot_password(passwordMail);
     if (passwordReset['type'] === 'danger') {
       console.log('yo1');
       console.log(passwordReset['message']);
@@ -77,14 +75,18 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
       });
     } else {
       console.log(passwordReset['message']);
+      setLoading(false);
       showMessage({
         message: passwordReset['message'],
         type: 'success',
         position: 'bottom',
       });
-      setTimeout(() => {
-        navigation.navigate("SignInScreen");
-      }, 1000);
+      toggleAlert();
+      // const timeout = setTimeout(() => {
+      //   toggleAlert();
+        
+      // }, 3000);
+      // return () => clearTimeout(timeout);
       // navigation.navigate("VerifyPhoneScreen");
     }
     }
@@ -123,9 +125,9 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
             No worries, we'll send you reset instructions.
           </Text>
         </View>
-        <TouchableOpacity onPress={toggleAlert}>
+        {/* <TouchableOpacity onPress={toggleAlert}>
         <Text>Tap me</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
         <View style={{ marginVertical: 20 }}>
           <View style={styles.mobileContainer}>
@@ -137,8 +139,6 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               selectionColor="#FD264F"
-              // onChangeText={(val) => setPassword(val)}
-              // onChangeText={setPassword}
               onChangeText={(text) => emailInputChange(text)}
             />
           {data.check_emailInputChange ? (
@@ -152,7 +152,6 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
               style={styles.LoginButton}
               onPress={resetPassword}
               disabled={!data.email}
-              // onPress={() => navigation.navigate('FinishSetupScreen')}
             >
               <Text style={styles.loginText}>Reset Password</Text>
             </TouchableOpacity>
@@ -203,8 +202,16 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
       >
         <View style={styles.content}>
         <Text style={styles.contentText}>Reset Link Sent Successfully!!</Text>
-        <TouchableOpacity onPress={toggleAlert} style={styles.btn}>
-        <Text style={styles.btnText}>OK</Text>
+        <TouchableOpacity onPress={() => {
+              navigation.navigate('SignInScreen');
+            }} style={styles.btn}>
+            <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('SignInScreen');
+            }}
+            >
+            <Text style={styles.btnText}>OK</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
         </View>
       </FancyAlert>
@@ -221,11 +228,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     flexDirection: 'column',
     marginTop: '20%',
     paddingVertical: 20,
-    // paddingHorizontal: 40,
   },
   backIcon: {
     marginTop: 67,
@@ -233,15 +238,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    // lineHeight: '34px',
-    // letterSpacing: '-0.01px',
     color: '#303030',
   },
   subtitle: {
     fontSize: 16,
     fontWeight: '400',
-    // lineHeight: '24px',
-    // letterSpacing: '-0.01px',
     color: '#ABABB4',
   },
   textInputMobile: {
@@ -251,7 +252,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     color: '#000000',
     backgroundColor: 'transparent',
-    // backgroundColor:'#c0c0c0'
   },
   countrCode: {
     width: '30%',
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   forgotPass: {
-    // flex: 1,
     paddingTop: 14,
     alignSelf: 'flex-end',
   },
@@ -282,7 +281,6 @@ const styles = StyleSheet.create({
     color: '#FD264F',
     fontSize: 14,
     fontWeight: '600',
-    // lineHeight: '18px'
   },
   activityIndicator: {
     position: 'absolute',
@@ -292,14 +290,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '600',
     fontSize: 18,
-    // lineHeight: '18px',
   },
   loginContainer: {
-    // justifyContent: 'flex-end',
-    // alignItems: 'center',
-    // flexDirection: 'row',
     width: '100%',
-    // paddingHorizontal: 7,
     paddingVertical: 5,
   },
   noAccount: {
@@ -310,7 +303,6 @@ const styles = StyleSheet.create({
   noAccountText: {
     color: '#FD264F',
     fontSize: 16,
-    // lineHeight:'18px',
   },
   eyeIcon: {
     marginTop: 5,
@@ -323,7 +315,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     backgroundColor: '#F2F2F4',
     borderRadius: 15,
-    // overflow: 'hidden'
   },
   headerContainer: {
     width: '100%',

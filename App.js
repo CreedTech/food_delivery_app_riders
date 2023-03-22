@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text,Alert } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -16,7 +16,6 @@ import {
   DefaultTheme as PaperDefaultTheme,
   DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
-import { BASE_URL } from './src/config';
 import { AuthProvider } from './src/components/context';
 import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
 import HomeScreen from './src/screens/HomeScreen';
@@ -25,9 +24,7 @@ import WalletScreen from './src/screens/WalletScreen';
 import MyTripsScreen from './src/screens/MyTripsScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeStack from './src/components/HomeNavigator';
 import AuthStack from './src/components/auth/AuthStack';
-import CustomDrawer from './src/navigation/CustomDrawer';
 
 let customFonts = {
   'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
@@ -290,69 +287,72 @@ const Drawer = createDrawerNavigator();
   //     await saveTokenToDatabase(token);
   //   }
   // }, []);
+   
+  //TODO UNCOMMENT LATER  
 
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // const requestUserPermission = async () => {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  };
+  //   if (enabled) {
+  //     console.log('Authorization status:', authStatus);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (requestUserPermission) {
-      // return fcm token for device
-      messaging()
-        .getToken()
-        .then((token) => {
-          console.log('====================================');
-          console.log(token);
-          console.log('====================================');
-        });
+  // useEffect(() => {
+  //   if (requestUserPermission) {
+  //     // return fcm token for device
+  //     messaging()
+  //       .getToken()
+  //       .then((token) => {
+  //         console.log('====================================');
+  //         console.log(token);
+  //         console.log('====================================');
+  //       });
       
-    } else {
-      console.log('====================================');
-      console.log('Failed to get device token status', authStatus);
-      console.log('====================================');
-    }
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(async (remoteMessage) => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification
-          );
-          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-        }
-        // setLoading(false);
-      });
+  //   } else {
+  //     console.log('====================================');
+  //     console.log('Failed to get device token status', authStatus);
+  //     console.log('====================================');
+  //   }
+  //   // Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(async (remoteMessage) => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification
+  //         );
+  //         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //       }
+  //       // setLoading(false);
+  //     });
 
-    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-    messaging().onNotificationOpenedApp(async (remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification
-      );
-      // navigation.navigate(remoteMessage.data.type);
-    });
+  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification
+  //     );
+  //     // navigation.navigate(remoteMessage.data.type);
+  //   });
 
-    // Register background handler
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
+  //   // Register background handler
+  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //   });
 
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
 
-    return unsubscribe;
-  }, []);
+  //   return unsubscribe;
+  // }, []);
+    //TODO UNCOMMENT LATER  
   // const initialLoginState = {
   //   isLoading: true,
   //   userInfo: null,
@@ -783,39 +783,16 @@ const Drawer = createDrawerNavigator();
                 )}
               >
                 <Drawer.Screen name="Home" component={HomeScreen} />
-                {/* {isLoggedIn ? (
-              // </Drawer.Screen>
-            ) : (
-              <Drawer.Screen name="Auth">
-                {() => (
-                  <AuthStack
-                    setToken={setToken}
-                    setIsLoggedIn={setIsLoggedIn}
-                  />
-                )}
-              </Drawer.Screen>
-            )} */}
-
                 <Drawer.Screen
                   name="EditProfileScreen"
                   component={EditProfileScreen}
                   setIsLoggedIn={setIsLoggedIn}
                 />
-                {/* {(screenProps) => (
-                <EditProfileScreen
-                  {...screenProps}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              )}
-            </Drawer.Screen> */}
                 <Drawer.Screen
                   name="WalletScreen"
                   component={WalletScreen}
                   setIsLoggedIn={setIsLoggedIn}
                 />
-                {/* <Drawer.Screen name="Wallet">
-              {(screenProps) => <WalletScreen {...screenProps} />}
-            </Drawer.Screen> */}
                 <Drawer.Screen
                   name="MyTripsScreen"
                   component={MyTripsScreen}
@@ -826,18 +803,6 @@ const Drawer = createDrawerNavigator();
                   component={DeliveriesScreen}
                   setIsLoggedIn={setIsLoggedIn}
                 />
-                {/* <Drawer.Screen name="MyTrips">
-              {(screenProps) => <MyTripsScreen {...screenProps} />}
-            </Drawer.Screen> */}
-
-                {/* <Drawer.Screen name="SetPassword">
-              {(screenProps) => (
-                <EditProfileScreen
-                  {...screenProps}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              )}
-            </Drawer.Screen> */}
               </Drawer.Navigator>
             ) : (
               <AuthStack setToken={setToken} setIsLoggedIn={setIsLoggedIn} />

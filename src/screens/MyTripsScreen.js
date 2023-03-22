@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { format } from "date-fns";
 import { useTheme } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -187,11 +188,13 @@ const MyTripsScreen = ({ navigation }) => {
           </View>
         </View>
         <ScrollView>
-          <View style={{ flexDirection: 'column', marginHorizontal: 5 }}>
+          <View style={{ flexDirection: 'column', marginHorizontal: 0 }}>
             {
               // mapping through an array?
               // const operations =
-              rides.map((r,index) => {
+              rides.map((r, index) => {
+                var date = new Date(r.createdAt);
+                var formattedDate = format(date, "MMMM do, yyyy H:mma");
                 // r.recipientAddress
                 return <View style={styles.trips} key={index}>
                   <View
@@ -199,6 +202,8 @@ const MyTripsScreen = ({ navigation }) => {
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      // width:50
+                      width:'80%'
                     }}
                   >
                     <View
@@ -218,25 +223,25 @@ const MyTripsScreen = ({ navigation }) => {
                         color="black"
                       />
                     </View>
-                    <View>
-                      <View style={{ marginHorizontal: 15 }}>
-                        <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                          {r.recipientAddress} - Lekki Lagos
+                    <View style={{ marginHorizontal: 15,width:'65%' }}>
+                        <Text style={{ fontSize: 16, fontWeight: '500',width:'100%' }} numberOfLines={1}>
+                          {r.recipientAddress} - {r.senderAddress}
                         </Text>
                         <Text
                           style={{
                             fontSize: 12,
                             fontWeight: '400',
                             color: '#ABABB4',
+                            // width:'50%'
                           }}
-                        >
-                          June 7, 2022 8:00am
+                      >
+                        
+                          {formattedDate}
                         </Text>
                       </View>
-                    </View>
                   </View>
                   <View>
-                    <View>
+                    <View style={{ width:'100%' }}>
                       <Text
                         style={{
                           fontSize: 12,
@@ -260,494 +265,6 @@ const MyTripsScreen = ({ navigation }) => {
                 </View>;
               })
             }
-            {/* <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View> */}
-            {/* <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#FD264F',
-                    }}
-                  >
-                    Canceled
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.trips}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    borderRadius: 50,
-                    // padding: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#FB7185',
-                    width: 50,
-                    height: 50,
-                  }}
-                >
-                  <Ionicons name="bicycle-outline" size={30} color="black" />
-                </View>
-                <View>
-                  <View style={{ marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500' }}>
-                      Ikeja - Lekki Lagos
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '400',
-                        color: '#ABABB4',
-                      }}
-                    >
-                      June 7, 2022 8:00am
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#000000',
-                    }}
-                  >
-                    #6,000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: '#6EB088',
-                    }}
-                  >
-                    Delivered
-                  </Text>
-                </View>
-              </View>
-            </View> */}
           </View>
         </ScrollView>
       </View>
@@ -816,6 +333,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
+    width:'100%'
   },
   tripsMade: {
     textAlign: 'center',

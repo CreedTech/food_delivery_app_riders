@@ -462,7 +462,7 @@ const AuthProvider = ({ children }) => {
           method: 'POST',
           body: JSON.stringify(email),
           headers: {
-              'content-type': 'application/json'
+              'Content-Type': 'application/json'
           },
       });
       
@@ -474,18 +474,18 @@ const AuthProvider = ({ children }) => {
           console.log(result.error);
           return {
               title: result.error,
-              message: result.message,
+              message: result.message || result.message.join('\n'),
               type: "danger",
           };
       }
       setLoading(false);
 
       if (result.statusCode >= 400) {
-          console.log('yo');
+          console.log('yo 400');
           console.log(result.error);
           return {
               title: result.error,
-              message: result.message,
+              message: result.message || result.message.join('\n'),
               type: "danger",
           };
       }
@@ -493,7 +493,7 @@ const AuthProvider = ({ children }) => {
 
       return {
           title: "Password Reset",
-          message: result.msg,
+          message: result.message,
           type: "success",
       };  
     };
