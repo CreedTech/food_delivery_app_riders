@@ -23,6 +23,28 @@ const storage = {
             //reading error value
         }
     },
+    storeLocation: async function storeLocation(location) {        
+        try {
+            const locationAndDate = {
+                location: location,
+                date: new Date().getTime(),
+            };
+            const jsonValue = JSON.stringify(locationAndDate);
+
+            await AsyncStorage.setItem('@location', jsonValue);
+        } catch (e) {
+            // save error
+        }
+    },
+
+    readLocation: async function readLocation() {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@location');
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+            //reading error value
+        }
+    },
 
     deleteToken: async function deleteToken() {
         await AsyncStorage.removeItem('@token');

@@ -113,21 +113,6 @@ const userModel = {
         }
       });
 
-    // const response = await fetch(`${config.base_url}request-ride`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(
-    //     request
-    //   ),
-    //   // headers: {
-    //   //     'x-access-token': token['token']
-    //   // }
-    // });
-
-    // const result = await response.json();
-    // console.log("YesSS");
-    // console.log(result);
-
-    // return result;
   },
   getRides: async function getRides() {
     // const token = await storage.readToken();
@@ -135,14 +120,64 @@ const userModel = {
 
     const response = await fetch(`${config.base_url}request-ride`, {
       method: 'GET',
-      // headers: {
-      //     'x-access-token': token['token']
-      // }
     });
 
     const result = await response.json();
 
     return result.rows;
+  },
+  updateRiderLocation: async function UpdateRiderLocation({driverLocation,driverId}) {
+    console.log("riderInfo");
+    console.log({driverLocation,driverId});
+    axios
+      .post(`${config.base_url}location/update-rider-location`, {
+        "location": driverLocation,
+        "driverId": driverId
+      })
+      .then((res) => {
+        let result = res.data;
+        console.log('result');
+        console.log(result);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
+
+  },
+
+  assignDeviceToken: async function AssignDeviceToken(deviceToken) {
+    console.log(deviceToken);
+    axios
+      .post(`${config.base_url}user/assign-device-token`, {
+        deviceToken
+      })
+      .then((res) => {
+        let result = res.data;
+        console.log('result');
+        console.log(result);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
+
   },
 
   // getHistory: async function getHistory() {
@@ -194,10 +229,24 @@ const userModel = {
   // },
 
   getProfile: async function getProfile() {
-    const userData = await storage.readUser();
-    const user = await userModel.getUserData(userData);
+    // const userData = await storage.readUser();
+    // const user = await userModel.getUserData(userData);
+
+    // return user;
+    const response = await fetch(`${config.base_url}user/profile`, {
+      method: 'GET',
+    });
+
+    const user = await response.json();
+    console.log('User');
+    console.log(user);
 
     return user;
+  },
+  getLocation: async function getLocation() {
+    const userLocation = await storage.readLocation();
+
+    return userLocation;
   },
 
   updateUser: async function updateUser(userData) {
@@ -246,47 +295,6 @@ const userModel = {
     return result;
   },
 
-  // deleteAccount: async function deleteAccount() {
-  //     const token = await storage.readToken();
-  //     const user = await storage.readUser();
-
-  //     const userId = user['userData']['id'];
-
-  //     const body = {
-  //         'user_id': userId,
-  //     };
-
-  //     const formBody = [];
-
-  //     for (const property in body) {
-  //         const encodedKey = encodeURIComponent(property);
-  //         const encodedValue = encodeURIComponent(body[property]);
-  //             formBody.push(encodedKey + "=" + encodedValue);
-  //     };
-
-  //     const requestBody = formBody.join("&");
-
-  //     const response = await fetch(`${config.base_url}users`, {
-  //         method: 'DELETE',
-  //         headers: {
-  //             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-  //             'x-access-token': token['token']
-  //         },
-  //         body: requestBody
-  //     });
-
-  //     if (response.status === 204) {
-  //         const message = {
-  //             message: 'Account deleted',
-  //         };
-
-  //         return message;
-  //     };
-
-  //     const result = await response.json();
-
-  //     return result;
-  // }
 };
 
 export default userModel;

@@ -36,40 +36,20 @@ const MyTripsScreen = ({ navigation }) => {
   const theme = useTheme();
   useEffect(() => {
     async function getUser() {
-      // const result = await userModel.getProfile();
-      // const walletBalance = await userModel.getBalance();
-      // const requestRides = await userModel.requestRide();
-      // const trips =  await userModel.getRides();
-      // setRides(trips);
-      // const profile = result['user'];
-      // setUserInfo(result);
-      // setUserBalance(walletBalance);
       console.log('Yes');
       handleAxiosRequest();
-      // console.log(requestRides);
-      // console.log(rides.rows[0].recipientAddress);
-
-      // setFirstname(profile['firstName']);
-      // setLastname(profile['lastName']);
-      // setEmail(profile['email']);
-      // setPhonenumber(profile['phoneNumber']);
-      // console.log(walletBalance);
     }
     getUser();
-    // const requestRides = userModel.requestRide();
     console.log('Yesoooo');
     rides.map((r) => {
       console.log(r.recipientAddress);
     });
-    // console.log(rides.map((r) => {r }));
   }, []);
 
   const handleAxiosRequest = async () => {
     await axios
       .get(`${BASE_URL}request-ride`)
-      // .then(response => response.json())
       .then((response) => {
-        //setData(results); original one
         console.log(response.data.rows[0].recipientAddress);
         setRides(response.data.rows); //changed one
       })

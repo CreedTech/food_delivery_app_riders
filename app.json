@@ -23,12 +23,17 @@
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
          "UIBackgroundModes": [
+          "location",
            "fetch",
            "remote-notification"
-         ]
+         ],
+         "NSLocationWhenInUseUsageDescription": "Fudap uses your location to pick origins, destinations, and predict ride times",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Fudap will use your location to provide ETA's to yourself and others",
+        "NSLocationAlwaysUsageDescription": "text"
       }
     },
     "android": {
+      "permissions":["ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION","ACCESS_BACKGROUND_LOCATION"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/fudap_logo.png",
         "backgroundColor": "#FD264F"

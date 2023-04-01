@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ActivityIndicator, Text,Alert } from 'react-native';
-// import messaging from '@react-native-firebase/messaging';
+import { View} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -16,7 +16,8 @@ import {
   DefaultTheme as PaperDefaultTheme,
   DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
-import { AuthProvider } from './src/components/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthProvider} from './src/components/context';
 import { DrawerContent } from './src/components/DrawerComponent/DrawerContent';
 import HomeScreen from './src/screens/HomeScreen';
 import DeliveriesScreen from './src/screens/DeliveriesScreen';
@@ -25,6 +26,11 @@ import MyTripsScreen from './src/screens/MyTripsScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthStack from './src/components/auth/AuthStack';
+import * as Location from 'expo-location';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
+import userModel from './src/model/user';
+import UserLocation from './src/components/UserLocation';
 
 let customFonts = {
   'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
@@ -38,326 +44,142 @@ let customFonts = {
   'Unbounded-Bold': require('./src/assets/fonts/Unbounded-Bold.ttf'),
 };
 
+
+
 const Home = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+// const LOCATION_TRACKING = 'location-tracking';
 
-// function CustomDrawerContent(props) {
-//   return (
-//     <DrawerContentScrollView {...props}>
-//       <View style={styles.drawerContent}>
-//         <View style={styles.userInfoSection}>
-//           <View style={{ flexDirection: 'row', marginTop: 15 }}>
-//             <ListItem>
-//               <Avatar
-//                 size={65}
-//                 rounded
-//                 source={
-//                   require("./src/assets/images/profile.png")
-//                 }
-//               />
-//               <View style={{ marginLeft: 5, flexDirection: 'column' }}>
-//                 <Text style={styles.title}>John Mark</Text>
-//                 <Caption style={styles.caption}>#4389Rider</Caption>
-//               </View>
-//             </ListItem>
-//           </View>
-//         </View>
+// TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
+//   if (error) {
+//       console.log('LOCATION_TRACKING task ERROR:', error);
+//       return;
+//   }
+//   if (data) {
+//       const { locations } = data;
+//       let lat = locations[0].coords.latitude;
+//       let long = locations[0].coords.longitude;
 
-//         <Drawer.Section style={styles.drawerSection}>
-//           <DrawerItem
-//             icon={({ color, size }) => (
-//               <Icon name="account" color="#000000" size={size} />
-//             )}
-//             labelStyle={{fontFamily: 'Poppins-Light'}}
-//             label="Edit"
-//             style={styles.drawerItem}
-//             onPress={() => {props.navigation.navigate('EditProfileScreen')}}
-//           />
-//           <Divider />
-//           <DrawerItem
-//             icon={({ color, size }) => (
-//               <Icon name="wallet" color="#000000" size={size} />
-//             )}
-//             labelStyle={{fontFamily: 'Poppins-Light'}}
-//             label="Wallet"
-//             style={styles.drawerItem}
-//             onPress={() => {props.navigation.navigate('WalletScreen')}}
-//           />
-//           <Divider />
-//           <DrawerItem
-//             icon={({ color, size }) => (
-//               <Icon name="car" color="#000000" size={size} />
-//             )}
-//             labelStyle={{fontFamily: 'Poppins-Light'}}
-//             label="My Trips"
-//             style={styles.drawerItem}
-//             onPress={() => {props.navigation.navigate('MyTripsScreen')}}
-//           />
-//           <Divider />
-//           <DrawerItem
-//             icon={({ color, size }) => (
-//               <Icon name="dialpad" color="#000000" size={size} />
-//             )}
-//             labelStyle={{fontFamily: 'Poppins-Light'}}
-//             label="Set Password"
-//             style={styles.drawerItem}
-//             // onPress={() => {props.navigation.navigate('Set PassScreen')}}
-//           />
-//           {/* <Divider /> */}
-//         </Drawer.Section>
-//       </View>
-//       <DrawerItemList {...props} />
-//     </DrawerContentScrollView>
-//   );
+//       l1 = lat;
+//       l2 = long;
+
+//       console.log(
+//           `${new Date(Date.now()).toLocaleString()}: ${lat},${long}`
+//       );
+//   }
+// });
+// const RegisterBackgroundTask = async () => {
+//   try {
+//     await BackgroundFetch.registerTaskAsync(LOCATION_TRACKING, {
+//       minimumInterval: 5, // seconds,
+//     })
+//     console.log("Task registered")
+//   } catch (err) {
+//     console.log("Task Register failed:", err)
+//   }
 // }
+// RegisterBackgroundTask();
+//  BackgroundFetch.registerTaskAsync(LOCATION_TRACKING, {
+//   minimumInterval: 60, // 1 min
+//   stopOnTerminate: false,
+//   startOnBoot: true,
+// })
+//   .then(() => alert('BackgroundFetch.registerTaskAsync success'))
+//   .catch(error => console.log(error.message));
+
+// var l1;
+// var l2;
+// !TODO -- RESTRUCTURE THE FILE TO SEND RIDERS LOCATION AFTER BEING LOGGED IN BUT THE TASK MANAGER AND ALL SHOULD WORK IMMEDIATELY THE APP STARTS RUNNING
+// !TODO -- SEND DEVICE TOKEN TO BACKEND SO IT CAN BE USED FOR THE NOTIFICATION SERVICE
+
  const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //  const [locationStarted, setLocationStarted] = React.useState(false);
   const [token, setToken] = useState(null);
-  const [toggleDrawer, setToggelDrawer] = useState(false);
   const [isLoaded] = useFonts(customFonts);
   const [isLoading, setIsLoading] = React.useState(true);
+  // const [location, setLocation] = React.useState(null);
+  const [deviceToken, setDeviceToken] = React.useState(null);
+  //  const [driverId, setDriverId] = React.useState(null);
+  //  const [userInfo, setUserInfo] = useState('');
   // const [userToken, setUserToken] = React.useState(null);
-
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
-  // useEffect(() => {
-  //   // Initialize Firebase
-  //    const firebaseConfig = {
-  //     apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
-  //     authDomain: "fudap-70850.firebaseapp.com",
-  //     databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
-  //     projectId: "fudap-70850",
-  //     storageBucket: "fudap-70850.appspot.com",
-  //     messagingSenderId: "395946524889",
-  //     appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
-  //   };
-
-  //   // initializeApp(firebaseConfig);
-
-  //   if (firebase.apps.length === 0) {
-  //     firebase.initializeApp(firebaseConfig);
-  //   }
-
-  //   // Get the device's FCM token
-  //   const messaging = firebase.messaging();
-
-  //   const getFCMToken = async () => {
-  //     try {
-  //       const settings = await Notifications.getPermissionsAsync();
-  //       if (settings.granted) {
-  //         const token = await messaging.getToken();
-  //         console.log('FCM token:', token);
-  //       } else {
-  //         const { status } = await Notifications.requestPermissionsAsync();
-  //         if (status === 'granted') {
-  //           const token = await messaging.getToken();
-  //           console.log('FCM token:', token);
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log('Error getting FCM token:', error);
-  //     }
-  //   };
-
-  //   // Request permissions to receive FCM push notifications
-  //   const requestPermissions = async () => {
-  //     try {
-  //       await Notifications.requestPermissionsAsync({
-  //         ios: {
-  //           allowAlert: true,
-  //           allowBadge: true,
-  //           allowSound: true,
-  //           allowAnnouncements: true,
-  //         },
-  //       });
-  //     } catch (error) {
-  //       console.log('Error requesting permissions:', error);
-  //     }
-  //   };
-
-  //   // Subscribe to FCM push notifications
-  //   const subscribeToNotifications = async () => {
-  //     try {
-  //       const expoPushToken = await Notifications.getExpoPushTokenAsync();
-  //       console.log('Expo push token:', expoPushToken.data);
-
-  //       if (Platform.OS === 'android') {
-  //         const channel = await Notifications.setNotificationChannelAsync('default', {
-  //           name: 'Default channel',
-  //           importance: Notifications.AndroidImportance.MAX,
-  //           vibrationPattern: [0, 250, 250, 250],
-  //           lightColor: '#FF231F7C',
-  //         });
-  //       }
-
-  //       await messaging().subscribeToTopic('all');
-  //     } catch (error) {
-  //       console.log('Error subscribing to notifications:', error);
-  //     }
-  //   };
-
-  //   // Call the functions to get the FCM token, request permissions and subscribe to notifications
-  //   getFCMToken();
-  //   requestPermissions();
-  //   subscribeToNotifications();
-
-  //   // Handle incoming FCM push notifications when the app is in the foreground
-  //   const handleForegroundMessage = async (message) => {
-  //     console.log('Foreground message:', message);
-  //     Notifications.setBadgeCountAsync(1);
-  //   };
-
-  //   const unsubscribeForeground = messaging().onMessage(handleForegroundMessage);
-
-  //   // Handle incoming FCM push notifications when the app is in the background or closed
-  //   const handleBackgroundMessage = async (message) => {
-  //     console.log('Background message:', message);
-  //     Notifications.setBadgeCountAsync(1);
-  //   };
-
-  //   const unsubscribeBackground = Notifications.addNotificationReceivedListener(handleBackgroundMessage);
-
-  //   // Clean up the subscriptions when the component unmounts
-  //   return () => {
-  //     unsubscribeForeground();
-  //     unsubscribeBackground.remove();
-  //   };
-  // }, []);
-
-  // useEffect(async () => {
-  //   const firebaseConfig = {
-  //     apiKey: "AIzaSyDclQuWpobiUod_Yl-Y7MMoZsC-zs7kNVE",
-  //     authDomain: "fudap-70850.firebaseapp.com",
-  //     databaseURL: "https://fudap-70850-default-rtdb.firebaseio.com",
-  //     projectId: "fudap-70850",
-  //     storageBucket: "fudap-70850.appspot.com",
-  //     messagingSenderId: "395946524889",
-  //     appId: "1:395946524889:web:31d42edf07f89a5f7a7ec8"
-  //   };
-    
-  //   firebase.initializeApp(firebaseConfig);
-    
-  //   Notifications.setNotificationHandler({
-  //     handleNotification: async () => ({
-  //       shouldShowAlert: true,
-  //       shouldPlaySound: true,
-  //       shouldSetBadge: true,
-  //     }),
-  //   });
-    
-  //   async function registerForPushNotificationsAsync() {
-  //     let token;
-  //     if (Platform.OS === 'android') {
-  //       const { status } = await Notifications.getPermissionsAsync();
-  //       if (status !== 'granted') {
-  //         const { status } = await Notifications.requestPermissionsAsync();
-  //         if (status !== 'granted') {
-  //           return;
-  //         }
-  //       }
-  //       token = await Notifications.getExpoPushTokenAsync();
-  //     } else {
-  //       const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  //       let finalStatus = existingStatus;
-  //       if (existingStatus !== 'granted') {
-  //         const { status } = await Notifications.requestPermissionsAsync();
-  //         finalStatus = status;
-  //       }
-  //       if (finalStatus !== 'granted') {
-  //         return;
-  //       }
-  //       token = (await Notifications.getExpoPushTokenAsync({ ios: { requireApnsPusher: true } }))?.data;
-  //     }
-  //     return token;
-  //   }
-    
-  //   async function saveTokenToDatabase(token) {
-  //     // Add your code for saving the token to your database here
-  //   }
-    
-  //   async function onMessageReceived(message) {
-  //     // Add your code for handling incoming messages here
-  //   }
-    
-  //   const messaging = firebase.messaging();
-  //   messaging.onMessage(onMessageReceived);
-    
-  //   const token = await registerForPushNotificationsAsync();
-  //   if (token) {
-  //     await saveTokenToDatabase(token);
-  //   }
-  // }, []);
    
-  //TODO UNCOMMENT LATER  
+  // const { UpdateRiderLocation } = useContext(AuthContext);
 
-  // const requestUserPermission = async () => {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // };
+   async function AssignDeviceToken() {
+  const storedDeviceToken = await AsyncStorage.getItem('deviceToken');
+  console.log("Device Token from setState");
+  console.log(deviceToken);
+  console.log("Device Token from Async Storage");
+  console.log(storedDeviceToken);
+  const result = await userModel.assignDeviceToken(storedDeviceToken);
+    
+  console.log(result);
+  console.log("Device Token Received");
 
-  // useEffect(() => {
-  //   if (requestUserPermission) {
-  //     // return fcm token for device
-  //     messaging()
-  //       .getToken()
-  //       .then((token) => {
-  //         console.log('====================================');
-  //         console.log(token);
-  //         console.log('====================================');
-  //       });
+};
+   const requestUserPermission = async () => {
+  };
+
+  useEffect(() => {
+    if (requestUserPermission) {
+      // return fcm token for device
+      messaging()
+        .getToken()
+        .then((token) => {
+          console.log('====================================');
+          console.log(token);
+          AsyncStorage.setItem('deviceToken', JSON.stringify(token));
+          setDeviceToken(token);
+          AssignDeviceToken();
+          console.log('====================================');
+        });
       
-  //   } else {
-  //     console.log('====================================');
-  //     console.log('Failed to get device token status', authStatus);
-  //     console.log('====================================');
-  //   }
-  //   // Check whether an initial notification is available
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           'Notification caused app to open from quit state:',
-  //           remoteMessage.notification
-  //         );
-  //         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-  //       }
-  //       // setLoading(false);
-  //     });
+    } else {
+      console.log('====================================');
+      console.log('Failed to get device token status', authStatus);
+      console.log('====================================');
+    }
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification
+          );
+          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        // setLoading(false);
+      });
 
-  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-  //   messaging().onNotificationOpenedApp(async (remoteMessage) => {
-  //     console.log(
-  //       'Notification caused app to open from background state:',
-  //       remoteMessage.notification
-  //     );
-  //     // navigation.navigate(remoteMessage.data.type);
-  //   });
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification
+      );
+      // navigation.navigate(remoteMessage.data.type);
+    });
 
-  //   // Register background handler
-  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  //     console.log('Message handled in the background!', remoteMessage);
-  //   });
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
 
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //   });
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
 
-  //   return unsubscribe;
-  // }, []);
-    //TODO UNCOMMENT LATER  
-  // const initialLoginState = {
-  //   isLoading: true,
-  //   userInfo: null,
-  //   userToken: null,
-  // };
+    return unsubscribe;
+
+
+    
+  }, []);
 
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
@@ -383,311 +205,6 @@ const Drawer = createDrawerNavigator();
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
-  // const loginReducer = (prevState, action) => {
-  //   switch (action.type) {
-  //     case 'RETRIEVE_TOKEN':
-  //       return {
-  //         ...prevState,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //     case 'LOGIN':
-  //       return {
-  //         ...prevState,
-  //         userInfo: action.id,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //     case 'LOGOUT':
-  //       return {
-  //         ...prevState,
-  //         userInfo: null,
-  //         userToken: null,
-  //         isLoading: false,
-  //       };
-  //     case 'REGISTER':
-  //       return {
-  //         ...prevState,
-  //         userInfo: action.id,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //   }
-  // };
-
-  // const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
-  // const authContext = React.useMemo(
-  //   () => ({
-  //     // signIn: async(foundUser) => {
-  //     //     const userToken = String(foundUser[0].userToken);
-  //     //     const userInfo = foundUser[0].userInfo;
-
-  //     //     try {
-  //     //       await AsyncStorage.setItem('userToken', userToken);
-  //     //     } catch(e) {
-  //     //       console.log(e);
-  //     //     }
-  //     //     console.log('user token: ', userToken);
-  //     //     dispatch({ type: 'LOGIN', id: userInfo, token: userToken });
-  //     //   },
-  //     signIn: () => {
-  //       setUserToken('fhdh');
-  //       setIsLoading(false);
-  //       // const userToken = String(foundUser[0].userToken);
-  //       // const userInfo = foundUser[0].userInfo;
-
-  //       // try {
-  //       //   await AsyncStorage.setItem('userToken', userToken);
-  //       // } catch(e) {
-  //       //   console.log(e);
-  //       // }
-  //       // console.log('user token: ', userToken);
-  //       // dispatch({ type: 'LOGIN', id: userInfo, token: userToken });
-  //     },
-  //     signOut: () => {
-  //       setUserToken(null);
-  //       setIsLoading(false);
-  //       // try {
-  //       //   await AsyncStorage.removeItem('userToken');
-  //       // } catch(e) {
-  //       //   console.log(e);
-  //       // }
-  //       // dispatch({ type: 'LOGOUT' });
-  //     },
-  //     signUp: () => {
-  //       setUserToken('fgkj');
-  //       setIsLoading(false);
-  //     },
-  //     toggleTheme: () => {
-  //       setIsDarkTheme((isDarkTheme) => !isDarkTheme);
-  //     },
-  //   }),
-  //   []
-  // );
-  // useEffect(() => {
-  //   setTimeout(async () => {
-  //     setIsLoading(false);
-  //   }, 1000);
-  // }, []);
-
-  // useEffect(() => {
-  //   setTimeout(async() => {
-  //     // setIsLoading(false);
-  //     let userToken;
-  //     userToken = null;
-  //     try {
-  //       userToken = await AsyncStorage.getItem('userToken');
-  //     } catch(e) {
-  //       console.log(e);
-  //     }
-  //     // console.log('user token: ', userToken);
-  //     dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
-  //   }, 1000);
-  // }, []);
-
-  // if (isLoading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-  // const loginReducer = (prevState, action) => {
-  //   switch (action.type) {
-  //     case 'RETRIEVE_TOKEN':
-  //       return {
-  //         ...prevState,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //     case 'LOGIN':
-  //       return {
-  //         ...prevState,
-  //         userInfo: action.userInfo,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //     case 'LOGOUT':
-  //       return {
-  //         ...prevState,
-  //         userInfo: null,
-  //         userToken: null,
-  //         isLoading: false,
-  //       };
-  //     case 'REGISTER':
-  //       return {
-  //         ...prevState,
-  //         userInfo: action.userInfo,
-  //         userToken: action.token,
-  //         isLoading: false,
-  //       };
-  //   }
-  // };
-
-  // const [loginState, dispatch] = React.useReducer(
-  //   loginReducer,
-  //   initialLoginState
-  // );
-  // const [userInfo, setUserInfo] = useState({});
-  // const [user, setUser] = useState({});
-
-  // const authContext = React.useMemo(
-  //   () => ({
-  //     signIn: async (phone, password) => {
-  //       // setUserToken('fgkj');
-  //       // setIsLoading(false);
-  //       setIsLoading(true);
-  //       axios
-  //         .post(`${BASE_URL}/auth/login`, {
-  //           phone,
-  //           password,
-  //           "userType": "VENDOR"
-  //         })
-  //         .then((res) => {
-  //           let userInfo = res.data;
-  //           console.log(userInfo);
-  //           setUserInfo(userInfo);
-  //           // setUserToken = 'ddhdjkdfjjkfd';
-  //           AsyncStorage.setItem('userToken', JSON.stringify(userInfo.token));
-  //           AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-  //           // const userToken = userInfo.token;
-  //           setIsLoading(false);
-  //           dispatch({ type: 'LOGIN', id: userInfo.userId, token: userInfo.token });
-  //         })
-  //         .catch((error) => {
-  //           if (error.response) {
-  //             // Request made and server responded
-  //             console.log(error.response.data);
-  //             console.log(error.response.status);
-  //             console.log(error.response.headers);
-  //           } else if (error.request) {
-  //             console.log(error.request);
-  //           } else {
-  //             console.log('Error', error.message);
-  //           }
-  //           setIsLoading(false);
-  //         });
-
-  //     },
-  //     signOut: async () => {
-  //       userToken = null;
-  //       // setIsLoading(false);
-  //       try {
-  //         await AsyncStorage.removeItem('userToken');
-  //         console.log(userToken);
-  //         dispatch({ type: 'LOGOUT' });
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-
-  //     },
-  //     signUp: (
-  //       firstName,
-  //       lastName,
-  //       email,
-  //       password,
-  //       phone,
-  //       userType = 'VENDOR',
-  //       {navigation}
-  //     ) => {
-  //       // setUserToken('fgkj');
-  //       // setIsLoading(false);
-  //       setIsLoading(true);
-  //       axios
-  //         .post(`${BASE_URL}/user/register`, {
-  //           firstName,
-  //           lastName,
-  //           email,
-  //           password,
-  //           phone,
-  //           userType,
-  //         })
-  //         .then((res) => {
-  //           let userInfo = res.data;
-  //           setUserInfo(userInfo);
-  //           // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-  //           // userInfo.token  = null
-  //           setIsLoading(false);
-  //           navigation.navigate("VerifyPhoneScreen");
-  //           // navigation.navigate('VerifyPhoneScreen');
-  //           console.log(userInfo);
-  //         })
-  //         .catch((error) => {
-  //           if (error.response) {
-  //             // Request made and server responded
-  //             console.log(error.response.data);
-  //             console.log(error.response.status);
-  //             console.log(error.response.headers);
-  //           } else if (error.request) {
-  //             // The request was made but no response was received
-  //             console.log(error.request);
-  //           } else {
-  //             // Something happened in setting up the request that triggered an Error
-  //             console.log('Error', error.message);
-  //           }
-  //           // console.log(`register error ${e}`);
-  //           setIsLoading(false);
-  //         });
-  //     },
-  //     getUserData: async (id) => {
-  //       axios
-  //         .get(`${BASE_URL}/user/${id}`)
-  //         .then((res) => {
-  //           let user = res.data;
-  //           console.log(user.id);
-  //           setUser(user);
-  //           // setUserToken = 'ddhdjkdfjjkfd';
-  //           AsyncStorage.setItem('user', JSON.stringify(user));
-  //           // const userToken = userInfo.token;
-  //           setIsLoading(false);
-  //         })
-  //         .catch((error) => {
-  //           if (error.response) {
-  //             // Request made and server responded
-  //             console.log(error.response.data);
-  //             console.log(error.response.status);
-  //             console.log(error.response.headers);
-  //           } else if (error.request) {
-  //             console.log(error.request);
-  //           } else {
-  //             console.log('Error', error.message);
-  //           }
-  //           setIsLoading(false);
-  //         });
-  //     }
-  //     // toggleTheme: () => {
-  //     //   setIsDarkTheme( isDarkTheme => !isDarkTheme );
-  //     // }
-
-  //   }),
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   setTimeout(async () => {
-  //     // setIsLoading(false);
-  //     let userToken;
-  //     userToken = null;
-  //     try {
-  //       userToken = await AsyncStorage.getItem('userToken');
-  //       let userInfo = await AsyncStorage.getItem('userInfo');
-  //       // console.log(userInfo.token);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //     // console.log('user token: ', userToken);
-  //     dispatch({ type: 'RETRIEVE_TOKEN', token: userInfo.token });
-  //   }, 1000);
-  // }, []);
-
-  // if (loginState.isLoading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
   const [fontsLoaded] = useFonts({
     'Poppins-Black': require('./src/assets/fonts/Poppins-Black.ttf'),
     'Poppins-Regular': require('./src/assets/fonts/Poppins-Regular.ttf'),
@@ -700,9 +217,13 @@ const Drawer = createDrawerNavigator();
     'Unbounded-Bold': require('./src/assets/fonts/Unbounded-Bold.ttf'),
   });
 
+   
+
   if (!fontsLoaded) {
     return null;
   }
+   
+
 
   return (
     // <PaperProvider theme={theme} style={{ fontFamily: 'Poppins-Black' }}>
@@ -711,6 +232,7 @@ const Drawer = createDrawerNavigator();
     <PaperProvider theme={theme}>
       <AuthProvider>
         <View style={{ flex: 1 }}>
+        <UserLocation />
           <NavigationContainer
         //     linking={{
         // config: {
@@ -814,6 +336,92 @@ const Drawer = createDrawerNavigator();
       </AuthProvider>
     </PaperProvider>
   );
-};
+ };
+
+
+
+
+
+//  const startLocationTracking = async () => {
+//   await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
+//       accuracy: Location.Accuracy.Highest,
+//       timeInterval: 1000,
+//       distanceInterval: 0,
+//   });
+//   await Location.hasStartedLocationUpdatesAsync(
+//       LOCATION_TRACKING
+//   );
+//   // setLocationStarted(hasStarted);
+//   // console.log('tracking started?', hasStarted);
+//  };
+
+// function myTask() {
+//   try {
+//     // fetch data here...
+//     const backendData = "Simulated fetch " + Math.random();
+//     console.log("myTask() ", backendData);
+//     setStateFn(backendData);
+//     return backendData
+//       ? BackgroundFetch.Result.NewData
+//       : BackgroundFetch.Result.NoData;
+//   } catch (err) {
+//     return BackgroundFetch.Result.Failed;
+//   }
+// }
+// async function initBackgroundFetch(taskName,
+//                                    taskFn,
+//                                    interval = 60 * 15) {
+//   try {
+//     if (!TaskManager.isTaskDefined(taskName)) {
+//       TaskManager.defineTask(taskName, taskFn);
+//     }
+//     const options = {
+//       minimumInterval: interval // in seconds
+//     };
+//   await BackgroundFetch.registerTaskAsync(taskName, options);
+//   } catch (err) {
+//     console.log("registerTaskAsync() failed:", err);
+//   }
+// }
+// initBackgroundFetch('myTaskName', myTask, 5);
+
+// TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
+//   if (error) {
+//       console.log('LOCATION_TRACKING task ERROR:', error);
+//       return;
+//   }
+//   if (data) {
+//       const { locations } = data;
+//       let lat = locations[0].coords.latitude;
+//       let long = locations[0].coords.longitude;
+
+//       l1 = lat;
+//       l2 = long;
+
+//       console.log(
+//           `${new Date(Date.now()).toLocaleString()}: ${lat},${long}`
+//       );
+//   }
+// });
+
+// TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
+//   if (error) {
+//       console.log('LOCATION_TRACKING task ERROR:', error);
+//       return;
+//   }
+//   if (data) {
+//       const { locations } = data;
+//       let lat = locations[0].coords.latitude;
+//       let long = locations[0].coords.longitude;
+
+//       l1 = lat;
+//     l2 = long;
+
+//       console.log(
+//           `${new Date(Date.now()).toLocaleString()}: ${lat},${long}`
+//       );
+//   }
+// });
+ 
 
 export default App;

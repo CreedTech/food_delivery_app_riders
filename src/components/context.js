@@ -585,6 +585,9 @@ const AuthProvider = ({ children }) => {
       console.log('Error logging out', error);
     }
   };
+
+ 
+  
 //   const deleteUser = async () => {
 //     try {
 //       const response = await axios.get(`${config.base_url}user/delete`);
