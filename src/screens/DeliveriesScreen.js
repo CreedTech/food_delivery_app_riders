@@ -1,25 +1,17 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  Divider,
-  Appbar,
-} from 'react-native-paper';
+import { Divider, Appbar } from 'react-native-paper';
 
 const DeliveriesScreen = ({ navigation }) => {
   const theme = useTheme();
 
   return (
     <View style={styles.wrapper}>
-      <Appbar.Header style={{paddingHorizontal:15}}>
+      <Appbar.Header style={{ paddingHorizontal: 15 }}>
         <Appbar.Action icon="close" onPress={() => navigation.goBack()} />
         <Appbar.Content title="Requests" />
       </Appbar.Header>
@@ -265,14 +257,12 @@ const DeliveriesScreen = ({ navigation }) => {
                   name="map-marker-radius"
                   color="black"
                   size={23}
-                  // style={styles.backIcon}
                 />
                 <Text style={styles.elipsis}>. . . . </Text>
                 <MaterialCommunityIcons
                   name="map-marker"
                   color="black"
                   size={23}
-                  // style={styles.backIcon}
                 />
               </View>
               <View style={styles.singleStepper}>
@@ -283,7 +273,6 @@ const DeliveriesScreen = ({ navigation }) => {
                     paddingHorizontal: 10,
                     width: '100%',
                     maxWidth: '100%',
-                    // gap: 4,
                   }}
                 >
                   <View style={{ flexGrow: 9 }}>
@@ -856,38 +845,27 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     flexDirection: 'column',
-    // alignItems: 'flex-end',
     marginTop: '10%',
-    // paddingVertical: 20,
     paddingHorizontal: 30,
   },
   header: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Black',
   },
   backIcon: {
-    // marginBottom: 57,
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Black',
   },
 
   title: {
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '800',
-    fontFamily: 'Poppins-Black'
-  },
-  overview: {
-    marginVertical: 50,
-    marginHorizontal: 30,
-    justifyContent: 'space-around',
+    fontFamily: 'Poppins-Black',
   },
   boardContainer: {
     marginTop: 15,
-    // padding: 30,
     alignContent: 'center',
     alignItems: 'stretch',
     flexDirection: 'column',
@@ -895,7 +873,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#ffff',
     borderRadius: 12,
-    // paddingVertical:50,
     borderColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     borderWidth: 0.2,
     shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -911,7 +888,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Black',
   },
   tripsMade: {
     textAlign: 'center',
@@ -919,8 +896,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Black',
     fontSize: 32,
     backgroundColor: '#130102',
-    // borderTopLeftRadius: 12,
-    // borderTopRightRadius: 12,
   },
   pickupBox: {
     display: 'flex',
@@ -930,15 +905,14 @@ const styles = StyleSheet.create({
   },
   stepperContainer: {
     flexDirection: 'row',
-    fontFamily: 'Poppins-Black'
-    // paddingHorizontal:10
+    fontFamily: 'Poppins-Black',
   },
   singleStepper: {
     width: '90%',
   },
   stepper: {
     paddingRight: 5,
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Black',
   },
   elipsis: {
     transform: [{ rotate: '90deg' }],
@@ -949,6 +923,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     color: '#979595',
-    fontFamily: 'Poppins-Black'
+    fontFamily: 'Poppins-Black',
   },
 });

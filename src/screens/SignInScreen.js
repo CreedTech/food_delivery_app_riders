@@ -1,34 +1,26 @@
-import React, {useState,useContext,useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
-  Platform,
   StyleSheet,
   StatusBar,
-  Alert,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FlashMessage from 'react-native-flash-message';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from 'react-native-flash-message';
 
 import { useTheme } from 'react-native-paper';
-import authModel from '../model/auth';
 
 import { AuthContext } from '../components/context';
 
-// import Users from '../model/users';
-
 const SignInScreen = ({ navigation, setIsLoggedIn }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  // const [password, setPassword] = useState(null);
-  // const [phone, setPhone] = useState(null);
   const [data, setData] = React.useState({
     phone: '',
     password: '',
@@ -37,98 +29,44 @@ const SignInScreen = ({ navigation, setIsLoggedIn }) => {
     isValidUser: true,
     isValidPassword: true,
   });
-  const { login,forgot_password ,loading,setLoading} = useContext(AuthContext);
-  
+  const { login, forgot_password, loading, setLoading } =
+    useContext(AuthContext);
+
   useEffect(() => {
     setLoading(false);
-
   }, []);
-  const handleLogin = () => {
-    login(data.phone, data.password);
-  };
 
   async function logIn() {
     Keyboard.dismiss();
     setLoading(true);
     const userLogin = {
-      phone: "+234" + data.phone.replace(" ","").slice(-10),
+      phone: '+234' + data.phone.replace(' ', '').slice(-10),
       password: data.password,
-      "userType": "VENDOR",
+      userType: 'VENDOR',
     };
 
     const loginUser = await login(userLogin);
-    
+
     if (loginUser['type'] === 'danger') {
       console.log('y2');
       console.log(loginUser['message']);
-        showMessage({
-            message: loginUser['message'],
-            type: 'danger',
-            position: 'bottom'
-        })
+      showMessage({
+        message: loginUser['message'],
+        type: 'danger',
+        position: 'bottom',
+      });
     } else {
       console.log(loginUser['message']);
-        showMessage({
-            message: loginUser['message'],
-            type: 'success',
-            position: 'bottom'
-        })
-        setIsLoggedIn(true);
-        
+      showMessage({
+        message: loginUser['message'],
+        type: 'success',
+        position: 'bottom',
+      });
+      setIsLoggedIn(true);
     }
-};
-
-async function resetPassword() {
-  // const passwordReset = {
-  //   email: email,
-  //   // password: password,
-  //   // "userType": "VENDOR",
-  // };
-
-  const passwordReset = await forgot_password(email);
-  if (passwordReset['type'] === 'danger') {
-    console.log('yo1');
-    console.log(passwordReset['message']);
-      showMessage({
-          message: passwordReset['message'],
-          type: 'danger',
-          position: 'bottom'
-      })
-  } else {
-    console.log(passwordReset['message']);
-      showMessage({
-          message: passwordReset['message'],
-          type: 'success',
-          position: 'bottom'
-      })
-      // navigation.navigate("VerifyPhoneScreen");
-      
   }
-  
-  // if (passwordReset['type'] === 'danger') {
-  //   console.log(passwordReset['message']);
-  //     showMessage({
-  //         message: passwordReset['message'],
-  //         type: 'danger',
-  //         position: 'bottom'
-  //     })
-  // } else {
-  //   console.log(passwordReset['message']);
-  //     showMessage({
-  //         message: passwordReset['message'],
-  //         type: 'success',
-  //         position: 'bottom'
-  //     })
-  //     setIsLoggedIn(true);
-      
-  // }
-};
-  
-  const { colors } = useTheme();
 
-  // const { login, isLoading } = React.useContext(AuthContext);
-  // const { signIn ,isLoading} = React.useContext(AuthContext);
-  // const [loading, setLoading] = React.useState(false);
+  const { colors } = useTheme();
 
   const textInputChange = (val) => {
     if (val.trim().length >= 10 && !isNaN(+val)) {
@@ -184,42 +122,12 @@ async function resetPassword() {
       });
     }
   };
-  // const loginHandle = () => {
-  //   signIn();
-  //   // signIn();
-  // };
-
-  //     const loginHandle = (phone_number, password) => {
-  //         const foundUser = Users.filter((item) => {
-  //             return phone_number == item.phone_number && password == item.password;
-  //         });
-  //         console.log(foundUser);
-
-  //     if (data.phone_number.length == 0 || data.password.length == 0) {
-  //       Alert.alert(
-  //         'Wrong Input!',
-  //         'phone_number or password field cannot be empty.',
-  //         [{ text: 'Okay' }]
-  //       );
-  //       return;
-  //     }
-
-  //     if (foundUser.length !== 0) {
-  //       Alert.alert('Invalid User!', 'phone_number or password is incorrect.', [
-  //         { text: 'Okay' },
-  //       ]);
-  //       return;
-  //     }
-  //     signIn(foundUser);
-  //         // signIn();
-  //   };
-
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <StatusBar style="auto" />
       <Spinner visible={loading} />
       <View style={{ paddingTop: 50, paddingHorizontal: 30 }}>
-      <TouchableOpacity>
+        <TouchableOpacity>
           <Feather
             name="chevron-left"
             color="black"
@@ -234,109 +142,112 @@ async function resetPassword() {
             Please provide details below to login
           </Text>
         </View>
-      
-      <View style={{ marginVertical: 20, marginTop: 50 }}>
-        
-        <View style={styles.mobileContainer}>
-          <PhoneInput
-            allowZeroAfterCountryCode={true}
-            style={styles.countrCode}
-            initialCountry={'ng'}
-            useRef="phone"
-          />
-          {/* <CallingCodePicker onValueChange={() => {}} /> */}
-           {/* <PhoneInput/> */}
-          <TextInput
+
+        <View style={{ marginVertical: 20, marginTop: 50 }}>
+          <View style={styles.mobileContainer}>
+            <PhoneInput
+              allowZeroAfterCountryCode={true}
+              style={styles.countrCode}
+              initialCountry={'ng'}
+              useRef="phone"
+            />
+            <TextInput
               style={styles.textInputMobile}
               value={data.phone}
-            placeholder="Phone Number"
-            keyboardType="numeric"
-            maxLength={20}
-            underlineColorAndroid="transparent"
+              placeholder="Phone Number"
+              keyboardType="numeric"
+              maxLength={20}
+              underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              // onChangeText={(val) => setPhone(val)}
-              // onChangeText={setPhone}
-            onChangeText={(val) => textInputChange(val)}
-            // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-          />
-          {data.check_textInputChange ? (
-            <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
-              <Feather name="check-circle" color="green" size={20} />
+              onChangeText={(val) => textInputChange(val)}
+            />
+            {data.check_textInputChange ? (
+              <Animatable.View
+                animation="bounceIn"
+                style={{
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Feather name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            ) : null}
+          </View>
+          {data.isValidUser ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Invalid Phone Number</Text>
             </Animatable.View>
-          ) : null}
-        </View>
-        {data.isValidUser ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Invalid Phone Number</Text>
-          </Animatable.View>
-        )}
-        <View style={styles.mobileContainer}>
-          <TextInput
-            secureTextEntry={data.secureTextEntry ? true : false}
-            style={styles.passwordInput}
+          )}
+          <View style={styles.mobileContainer}>
+            <TextInput
+              secureTextEntry={data.secureTextEntry ? true : false}
+              style={styles.passwordInput}
               placeholder="Password"
               value={data.password}
-            placeholderStyle={{ fontSize: 40, color: 'red' }}
-            autoCapitalize="none"
+              placeholderStyle={{ fontSize: 40, color: 'red' }}
+              autoCapitalize="none"
               selectionColor="#FD264F"
-              // onChangeText={(val) => setPassword(val)}
-              // onChangeText={setPassword}
-            onChangeText={(val) => handlePasswordChange(val)}
-          />
-          <TouchableOpacity onPress={updateSecureTextEntry}  style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
-            {data.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={25} />
-            ) : (
-              <Feather name="eye" color="grey" size={25} />
-            )}
-          </TouchableOpacity>
-        </View>
-        {data.isValidPassword ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Password must be more than or equal to 6 characters long.
-            </Text>
-          </Animatable.View>
-        )}
-        <View style={styles.forgotPass}>
+              onChangeText={(val) => handlePasswordChange(val)}
+            />
             <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('ForgotPasswordScreen');
-            }}
-            >
-            <Text style={styles.passwordForgotten}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.loginContainer}>
-          <TouchableOpacity
-            style={styles.LoginButton}
-              onPress={logIn}
-              disabled={!data.phone && !data.password}
-            // onPress={() => navigation.navigate('FinishSetupScreen')}
-          >
-            <Text style={styles.loginText}>Sign in</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.noAccount}>
-          <Text style={styles.noAccountText}>
-            Don’t have an account?{' '}
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('SignUpBase');
+              onPress={updateSecureTextEntry}
+              style={{
+                alignSelf: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <Text style={{ fontWeight: '600', color: '#FD264F' }}>
-                Register
-              </Text>
+              {data.secureTextEntry ? (
+                <Feather name="eye-off" color="grey" size={25} />
+              ) : (
+                <Feather name="eye" color="grey" size={25} />
+              )}
             </TouchableOpacity>
-          </Text>
-        </View>
-
-        {/* <ActivityIndicator size="large" /> */}
+          </View>
+          {data.isValidPassword ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be more than or equal to 6 characters long.
+              </Text>
+            </Animatable.View>
+          )}
+          <View style={styles.forgotPass}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('ForgotPasswordScreen');
+              }}
+            >
+              <Text style={styles.passwordForgotten}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.loginContainer}>
+            <TouchableOpacity
+              style={styles.LoginButton}
+              onPress={logIn}
+              disabled={!data.phone && !data.password}
+            >
+              <Text style={styles.loginText}>Sign in</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.noAccount}>
+            <Text style={styles.noAccountText}>
+              Don’t have an account?{' '}
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('SignUpBase');
+                }}
+              >
+                <Text style={{ fontWeight: '600', color: '#FD264F' }}>
+                  Register
+                </Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
         </View>
       </View>
-      <FlashMessage position={'top'}/>
-     </SafeAreaView>
+      <FlashMessage position={'top'} />
+    </SafeAreaView>
   );
 };
 
@@ -349,7 +260,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     flexDirection: 'column',
     marginTop: '20%',
     paddingVertical: 20,
@@ -361,15 +271,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    // lineHeight: '34px',
-    // letterSpacing: '-0.01px',
     color: '#303030',
   },
   subtitle: {
     fontSize: 16,
     fontWeight: '400',
-    // lineHeight: '24px',
-    // letterSpacing: '-0.01px',
     color: '#ABABB4',
   },
   textInputMobile: {
@@ -379,7 +285,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     color: '#000000',
     backgroundColor: 'transparent',
-    // backgroundColor:'#c0c0c0'
   },
   countrCode: {
     width: '30%',
@@ -402,7 +307,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   forgotPass: {
-    // flex: 1,
     paddingTop: 14,
     alignSelf: 'flex-end',
   },
@@ -410,7 +314,6 @@ const styles = StyleSheet.create({
     color: '#FD264F',
     fontSize: 14,
     fontWeight: '600',
-    // lineHeight: '18px'
   },
   activityIndicator: {
     position: 'absolute',
@@ -420,14 +323,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '600',
     fontSize: 18,
-    // lineHeight: '18px',
   },
   loginContainer: {
-    // justifyContent: 'flex-end',
-    // alignItems: 'center',
-    // flexDirection: 'row',
     width: '100%',
-    // paddingHorizontal: 7,
     paddingVertical: 5,
   },
   noAccount: {
@@ -437,7 +335,6 @@ const styles = StyleSheet.create({
   noAccountText: {
     color: '#FD264F',
     fontSize: 16,
-    // lineHeight:'18px',
   },
   eyeIcon: {
     marginTop: 5,
@@ -450,7 +347,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     backgroundColor: '#F2F2F4',
     borderRadius: 15,
-    // overflow: 'hidden'
   },
   headerContainer: {
     width: '100%',
@@ -464,6 +360,6 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   errorMsg: {
-    color:'red'
-  }
+    color: 'red',
+  },
 });

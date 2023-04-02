@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
-import { View, ActivityIndicator } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
 } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   Provider as PaperProvider,
@@ -26,8 +24,6 @@ const Drawer = createDrawerNavigator();
 
 const Navigation = () => {
   
-  const [isLoading, setIsLoading] = React.useState(true);
-  // const [userToken, setUserToken] = React.useState(null);
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
@@ -101,9 +97,6 @@ const Navigation = () => {
                 component={EditProfileScreen}
                
               />
-              {/* <Drawer.Screen name="SupportScreen" component={SupportScreen} /> */}
-              {/* <Drawer.Screen name="SettingsScreen" component={SettingsScreen} /> */}
-              {/* <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} /> */}
             </Drawer.Navigator>
           ) : (
             <RootStackScreen />

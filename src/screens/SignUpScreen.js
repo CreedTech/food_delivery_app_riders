@@ -1,53 +1,32 @@
-import React, { useState, useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
-  Button,
   TouchableOpacity,
-  Dimensions,
   TextInput,
-  Platform,
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
 } from 'react-native';
-  import { AuthContext } from '../components/context';
-import { StatusBar } from 'expo-status-bar';
-// import authModel from '../model/auth';
+import { AuthContext } from '../components/context';
 import axios from 'axios';
 import { BASE_URL } from '../config';
 import FlashMessage from 'react-native-flash-message';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from 'react-native-flash-message';
 import PhoneInput from 'react-native-phone-input';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import * as EmailValidator from 'email-validator';
-// import { AuthContext } from '../components/context';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 function checkEmail(email) {
   return EmailValidator.validate(email);
 }
 
-// function checkAlert() {
-//   showMessage({
-//       message: 'You must agree to terms to register',
-//       type: 'danger',
-//       position: 'bottom'
-//   });
-// };
-
-const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [phone, setPhone] = useState(null);
+const SignUpScreen = ({ setToken, navigation }) => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [userInfo, setUserInfo] = useState({});
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
@@ -63,14 +42,10 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     isValidPassword: true,
   });
 
-  const { register, loading,setLoading ,login} = useContext(AuthContext);
+  const { register, loading, setLoading, login } = useContext(AuthContext);
 
-  // const handleRegister = () => {
-  //   register(firstName,lastName, email, password,phone);
-  // };
   useEffect(() => {
     setLoading(false);
-
   }, []);
 
   async function createUser() {
@@ -90,7 +65,7 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-        phone: "+234" + data.phone.replace(" ","").slice(-10),
+        phone: '+234' + data.phone.replace(' ', '').slice(-10),
         userType: 'VENDOR',
       };
 
@@ -100,41 +75,27 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
       if (result['type'] === 'danger') {
         console.log('yo1');
         console.log(result['message']);
-          showMessage({
-              message: result['message'],
-              type: 'danger',
-              position: 'bottom'
-          })
+        showMessage({
+          message: result['message'],
+          type: 'danger',
+          position: 'bottom',
+        });
       } else {
         console.log(result['message']);
-          showMessage({
-              message: result['message'],
-              type: 'success',
-              position: 'bottom'
-          })
-          logIn();
-          navigation.navigate("VerifyPhoneScreen");
-          // setIsLoggedIn(true);
+        showMessage({
+          message: result['message'],
+          type: 'success',
+          position: 'bottom',
+        });
+        logIn();
+        navigation.navigate('VerifyPhoneScreen');
       }
-
-      // Check if registration successful
-      // if (result['type'] === 'success') {
-        // logIn();
-      //   navigation.navigate("VerifyPhoneScreen");
-      // }
-
-      // showMessage({
-      //   message: result['title'],
-      //   description: result['message'],
-      //   type: result['type'],
-      //   position: 'bottom',
-      // });
     }
   }
 
   async function logIn() {
     const userLogin = {
-      phone: "+234" + data.phone.replace(" ","").slice(-10),
+      phone: '+234' + data.phone.replace(' ', '').slice(-10),
       password: data.password,
       userType: 'VENDOR',
     };
@@ -147,14 +108,11 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
         position: 'bottom',
       });
     } else {
-      console.log("id part");
+      console.log('id part');
       console.log(loginUser['id']);
       setToken(loginUser['id']);
-      // setIsLoggedIn(true);
     }
   }
-
-  // const {signUp} = useContext(AuthContext);
 
   const firstNameInputChange = (val) => {
     if (val.trim().length >= 6 && val.trim().length <= 25) {
@@ -242,58 +200,12 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
     });
   };
 
-  const handleAxiosRequest = async (
-    firstName,
-    lastName,
-    email,
-    password,
-    phone,
-    userType = 'VENDOR'
-  ) => {
-    // setUserToken('fgkj');
-    // setIsLoading(false);
-    setIsLoading(true);
-    await axios
-      .post(`${BASE_URL}/user/register`, {
-        firstName,
-        lastName,
-        email,
-        password,
-        phone,
-        userType,
-      })
-      .then((res) => {
-        let userInfo = res.data;
-        setUserInfo(userInfo);
-        setIsLoading(false);
-        navigation.navigate('VerifyPhoneScreen');
-        console.log(userInfo);
-      })
-      .catch((error) => {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        // console.log(`register error ${e}`);
-        setIsLoading(false);
-      });
-  };
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 30 }}
     >
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset="25">
-        {/* <StatusBar backgroundColor="#ffffff" barStyle="light-content" /> */}
         <Spinner visible={loading} />
         <TouchableOpacity>
           <AntIcon
@@ -321,14 +233,16 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               onChangeText={(text) => firstNameInputChange(text)}
-              // onChangeText={setFirstName}
             />
           </View>
           {data.check_firstNameInputChange ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>First Name must be more than 6 characters and less than 25 characters long.</Text>
-          </Animatable.View>
-        )}
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                First Name must be more than 6 characters and less than 25
+                characters long.
+              </Text>
+            </Animatable.View>
+          )}
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
@@ -337,15 +251,17 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               selectionColor="#FD264F"
               underlineColorAndroid="transparent"
               placeholderStyle={{ fontSize: 40 }}
-              // onChangeText={setLastName}
               onChangeText={(text) => lastNameInputChange(text)}
             />
           </View>
           {data.check_lastNameInputChange ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Last Name must be more than 6 characters and less than 25 characters long.</Text>
-          </Animatable.View>
-        )}
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Last Name must be more than 6 characters and less than 25
+                characters long.
+              </Text>
+            </Animatable.View>
+          )}
           <View style={styles.mobileContainer}>
             <TextInput
               style={styles.input}
@@ -354,11 +270,17 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
-              // onChangeText={setEmail}
               onChangeText={(text) => emailInputChange(text)}
             />
             {data.check_emailInputChange ? (
-              <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
+              <Animatable.View
+                animation="bounceIn"
+                style={{
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
             ) : null}
@@ -373,7 +295,6 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
               placeholderStyle={{ fontSize: 40 }}
-              // onChangeText={setPassword}
               onChangeText={(val) => handlePasswordChange(val)}
             />
             <TouchableOpacity
@@ -392,12 +313,12 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
             </TouchableOpacity>
           </View>
           {data.isValidPassword ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-            Password must be more than or equal to 6 characters long.
-            </Text>
-          </Animatable.View>
-        )}
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be more than or equal to 6 characters long.
+              </Text>
+            </Animatable.View>
+          )}
           <View style={styles.mobileContainer}>
             <PhoneInput
               allowZeroAfterCountryCode={true}
@@ -405,21 +326,25 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
               initialCountry={'ng'}
               useRef="phone"
             />
-            {/* <CallingCodePicker onValueChange={() => {}} /> */}
-            {/* <PhoneInput/> */}
             <TextInput
               style={styles.textInputMobile}
-              placeholder="Phone Number"   
+              placeholder="Phone Number"
               value={data.phone}
               keyboardType="numeric"
               maxLength={20}
               underlineColorAndroid="transparent"
               selectionColor="#FD264F"
-              // onChangeText={setPhone}
               onChangeText={(val) => numberInputChange(val)}
             />
             {data.check_numberInputChange ? (
-              <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
+              <Animatable.View
+                animation="bounceIn"
+                style={{
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
             ) : null}
@@ -428,7 +353,13 @@ const SignUpScreen = ({ setToken, navigation, setIsLoggedIn }) => {
             <TouchableOpacity
               style={styles.registerButton}
               onPress={createUser}
-              disabled={!data.phone && !data.password &&  !data.email && !data.firstName && !data.lastName}
+              disabled={
+                !data.phone &&
+                !data.password &&
+                !data.email &&
+                !data.firstName &&
+                !data.lastName
+              }
             >
               <Text style={styles.registerText}>Register</Text>
             </TouchableOpacity>
@@ -466,10 +397,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // flexDirection: 'column',
-    // marginTop: '15%',
-    // paddingTop: 20,
-    // paddingHorizontal: 40,
   },
   backIcon: {
     marginBottom: 37,
@@ -477,16 +404,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    // lineHeight: '34px',
-    // letterSpacing: '-0.01px',
     color: '#303030',
   },
   subtitle: {
     fontSize: 16,
     fontWeight: '400',
     marginBottom: 20,
-    // lineHeight: '24px',
-    // letterSpacing: '-0.01px',
     color: '#ABABB4',
   },
   textInputMobile: {
@@ -515,9 +438,6 @@ const styles = StyleSheet.create({
     color: '#000000',
     backgroundColor: 'transparent',
   },
-  eyeIcon: {
-    marginTop: 5,
-  },
   registerButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -535,11 +455,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '600',
     fontSize: 18,
-    // lineHeight: '18px',
   },
   registerContainer: {
     width: '100%',
-    // paddingHorizontal: 10,
     paddingVertical: 5,
   },
   noAccount: {
@@ -550,7 +468,6 @@ const styles = StyleSheet.create({
   noAccountText: {
     color: '#FD264F',
     fontSize: 16,
-    // lineHeight:'18px',
   },
   mobileContainer: {
     width: '100%',
@@ -561,18 +478,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F4',
     borderRadius: 15,
   },
-  headerContainer: {
-    width: '100%',
-    height: '10%',
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  headerText: {
-    fontSize: 17,
-    color: 'grey',
-  },
   errorMsg: {
-    color:'red'
-  }
+    color: 'red',
+  },
 });

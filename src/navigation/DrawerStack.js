@@ -5,21 +5,19 @@ import CustomDrawer from './CustomDrawer';
 
 const Drawer = createDrawerNavigator();
 
-function HomeNav(){
-    return(
-        <HomeStack />
-    );
+function HomeNav() {
+  return <HomeStack />;
 }
 
 const DrawerStack = () => {
-    return (
-        <Drawer.Navigator 
-            screenOptions={{ headerShown: false }} 
-            drawerContent={props => <CustomDrawer {...props} />}
-        >
-            <Drawer.Screen name="HomePage" component={HomeNav} />
-        </Drawer.Navigator>
-    );
-}
+  return (
+    <Drawer.Navigator
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawer {...props} />}
+    >
+      <Drawer.Screen name="HomePage" component={HomeNav} />
+    </Drawer.Navigator>
+  );
+};
 
 export default DrawerStack;

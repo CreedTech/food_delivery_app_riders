@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import storage from '../model/storage';
 
 const LOCATION_TRACKING = 'location-tracking';
 
@@ -14,9 +12,6 @@ var location;
 function UserLocation() {
 
     const [locationStarted, setLocationStarted] = React.useState(false);
-    // const [driverId, setDriverId] = React.useState(null);
-    // const [userInfo, setUserInfo] = useState('');
-    // const [locationString, setLocationString] = React.useState(null);
     const [location, setLocation] = useState(null);
 
     const startLocationTracking = async () => {
@@ -32,9 +27,6 @@ function UserLocation() {
       showsBackgroundLocationIndicator: true,
            });
         let location = await Location.getCurrentPositionAsync({});
-        console.log('====================================');
-        console.log("real");
-        console.log('====================================');
         let lat = location.coords.latitude;
         let long = location.coords.longitude;
         console.log('====================================');
@@ -70,10 +62,6 @@ function UserLocation() {
 
         config();
         startLocation();
-        // console.log("Location String");
-        // console.log(location);
-        // setLocationString(location);
-        // console.log(locationString);
     }, []);
 
     

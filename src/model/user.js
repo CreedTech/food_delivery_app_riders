@@ -5,7 +5,6 @@ import { BASE_URL } from '../config';
 
 const userModel = {
   getUserData: async function getUserData(userData) {
-    // const token = await storage.readToken();
     const user = userData['userData'];
 
     const response = await fetch(`${config.base_url}user/${user.userId}`, {
@@ -23,13 +22,6 @@ const userModel = {
   getBalance: async function getBalance() {
     const userData = await storage.readUser();
     const user = await userModel.getUserData(userData);
-    // console.log('yo');
-    // console.log(user.userId);
-
-    // const userBalance = user['user']['balance'];
-
-    // return userBalance;
-    // const user = userData['userData'];
 
     const response = await fetch(`${config.base_url}wallet/balance`, {
       method: 'GET',
@@ -44,33 +36,6 @@ const userModel = {
   },
 
   requestRide: async function requestRide() {
-    // const userData = await storage.readUser();
-    // const user = await userModel.getUserData(userData);
-    // console.log("yo");
-    // console.log(user.userId);
-
-    // const userBalance = user['user']['balance'];
-
-    // return userBalance;
-    // const user = userData['userData'];
-    // const request = {
-    //   "requestType": "EXPRESS",
-    //   "senderAddress": "Quarry",
-    //   "senderLocationLatLng": "7.1361098,3.3250559",
-    //   "senderLandMark": "Quarry",
-    //   "senderName": "Test",
-    //   "senderPhone": "+2348126435378",
-    //   "recipientAddress": "asero",
-    //   "recipientLocationLatLng": "7.145244,3.327695",
-    //   "recipientLandMark": "Asero",
-    //   "recipientName": "Ayoola",
-    //   "recipientPhone": "+2349137104825",
-    //   "packageDetails": "Food",
-    //   "pickupTime": "12:00",
-    //   "userId": "6462f24a-c42e-4ad0-a53d-e3592fdb93e0"
-    // }
-    // console.log(request);
-
     axios
       .post(`${config.base_url}request-ride`, {
         requestType: 'EXPRESS',
@@ -112,12 +77,8 @@ const userModel = {
           console.log('Error', error.message);
         }
       });
-
   },
   getRides: async function getRides() {
-    // const token = await storage.readToken();
-    // const user = userData['userData'];
-
     const response = await fetch(`${config.base_url}request-ride`, {
       method: 'GET',
     });
@@ -126,13 +87,16 @@ const userModel = {
 
     return result.rows;
   },
-  updateRiderLocation: async function UpdateRiderLocation({driverLocation,driverId}) {
-    console.log("riderInfo");
-    console.log({driverLocation,driverId});
+  updateRiderLocation: async function UpdateRiderLocation({
+    driverLocation,
+    driverId,
+  }) {
+    console.log('riderInfo');
+    console.log({ driverLocation, driverId });
     axios
       .post(`${config.base_url}location/update-rider-location`, {
-        "location": driverLocation,
-        "driverId": driverId
+        location: driverLocation,
+        driverId: driverId,
       })
       .then((res) => {
         let result = res.data;
@@ -151,14 +115,13 @@ const userModel = {
           console.log('Error', error.message);
         }
       });
-
   },
 
   assignDeviceToken: async function AssignDeviceToken(deviceToken) {
     console.log(deviceToken);
     axios
       .post(`${config.base_url}user/assign-device-token`, {
-        deviceToken
+        deviceToken,
       })
       .then((res) => {
         let result = res.data;
@@ -177,62 +140,9 @@ const userModel = {
           console.log('Error', error.message);
         }
       });
-
   },
 
-  // getHistory: async function getHistory() {
-  //     const user = await storage.readUser();
-  //     const userId = user['userData']['id']
-
-  //     const token = await storage.readToken();
-  //     const respone = await fetch(`${config.base_url}users/${userId}?api_key=${API_KEY}`, {
-  //         method: 'GET',
-  //         headers: {
-  //             'x-access-token': token['token']
-  //         }
-  //     }
-  //     );
-
-  //     const result = await respone.json();
-
-  //     const userData = result['user'];
-
-  //     const userHistory = userData['history'];
-
-  //     return userHistory;
-  // },
-
-  // addFunds: async function addFunds(prepaid) {
-  //     const token = await storage.readToken();
-  //     const user = await storage.readUser();
-  //     const userData = await userModel.getUserData(user);
-
-  //     const userId = userData['user']['_id'];
-
-  //     const requestBody = {
-  //         'user_id': userId,
-  //         'prepaid_code': prepaid
-  //     };
-
-  //     const response = await fetch(`${config.base_url}users/addfund?api_key=${API_KEY}`, {
-  //         method: 'POST',
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //             'x-access-token': token['token']
-  //         },
-  //         body: JSON.stringify(requestBody)
-  //     });
-
-  //     const result = await response;
-
-  //     return result;
-  // },
-
   getProfile: async function getProfile() {
-    // const userData = await storage.readUser();
-    // const user = await userModel.getUserData(userData);
-
-    // return user;
     const response = await fetch(`${config.base_url}user/profile`, {
       method: 'GET',
     });
@@ -294,7 +204,6 @@ const userModel = {
 
     return result;
   },
-
 };
 
 export default userModel;

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
   // Switch,
@@ -14,28 +12,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { format } from "date-fns";
 import {
   Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  TouchableRipple,
   Switch
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userModel from '../model/user';
 import axios from 'axios';
 import { BASE_URL } from '../config';
-import FlashMessage from 'react-native-flash-message';
-import { showMessage, hideMessage } from 'react-native-flash-message';
 
 const HomeScreen = ({ navigation }) => {
-  const { colors } = useTheme();
   const [userInfo, setUserInfo] = useState('');
   const [userBalance, setUserBalance] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const [rides, setRides] = useState([]);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const theme = useTheme();
   useEffect(() => {
     async function getUser() {
       const result = await userModel.getProfile();
@@ -57,13 +46,10 @@ const HomeScreen = ({ navigation }) => {
       console.log(r.recipientAddress);
     });
     if (isEnabled) {
-      // console.log("isEnabled");
-      // console.log(isEnabled);
       console.log("Availability is Set to Online");
     }
     setInterval(() => {
       if (isEnabled) {
-        // console.log("isEnabled");
         console.log("Availability is Set to Online");
       UpdateRiderLocation();
     }  
@@ -115,41 +101,6 @@ const HomeScreen = ({ navigation }) => {
         // console.log(`register error ${e}`);
       });
   };
-  // useEffect(() => {
-
-  //   try {
-  //     let user =  AsyncStorage.getItem('userInfo');
-  //     // setParsed(JSON.parse(user.userId));
-  //     // console.log(parsed.firstName);
-  //     setUserInfo(user);
-  //     console.log(user.userId);
-  //     getUserData(user.userId);
-  //     // console.log(user);
-
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-
-  //   // setTimeout(async () => {
-  //   //   // setIsLoading(false);
-  //   //   // let userToken;
-  //   //   // userToken = null;
-  //   //   try {
-  //   //     let user = await AsyncStorage.getItem('userInfo');
-  //   //     setParsed(JSON.parse(user.id));
-  //   //     // console.log(parsed.firstName);
-  //   //     setUserInfo(user);
-  //   //     console.log(parsed.userId);
-
-  //   //     // console.log(user);
-
-  //   //   } catch (e) {
-  //   //     console.log(e);
-  //   //   }
-  //   // }, 1000);
-
-  // }, []);
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
@@ -157,21 +108,14 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', width: '70%' }}>
             <Avatar.Image
-              // style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
               source={require('../assets/images/profile.png')}
               size={72}
             />
             <View style={styles.user}>
               <Text style={styles.title} numberOfLines={1}>
-                {/* {`${userInfo.firstName.slice(
-                            0,
-                            8
-                          )}...`} */}
+                
                 {userInfo.firstName} {userInfo.lastName}
-                {/* {`${userInfo.lastName.slice(
-                            0,
-                            6
-                          )}...`} */}
+              
               </Text>
             </View>
           </View>
@@ -201,12 +145,7 @@ const HomeScreen = ({ navigation }) => {
             >
               Availability
             </Text>
-            {/* <Toggle toggle={toggle} setToggle={setToggle}
-            color={"#4C9521"}
-            size={15}
-            filled={true}
-            circleColor={"white"}
-            /> */}
+           
             <Switch
               trackColor={{ false: '#000000', true: '#4C9521' }}
               thumbColor={isEnabled ? '#ffffff' : '#767577'}
@@ -276,14 +215,11 @@ const HomeScreen = ({ navigation }) => {
                 rides.map((r, index) => {
                   var date = new Date(r.createdAt);
                   var formattedDate = format(date, "MMMM do, yyyy H:mma");
-                  // r.recipientAddress
                   return <View style={styles.trips} key={index}>
                     <View
                     style={{
                       flexDirection: 'row',
-                      // justifyContent: 'center',
                       alignItems: 'center',
-                      // width:50
                       width:'80%'
                     }}
                     >
@@ -377,25 +313,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     flexDirection: 'column',
-    // alignItems: 'flex-end',
     marginTop: '10%',
     paddingVertical: 20,
     paddingHorizontal: 20,
   },
   header: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
     alignContent: 'center',
     alignItems: 'center',
     width: '90%',
-    // flexBasis:'30%'
   },
   backIcon: {
-    // marginBottom: 57,
   },
   user: {
     margin: 15,
@@ -406,7 +337,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '800',
     fontFamily: 'Poppins-Bold',
-    // width: '60%'
   },
   overview: {
     marginVertical: 50,
@@ -422,7 +352,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#200202',
     borderRadius: 12,
-    // paddingVertical:50,
   },
   board: {
     flexDirection: 'row',
@@ -460,7 +389,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     position: 'relative',
-    // top: '10%',
     bottom: '0%',
     alignItems: 'center',
     color: '#ffffff',

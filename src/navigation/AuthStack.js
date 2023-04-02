@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-// import WelcomeScreen from '../screens/WelcomeScreen';
-// import Login from '../screens/Login';
-// import Signup from '../screens/Signup';
-// import SetPhotoName from '../screens/SetPhotoName';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VerifyPhoneScreen from '../screens/VerifyPhoneScreen';
 import SignUpScreen from '../screens/SignUpScreen';

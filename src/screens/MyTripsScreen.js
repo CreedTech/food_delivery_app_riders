@@ -1,33 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import { format } from "date-fns";
+import { View, Text, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { format } from 'date-fns';
 import { useTheme } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  TouchableRipple,
-  Switch,
-  Divider,
-  Appbar,
-} from 'react-native-paper';
-import { useWindowDimensions } from 'react-native';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import userModel from '../model/user';
+import { Appbar } from 'react-native-paper';
 import axios from 'axios';
 import { BASE_URL } from '../config';
 
@@ -83,30 +60,6 @@ const MyTripsScreen = ({ navigation }) => {
       </Appbar.Header>
       <View style={styles.container}>
         <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
-
-        {/* <View style={styles.boardContainer}>
-          <View style={styles.board}>
-            <Text style={{ color: '#000000', fontSize: 15, fontWeight: '500' }}>
-              Balance
-            </Text>
-            <Text
-              style={{
-                color: '#000000',
-                fontSize: 24,
-                fontWeight: '800',
-              }}
-            >
-              N 12,000.00
-            </Text>
-            <View style={styles.requestButton}>
-              <TouchableOpacity onPress={() => {}}>
-                <View style={styles.requestText}>
-                  <Text style={{ color: '#ffffff' }}>Withdraw</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View> */}
         <View
           style={{
             marginVertical: 30,
@@ -169,21 +122,17 @@ const MyTripsScreen = ({ navigation }) => {
         </View>
         <ScrollView>
           <View style={{ flexDirection: 'column', marginHorizontal: 0 }}>
-            {
-              // mapping through an array?
-              // const operations =
-              rides.map((r, index) => {
-                var date = new Date(r.createdAt);
-                var formattedDate = format(date, "MMMM do, yyyy H:mma");
-                // r.recipientAddress
-                return <View style={styles.trips} key={index}>
+            {rides.map((r, index) => {
+              var date = new Date(r.createdAt);
+              var formattedDate = format(date, 'MMMM do, yyyy H:mma');
+              return (
+                <View style={styles.trips} key={index}>
                   <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      // width:50
-                      width:'80%'
+                      width: '80%',
                     }}
                   >
                     <View
@@ -203,25 +152,30 @@ const MyTripsScreen = ({ navigation }) => {
                         color="black"
                       />
                     </View>
-                    <View style={{ marginHorizontal: 15,width:'65%' }}>
-                        <Text style={{ fontSize: 16, fontWeight: '500',width:'100%' }} numberOfLines={1}>
-                          {r.recipientAddress} - {r.senderAddress}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: '400',
-                            color: '#ABABB4',
-                            // width:'50%'
-                          }}
+                    <View style={{ marginHorizontal: 15, width: '65%' }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '500',
+                          width: '100%',
+                        }}
+                        numberOfLines={1}
                       >
-                        
-                          {formattedDate}
-                        </Text>
-                      </View>
+                        {r.recipientAddress} - {r.senderAddress}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '400',
+                          color: '#ABABB4',
+                        }}
+                      >
+                        {formattedDate}
+                      </Text>
+                    </View>
                   </View>
                   <View>
-                    <View style={{ width:'100%' }}>
+                    <View style={{ width: '100%' }}>
                       <Text
                         style={{
                           fontSize: 12,
@@ -242,9 +196,9 @@ const MyTripsScreen = ({ navigation }) => {
                       </Text>
                     </View>
                   </View>
-                </View>;
-              })
-            }
+                </View>
+              );
+            })}
           </View>
         </ScrollView>
       </View>
@@ -261,20 +215,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     flexDirection: 'column',
-    // alignItems: 'flex-end',
     marginTop: '5%',
-    // paddingVertical: 20,
     paddingHorizontal: 30,
   },
   header: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  backIcon: {
-    // marginBottom: 57,
   },
 
   title: {
@@ -282,94 +229,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '800',
   },
-  overview: {
-    marginVertical: 50,
-    marginHorizontal: 30,
-    justifyContent: 'space-around',
-  },
-  boardContainer: {
-    padding: 20,
-    alignContent: 'center',
-    alignItems: 'stretch',
-    flexDirection: 'column',
-    color: '#000000',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFE4E6',
-    borderRadius: 12,
-    // paddingVertical:50,
-  },
-  board: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingTop: 15,
-    paddingHorizontal: 1,
-    paddingVertical: 5,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
   trips: {
     paddingBottom: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-    width:'100%'
+    width: '100%',
   },
   tripsMade: {
     textAlign: 'center',
     alignItems: 'center',
     fontSize: 32,
     backgroundColor: '#130102',
-    // borderTopLeftRadius: 12,
-    // borderTopRightRadius: 12,
-  },
-  pickupBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
-  stepperContainer: {
-    flexDirection: 'row',
-    // paddingHorizontal:10
-  },
-  singleStepper: {
-    // flexDirection: 'column',
-    // paddingHorizontal: 5,
-    // justifyContent: 'space-between',
-    width: '90%',
-  },
-  stepper: {
-    paddingRight: 5,
-  },
-  elipsis: {
-    transform: [{ rotate: '90deg' }],
-    paddingVertical: 10,
-    fontSize: 12,
-    fontWeight: '900',
-    alignContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#979595',
-  },
-  requestButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 10,
-    borderRadius: 50,
-    position: 'relative',
-    // top: '20%',
-    // bottom: '3%',
-    alignItems: 'center',
-    color: '#ffffff',
-    width: '40%',
-    borderBottomWidth: 0,
-    backgroundColor: '#FD264F',
-    shadowColor: 'transparent',
-    shadowRadius: 0,
-    shadowOffset: {
-      height: 0,
-    },
   },
 });

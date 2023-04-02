@@ -137,20 +137,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  row: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   section: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 15,
-  },
-  paragraph: {
-    fontWeight: 'bold',
-    marginRight: 3,
-    fontFamily: 'Poppins-Light'
   },
   drawerItem: {
     fontSize: 13,
@@ -183,12 +173,5 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 0,
     },
-  },
-  preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    fontFamily: 'Poppins-Light'
   },
 });

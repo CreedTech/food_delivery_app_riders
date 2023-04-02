@@ -1,21 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
-  Platform,
   StyleSheet,
   StatusBar,
-  Alert,
   Keyboard,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FlashMessage from 'react-native-flash-message';
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import * as EmailValidator from 'email-validator';
 import { FancyAlert } from 'react-native-expo-fancy-alerts';
 
@@ -23,19 +21,11 @@ import { useTheme } from 'react-native-paper';
 
 import { AuthContext } from '../components/context';
 
-
-// import Users from '../model/users';
-
-
 function checkEmail(email) {
   return EmailValidator.validate(email);
 }
 
-
 const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  // const [password, setPassword] = useState(null);
-  // const [phone, setPhone] = useState(null);
   const [data, setData] = React.useState({
     email: '',
     check_emailInputChange: false,
@@ -44,8 +34,7 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
   const toggleAlert = React.useCallback(() => {
     setVisible(!visible);
   }, [visible]);
-  const {forgot_password, loading, setLoading } =
-    useContext(AuthContext);
+  const { forgot_password, loading, setLoading } = useContext(AuthContext);
 
   useEffect(() => {
     setLoading(false);
@@ -66,30 +55,24 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
       });
     } else {
       const passwordReset = await forgot_password(passwordMail);
-    if (passwordReset['type'] === 'danger') {
-      console.log('yo1');
-      console.log(passwordReset['message']);
-      showMessage({
-        message: passwordReset['message'],
-        type: 'danger',
-        position: 'bottom',
-      });
-    } else {
-      console.log(passwordReset['message']);
-      setLoading(false);
-      showMessage({
-        message: passwordReset['message'],
-        type: 'success',
-        position: 'bottom',
-      });
-      toggleAlert();
-      // const timeout = setTimeout(() => {
-      //   toggleAlert();
-        
-      // }, 3000);
-      // return () => clearTimeout(timeout);
-      // navigation.navigate("VerifyPhoneScreen");
-    }
+      if (passwordReset['type'] === 'danger') {
+        console.log('yo1');
+        console.log(passwordReset['message']);
+        showMessage({
+          message: passwordReset['message'],
+          type: 'danger',
+          position: 'bottom',
+        });
+      } else {
+        console.log(passwordReset['message']);
+        setLoading(false);
+        showMessage({
+          message: passwordReset['message'],
+          type: 'success',
+          position: 'bottom',
+        });
+        toggleAlert();
+      }
     }
   }
 
@@ -111,10 +94,6 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
     }
   };
 
-
-
-
-
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <StatusBar style="auto" />
@@ -126,9 +105,6 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
             No worries, we'll send you reset instructions.
           </Text>
         </View>
-        {/* <TouchableOpacity onPress={toggleAlert}>
-        <Text>Tap me</Text>
-      </TouchableOpacity> */}
 
         <View style={{ marginVertical: 20 }}>
           <View style={styles.mobileContainer}>
@@ -142,8 +118,15 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
               selectionColor="#FD264F"
               onChangeText={(text) => emailInputChange(text)}
             />
-          {data.check_emailInputChange ? (
-              <Animatable.View animation="bounceIn" style={{ alignSelf:'center', alignContent:'center', alignItems:'center'}}>
+            {data.check_emailInputChange ? (
+              <Animatable.View
+                animation="bounceIn"
+                style={{
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
             ) : null}
@@ -190,30 +173,39 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
       <FlashMessage position={'top'} />
       <FancyAlert
         visible={visible}
-        icon={<View style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#4CB748',
-          borderRadius: 50,
-          width: '100%',
-        }}><Text style={{color:'ffffff'}}>👍🏻</Text></View>}
+        icon={
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#4CB748',
+              borderRadius: 50,
+              width: '100%',
+            }}
+          >
+            <Text style={{ color: 'ffffff' }}>👍🏻</Text>
+          </View>
+        }
         style={{ backgroundColor: 'white' }}
       >
         <View style={styles.content}>
-        <Text style={styles.contentText}>Reset Link Sent Successfully!!</Text>
-        <TouchableOpacity onPress={() => {
-              navigation.navigate('SignInScreen');
-            }} style={styles.btn}>
-            <TouchableOpacity
+          <Text style={styles.contentText}>Reset Link Sent Successfully!!</Text>
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate('SignInScreen');
             }}
+            style={styles.btn}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SignInScreen');
+              }}
             >
-            <Text style={styles.btnText}>OK</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
+              <Text style={styles.btnText}>OK</Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </FancyAlert>
     </SafeAreaView>
@@ -254,9 +246,6 @@ const styles = StyleSheet.create({
     color: '#000000',
     backgroundColor: 'transparent',
   },
-  countrCode: {
-    width: '30%',
-  },
   input: {
     alignSelf: 'stretch',
     paddingHorizontal: 11,
@@ -278,11 +267,6 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     alignSelf: 'flex-end',
   },
-  passwordForgotten: {
-    color: '#FD264F',
-    fontSize: 14,
-    fontWeight: '600',
-  },
   activityIndicator: {
     position: 'absolute',
     alignSelf: 'center',
@@ -301,13 +285,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 26,
   },
-  noAccountText: {
-    color: '#FD264F',
-    fontSize: 16,
-  },
-  eyeIcon: {
-    marginTop: 5,
-  },
   mobileContainer: {
     width: '100%',
     flexDirection: 'row',
@@ -316,20 +293,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     backgroundColor: '#F2F2F4',
     borderRadius: 15,
-  },
-  headerContainer: {
-    width: '100%',
-    height: '10%',
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  headerText: {
-    fontSize: 17,
-    color: 'grey',
-  },
-  errorMsg: {
-    color: 'red',
   },
   content: {
     display: 'flex',

@@ -1,80 +1,58 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const storage = {
-    storeToken: async function storeToken(token) {        
-        try {
-            const tokenAndDate = {
-                token: token,
-                date: new Date().getTime(),
-            };
-            const jsonValue = JSON.stringify(tokenAndDate);
+  storeToken: async function storeToken(token) {
+    try {
+      const tokenAndDate = {
+        token: token,
+        date: new Date().getTime(),
+      };
+      const jsonValue = JSON.stringify(tokenAndDate);
 
-            await AsyncStorage.setItem('@token', jsonValue);
-        } catch (e) {
-            // save error
-        }
-    },
+      await AsyncStorage.setItem('@token', jsonValue);
+    } catch (e) {
+      // save error
+    }
+  },
 
-    readToken: async function readToken() {
-        try {
-            const jsonValue = await AsyncStorage.getItem('@token');
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-            //reading error value
-        }
-    },
-    storeLocation: async function storeLocation(location) {        
-        try {
-            const locationAndDate = {
-                location: location,
-                date: new Date().getTime(),
-            };
-            const jsonValue = JSON.stringify(locationAndDate);
+  readToken: async function readToken() {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@token');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      //reading error value
+    }
+  },
 
-            await AsyncStorage.setItem('@location', jsonValue);
-        } catch (e) {
-            // save error
-        }
-    },
+  deleteToken: async function deleteToken() {
+    await AsyncStorage.removeItem('@token');
+  },
 
-    readLocation: async function readLocation() {
-        try {
-            const jsonValue = await AsyncStorage.getItem('@location');
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-            //reading error value
-        }
-    },
+  storeUser: async function storeUser(userData) {
+    try {
+      const user = {
+        userData: userData,
+      };
+      const jsonValue = JSON.stringify(user);
 
-    deleteToken: async function deleteToken() {
-        await AsyncStorage.removeItem('@token');
-    },
+      await AsyncStorage.setItem('@user', jsonValue);
+    } catch (e) {
+      // save error
+    }
+  },
 
-    storeUser: async function storeUser(userData) {        
-        try {
-            const user = {
-                userData: userData
-            };
-            const jsonValue = JSON.stringify(user);
+  readUser: async function readUser() {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@user');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      //reading error value
+    }
+  },
 
-            await AsyncStorage.setItem('@user', jsonValue);
-        } catch (e) {
-            // save error
-        }
-    },
-
-    readUser: async function readUser() {
-        try {
-            const jsonValue = await AsyncStorage.getItem('@user');
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-            //reading error value
-        }
-    },
-
-    deleteUser: async function deleteUser() {
-        await AsyncStorage.removeItem('@user');
-    },
-}
+  deleteUser: async function deleteUser() {
+    await AsyncStorage.removeItem('@user');
+  },
+};
 
 export default storage;
