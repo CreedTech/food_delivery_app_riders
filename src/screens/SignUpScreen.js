@@ -66,7 +66,7 @@ const SignUpScreen = ({ setToken, navigation }) => {
         email: data.email,
         password: data.password,
         phone: '+234' + data.phone.replace(' ', '').slice(-10),
-        userType: 'VENDOR',
+        userType: 'RIDER',
       };
 
       // Register user
@@ -97,7 +97,7 @@ const SignUpScreen = ({ setToken, navigation }) => {
     const userLogin = {
       phone: '+234' + data.phone.replace(' ', '').slice(-10),
       password: data.password,
-      userType: 'VENDOR',
+      userType: 'RIDER',
     };
 
     const loginUser = await login(userLogin);
