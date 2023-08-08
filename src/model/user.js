@@ -1,7 +1,6 @@
 import config from '../config/config.json';
 import storage from './storage';
 import axios from 'axios';
-import { BASE_URL } from '../config';
 
 const userModel = {
   getUserData: async function getUserData(userData) {
@@ -9,9 +8,6 @@ const userModel = {
 
     const response = await fetch(`${config.base_url}user/${user.userId}`, {
       method: 'GET',
-      // headers: {
-      //     'x-access-token': token['token']
-      // }
     });
 
     const result = await response.json();
@@ -25,9 +21,6 @@ const userModel = {
 
     const response = await fetch(`${config.base_url}wallet/balance`, {
       method: 'GET',
-      // headers: {
-      //     'x-access-token': token['token']
-      // }
     });
 
     const result = await response.json();
@@ -57,13 +50,6 @@ const userModel = {
         let result = res.data;
         console.log('result');
         console.log(result);
-        // setUserInfo(userInfo);
-        // setUserToken = 'ddhdjkdfjjkfd';
-        // AsyncStorage.setItem('userToken', JSON.stringify(userInfo.token));
-        // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-        // const userToken = userInfo.token;
-        // setIsLoading(false);
-        // dispatch({ type: 'LOGIN', id: userInfo.userId, token: userInfo.token });
       })
       .catch((error) => {
         if (error.response) {
@@ -161,7 +147,6 @@ const userModel = {
 
   updateUser: async function updateUser(userData) {
     const token = await storage.readToken();
-    const userId = await storage.readUser();
     const user = await userModel.getUserData(token);
 
     const body = {

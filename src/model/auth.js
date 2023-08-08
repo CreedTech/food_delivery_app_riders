@@ -18,18 +18,13 @@ const authModel = {
       console.log(result);
     } catch (error) {
       if (error.response) {
-        console.log('yo1');
         // Request made and server responded
         console.log(error.response.data);
-        console.log('yo2');
         console.log(error.response.status);
-        console.log('yo3');
         console.log(error.response.headers);
       } else if (error.request) {
-        console.log('yo4');
         console.log(error.request);
       } else {
-        console.log('yo5');
         console.log('Error', error.message);
       }
     }
@@ -42,7 +37,6 @@ const authModel = {
       })
       .then((res) => {
         const result = res.data;
-        console.log('yo');
         console.log(result);
         const userData = result.user;
         console.log(userData);
@@ -51,7 +45,6 @@ const authModel = {
 
         //Store token
         const token = result.userId;
-        console.log('yo token');
         console.log(token);
 
         storage.storeToken(token);
@@ -63,19 +56,14 @@ const authModel = {
       })
       .catch((error) => {
         if (error.response) {
-          console.log('yo1');
           // Request made and server responded
           console.log(error.response.data);
-          console.log('yo2');
           console.log(error.response.status);
-          console.log('yo3');
           console.log(error.response.headers);
           console.log('Error', error.response.data.message);
         } else if (error.request) {
-          console.log('yo4');
           console.log(error.request);
         } else {
-          console.log('yo5');
           console.log('Error', error.response.data.message);
         }
         return {

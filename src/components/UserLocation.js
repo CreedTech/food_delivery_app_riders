@@ -98,13 +98,6 @@ TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
         l1 = lat;
         l2 = long;
         location = [l1, l2].toString();
-        // const locationData = JSON.stringify(location);
-        // await AsyncStorage.setItem('locationData', locationData);
-        // console.log("location here");
-        // console.log(locationData);
-        // const userLocation = await storage.storeLocation();
-        // console.log(userLocation);
-        // console.log(location.toString());
 
         console.log(
             `${new Date(Date.now()).toLocaleString()}: ${lat},${long}`
