@@ -47,8 +47,6 @@ const EditProfileScreen = ({ navigation }) => {
           <View
             style={{ justifyContent: 'space-between', alignContent: 'stretch' }}
           >
-            {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} enabled> */}
-            {/* <ScrollView> */}
             <View style={styles.mobileContainer}>
               <TextInput
                 style={styles.input}
@@ -56,7 +54,6 @@ const EditProfileScreen = ({ navigation }) => {
                 placeholderStyle={{ fontSize: 40 }}
                 autoCapitalize="none"
                 selectionColor="#FD264F"
-                // onChangeText={(val) => handlePasswordChange(val)}
               />
             </View>
             <View style={styles.mobileContainer}>
@@ -66,7 +63,6 @@ const EditProfileScreen = ({ navigation }) => {
                 placeholderStyle={{ fontSize: 40 }}
                 autoCapitalize="none"
                 selectionColor="#FD264F"
-                // onChangeText={(val) => handlePasswordChange(val)}
               />
             </View>
             <View style={styles.mobileContainer}>
@@ -76,7 +72,6 @@ const EditProfileScreen = ({ navigation }) => {
                 placeholderStyle={{ fontSize: 40 }}
                 autoCapitalize="none"
                 selectionColor="#FD264F"
-                // onChangeText={(val) => handlePasswordChange(val)}
               />
             </View>
             <View style={styles.mobileContainer}>
@@ -86,18 +81,11 @@ const EditProfileScreen = ({ navigation }) => {
                 placeholderStyle={{ fontSize: 40 }}
                 autoCapitalize="none"
                 selectionColor="#FD264F"
-                // onChangeText={(val) => handlePasswordChange(val)}
               />
             </View>
-            {/* </ScrollView> */}
 
-            {/* </KeyboardAvoidingView> */}
             <View style={styles.requestButton}>
-              <TouchableOpacity
-                onPress={() => {
-                  // navigation.navigate('DeliveriesScreen')
-                }}
-              >
+              <TouchableOpacity onPress={() => {}}>
                 <View style={styles.requestText}>
                   <Text style={{ color: '#ffffff' }}>Save</Text>
                 </View>
