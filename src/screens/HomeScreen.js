@@ -5,15 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  // Switch,
 } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { format } from "date-fns";
-import {
-  Avatar,
-  Switch
-} from 'react-native-paper';
+import { format } from 'date-fns';
+import { Avatar, Switch } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userModel from '../model/user';
 import axios from 'axios';
@@ -24,21 +20,15 @@ const HomeScreen = ({ navigation }) => {
   const [userBalance, setUserBalance] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
   const [rides, setRides] = useState([]);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   useEffect(() => {
     async function getUser() {
       const result = await userModel.getProfile();
       const walletBalance = await userModel.getBalance();
-      // const rides =  await userModel.getRides();
       handleAxiosRequest();
 
-      // const profile = result['user'];
       setUserInfo(result);
       setUserBalance(walletBalance);
-      console.log('Yes');
-      
-      // console.log(requestRides);
-
     }
 
     getUser();
@@ -46,36 +36,30 @@ const HomeScreen = ({ navigation }) => {
       console.log(r.recipientAddress);
     });
     if (isEnabled) {
-      console.log("Availability is Set to Online");
+      console.log('Availability is Set to Online');
     }
     setInterval(() => {
       if (isEnabled) {
-        console.log("Availability is Set to Online");
-      UpdateRiderLocation();
-    }  
+        console.log('Availability is Set to Online');
+        UpdateRiderLocation();
+      }
     }, 60000);
     if (!isEnabled) {
-      console.log("Availability is Set to offline");
+      console.log('Availability is Set to offline');
     }
     console.log('Testing again');
-    
   }, [isEnabled]);
-  
+
   async function UpdateRiderLocation() {
     const driverLocation = await AsyncStorage.getItem('locationData');
-    console.log("driverLocations");
+    console.log('driverLocations');
     console.log(driverLocation);
-  
-    const driverId = userInfo.userId;
-    const result = await userModel.updateRiderLocation(
-      {
-        driverLocation,
-        driverId
-      }
-    );
 
-    // console.log(result);
-    console.log("Driver's Info Sent");
+    const driverId = userInfo.userId;
+    const result = await userModel.updateRiderLocation({
+      driverLocation,
+      driverId,
+    });
   }
 
   const handleAxiosRequest = async () => {
@@ -98,13 +82,11 @@ const HomeScreen = ({ navigation }) => {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
         }
-        // console.log(`register error ${e}`);
       });
   };
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        {/* <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} /> */}
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', width: '70%' }}>
             <Avatar.Image
@@ -113,9 +95,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <View style={styles.user}>
               <Text style={styles.title} numberOfLines={1}>
-                
                 {userInfo.firstName} {userInfo.lastName}
-              
               </Text>
             </View>
           </View>
@@ -145,7 +125,7 @@ const HomeScreen = ({ navigation }) => {
             >
               Availability
             </Text>
-           
+
             <Switch
               trackColor={{ false: '#000000', true: '#4C9521' }}
               thumbColor={isEnabled ? '#ffffff' : '#767577'}
@@ -210,55 +190,56 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <ScrollView>
             <View style={{ flexDirection: 'column' }}>
-              
-              {
-                rides.map((r, index) => {
-                  var date = new Date(r.createdAt);
-                  var formattedDate = format(date, "MMMM do, yyyy H:mma");
-                  return <View style={styles.trips} key={index}>
+              {rides.map((r, index) => {
+                var date = new Date(r.createdAt);
+                var formattedDate = format(date, 'MMMM do, yyyy H:mma');
+                return (
+                  <View style={styles.trips} key={index}>
                     <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width:'80%'
-                    }}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '80%',
+                      }}
                     >
-                    <View
-                    >
-                      <Avatar.Image
-                        style={{ color: '#E3E3E3', backgroundColor: '#E3E3E3' }}
-                        source={require('../assets/images/profile.png')}
-                        size={35}
-                      />
-                    </View>
+                      <View>
+                        <Avatar.Image
+                          style={{
+                            color: '#E3E3E3',
+                            backgroundColor: '#E3E3E3',
+                          }}
+                          source={require('../assets/images/profile.png')}
+                          size={35}
+                        />
+                      </View>
 
-                    <View>
-                      <View style={{ marginHorizontal: 10,width:'75%' }}>
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            fontWeight: '500',
-                            fontFamily: 'Poppins-Medium',
-                            width:'100%' 
-                          }}
-                          numberOfLines={1}
-                        >
-                          {r.recipientAddress} - {r.senderAddress}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: '400',
-                            fontFamily: 'Poppins-Medium',
-                          }}
-                        >
-                          {formattedDate}
-                        </Text>
+                      <View>
+                        <View style={{ marginHorizontal: 10, width: '75%' }}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: '500',
+                              fontFamily: 'Poppins-Medium',
+                              width: '100%',
+                            }}
+                            numberOfLines={1}
+                          >
+                            {r.recipientAddress} - {r.senderAddress}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              fontWeight: '400',
+                              fontFamily: 'Poppins-Medium',
+                            }}
+                          >
+                            {formattedDate}
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                    </View>
                     <View>
-                      <View style={{ width:'100%' }}>
+                      <View style={{ width: '100%' }}>
                         <Text
                           style={{
                             fontSize: 16,
@@ -280,8 +261,8 @@ const HomeScreen = ({ navigation }) => {
                       </View>
                     </View>
                   </View>
-                })
-              }
+                );
+              })}
             </View>
           </ScrollView>
           <View style={styles.requestButton}>
@@ -326,8 +307,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
   },
-  backIcon: {
-  },
+  backIcon: {},
   user: {
     margin: 15,
     textAlign: 'center',
@@ -380,7 +360,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     fontFamily: 'Poppins-Black',
-    width:'100%'
+    width: '100%',
   },
   requestButton: {
     display: 'flex',

@@ -3,12 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  AsyncStorage,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
-  Image,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
@@ -24,7 +20,7 @@ import { BASE_URL } from '../config';
 import { StatusBar } from 'expo-status-bar';
 import userModel from '../model/user';
 import FlashMessage from 'react-native-flash-message';
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 const VerifyPhoneScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = React.useState(false);

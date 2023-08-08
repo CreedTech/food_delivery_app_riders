@@ -8,7 +8,6 @@ import {
   ImageBackground,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { useTheme } from '@react-navigation/native';
 
 const OnBoardingScreen = ({ navigation }) => {
   return (

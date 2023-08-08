@@ -10,8 +10,6 @@ import {
   Keyboard,
 } from 'react-native';
 import { AuthContext } from '../components/context';
-import axios from 'axios';
-import { BASE_URL } from '../config';
 import FlashMessage from 'react-native-flash-message';
 import { showMessage } from 'react-native-flash-message';
 import PhoneInput from 'react-native-phone-input';
