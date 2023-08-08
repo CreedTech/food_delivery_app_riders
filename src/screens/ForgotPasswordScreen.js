@@ -166,8 +166,6 @@ const ForgotPasswordScreen = ({ navigation, setIsLoggedIn }) => {
               </Text>
             </TouchableOpacity>
           </View>
-
-          {/* <ActivityIndicator size="large" /> */}
         </View>
       </View>
       <FlashMessage position={'top'} />
